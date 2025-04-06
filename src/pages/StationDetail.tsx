@@ -1,0 +1,87 @@
+import React from 'react';
+import { Typography, Box, Container, Paper, Chip } from '@mui/material';
+import { useStation } from '../hooks/useStation';
+
+interface StationDetailProps {
+   stationId: string;
+}
+
+const StationDetail: React.FC<StationDetailProps> = ({ stationId }) => {
+   const { station, loading, error } = useStation(stationId);
+
+   if (loading) return <Typography>Loading...</Typography>;
+   if (error) return <Typography color="error">Error loading station: {error}</Typography>;
+   if (!station) return <Typography>Station not found</Typography>;
+
+   return (
+      <Container maxWidth="lg">
+         <Paper elevation={3} sx={{ p: 3, mt: 4, mb: 4 }}>
+            <Box mb={3}>
+               <Typography variant="h4" gutterBottom>
+                  {station.name}
+               </Typography>
+               
+               <Box display="flex" gap={1} mb={2}>
+                  {station.nextTrains && station.nextTrains.map(trains => (
+                     <Chip 
+                        key={trains.destination} 
+                        label={trains.destination} 
+                        color="primary"
+                        variant="outlined"
+                     />
+                  ))}
+                  {(!station.nextTrains || station.nextTrains.length === 0) && (
+                     <Typography variant="body2" color="textSecondary">No destinations available</Typography>
+                  )}
+               </Box>
+            </Box>
+
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+               <Box>
+                  <Typography variant="h6">Information</Typography>
+                  <Box mt={1}>
+                     <Typography><strong>Name:</strong> {station.name}</Typography>
+                     <Typography><strong>Lines:</strong> {Array.isArray(station.lines) ? station.lines.join(', ') : station.lines}</Typography>
+                     <Typography><strong>Location:</strong> {[station.coordinates.x, station.coordinates.y].join(', ')}</Typography>
+                  </Box>
+               </Box>
+               
+               <Box>
+                  <Typography variant="h6">Next Trains</Typography>
+                  <Box sx={{ overflowX: 'auto' }}>
+                     <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '8px' }}>
+                        <thead>
+                           <tr>
+                              <th style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Destination</th>
+                              <th style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Time 1</th>
+                              <th style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Time 2</th>
+                              <th style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Time 3</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {station.nextTrains && station.nextTrains.length > 0 ? (
+                              station.nextTrains.map((train, index) => (
+                                 <tr key={index}>
+                                    <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{train.destination}</td>
+                                    <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{train.time1}</td>
+                                    <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{train.time2}</td>
+                                    <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{train.time3}</td>
+                                 </tr>
+                              ))
+                           ) : (
+                              <tr>
+                                 <td colSpan={4} style={{ padding: '8px', textAlign: 'center' }}>No upcoming trains</td>
+                              </tr>
+                           )}
+                        </tbody>
+                     </table>
+                  </Box>
+               </Box>
+            </Box>
+         </Paper>
+      </Container>
+   );
+};
+
+
+export default StationDetail;

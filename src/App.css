@@ -1,0 +1,259 @@
+/* Base styles */
+:root {
+  --primary-color: #009048; /* Verde Metro de Lisboa */
+  --blue-line: #0070b9;     /* Linha Azul */
+  --yellow-line: #ffcc29;   /* Linha Amarela */
+  --green-line: #009048;    /* Linha Verde */
+  --red-line: #dc241f;      /* Linha Vermelha */
+  --text-dark: #333;
+  --text-light: #fff;
+  --background-light: #f5f5f5;
+  --background-dark: #222;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background-color: var(--background-light);
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Header styles */
+.header {
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  padding: 1rem 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container img {
+  height: 60px;
+}
+
+.main-nav ul {
+  display: flex;
+  list-style: none;
+  margin-top: 1rem;
+}
+
+.main-nav li {
+  margin-right: 1.5rem;
+}
+
+.main-nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.3s;
+}
+
+.main-nav a:hover {
+  opacity: 0.8;
+}
+
+/* Main content */
+.main-content {
+  padding: 2rem 0;
+  min-height: calc(100vh - 180px);
+}
+
+/* Line selector */
+.line-selector {
+  margin-bottom: 2rem;
+}
+
+.line-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.line-item {
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.line-item:hover {
+  transform: scale(1.05);
+}
+
+.line-item.selected {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5), 0 0 0 6px currentColor;
+}
+
+/* Train map */
+.train-map {
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.station-marker {
+  cursor: pointer;
+}
+
+.station-point {
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 50%;
+}
+
+.station-name {
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+  transform: translateY(-20px);
+}
+
+/* Line path styles */
+.line-path {
+  height: 6px;
+  position: absolute;
+  z-index: 0;
+}
+
+/* Timetable */
+.timetable {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.timetable table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.timetable th, .timetable td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.timetable th {
+  background-color: #f8f8f8;
+  font-weight: 600;
+}
+
+/* Footer */
+.footer {
+  background-color: var(--background-dark);
+  color: var(--text-light);
+  padding: 2.5rem 0 1rem;
+}
+
+.footer-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-column {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-column h4 {
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+}
+
+.footer-column ul {
+  list-style: none;
+}
+
+.footer-column li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-column a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-column a:hover {
+  color: var(--primary-color);
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-bottom {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  color: #999;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-columns {
+    flex-direction: column;
+  }
+  
+  .main-nav ul {
+    flex-direction: column;
+  }
+  
+  .main-nav li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .line-list {
+    flex-direction: column;
+  }
+}
+
+/* Line detail page */
+.line-detail {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.line-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.line-color-indicator {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.line-map-container {
+  margin: 2rem 0;
+}
