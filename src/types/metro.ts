@@ -56,3 +56,10 @@ export interface Destination {
   id: string;
   name: string;
 }
+
+// Metro's lines state 
+export interface LineState {
+  name: 'Amarela' | 'Azul' | 'Verde' | 'Vermelha';
+  status: string;
+  message: string;
+}

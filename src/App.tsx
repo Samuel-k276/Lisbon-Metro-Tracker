@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import StationDetail from './pages/StationDetail';
+import Alerts from './pages/Alerts';
 import './App.css';
 
 // Wrapper component to extract URL parameters
@@ -20,7 +21,9 @@ const App: React.FC = () => {
          <main className="main-content">
             <Routes>
                <Route path="/" element={<Home />} />
+               <Route path="/alertas" element={<Alerts />} />
                <Route path="/station/:stationId" element={<StationDetailWrapper />} />
+               <Route path="*" element={<div>404 Not Found</div>} />
             </Routes>
          </main>
          <Footer />

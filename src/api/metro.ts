@@ -1,4 +1,4 @@
-import { Station, Destination, NextTrainsResponse } from '../types/metro';
+import { Station, Destination, NextTrainsResponse, LineState } from '../types/metro';
 import { getStationById, getDestinationNameById } from '../utils/stationMappings';
 
 // API URL for Lisbon Metro
@@ -175,6 +175,49 @@ export const fetchStations = async (): Promise<Station[]> => {
     return await response.json(); 
   } catch (error) {
     console.error('Error fetching stations:', error);
+    return [];
+  }
+}
+
+export const fetchLineStateAll = async (): Promise<LineState[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/estadoLinha/todos`, { headers: HEADERS });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch line state: ${response.status}`);
+    }
+
+    const data = await response.json();
+    if (data.codigo !== "200" || !data.resposta || data.resposta.length === 0) {
+      throw new Error('Invalid response format or no data received, code: ' + data.codigo);
+    }
+    // Transform the response to match the LineState type
+    const lineStates: LineState[] = [
+      {
+        name: "Amarela",
+        status: data.resposta.amarela.trim(),
+        message: data.resposta.tipo_msg_am
+      },
+      {
+        name: "Azul",
+        status: data.resposta.azul.trim(),
+        message: data.resposta.tipo_msg_az
+      },
+      {
+        name: "Verde",
+        status: data.resposta.verde.trim(),
+        message: data.resposta.tipo_msg_vd
+      },
+      {
+        name: "Vermelha",
+        status: data.resposta.vermelha.trim(),
+        message: data.resposta.tipo_msg_vm
+      }
+    ];
+
+    return lineStates;
+
+  } catch (error) {
+    console.error('Error fetching line state:', error);
     return [];
   }
 }
