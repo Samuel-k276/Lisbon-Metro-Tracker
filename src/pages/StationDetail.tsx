@@ -8,7 +8,7 @@ interface StationDetailProps {
 
 const StationDetail: React.FC<StationDetailProps> = ({ stationId }) => {
    const { station, loading, error } = useStation(stationId);
-
+   console.log('Station:', station); // Debugging line to check the station data
    if (loading) return <Typography>Loading...</Typography>;
    if (error) return <Typography color="error">Error loading station: {error}</Typography>;
    if (!station) return <Typography>Station not found</Typography>;

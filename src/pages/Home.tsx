@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import StationSelector from '../components/StationSelector';
-import { fetchStations } from '../api/metro';
 import { Station } from '../types/metro';
+import { fetchStations } from '../api/metro'; // Adjust the import path as necessary
 
 const Home: React.FC = () => {
   const [stations, setStations] = useState<Station[]>([]);

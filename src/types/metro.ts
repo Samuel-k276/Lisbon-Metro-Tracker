@@ -41,7 +41,6 @@ export interface UserLocation {
 
 // Next Trains response (3 next trains)
 export interface NextTrainsResponse {
-  stationId: string;
   destination: string;
   train1: string;
   time1: string;

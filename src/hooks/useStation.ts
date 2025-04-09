@@ -1,16 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Station } from '../types/metro';
-
-// You would typically replace this with an API call to your backend
-const fetchStation = async (stationId: string): Promise<Station> => {
-  // This is a mock implementation
-  // Replace with your actual API call
-  const response = await fetch(`/api/stations/${stationId}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch station data');
-  }
-  return response.json();
-};
+import { fetchStationWaitingTimes } from '../api/metro'; // Adjust the import path as necessary
 
 export const useStation = (stationId: string | undefined) => {
   const [station, setStation] = useState<Station | null>(null);
@@ -27,7 +17,7 @@ export const useStation = (stationId: string | undefined) => {
     const getStationData = async () => {
       try {
         setLoading(true);
-        const data = await fetchStation(stationId);
+        const data = await fetchStationWaitingTimes(stationId);
         setStation(data);
         setError(null);
       } catch (err) {

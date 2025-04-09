@@ -1,4 +1,5 @@
 import { Station, Destination, NextTrainsResponse } from '../types/metro';
+import { getStationById, getDestinationNameById } from '../utils/stationMappings';
 
 // API URL for Lisbon Metro
 const API_BASE_URL = 'https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1';
@@ -14,18 +15,80 @@ const HEADERS = {
   'accept': 'application/json'  
 };
 
-// Fetch all metro stations
-export const fetchStations = async (): Promise<Station[]> => {
+
+export const fetchStationWaitingTimes = async (stationId: string): Promise<Station | null> => {
   try {
-    console.log(HEADERS);
-    const response = await fetch(`${API_BASE_URL}/infoEstacao/todos`, { headers: HEADERS });
+    const response = await fetch(`${API_BASE_URL}/tempoEspera/Estacao/${stationId}`, { headers: HEADERS });
     if (!response.ok) {
-      throw new Error(`Failed to fetch stations: ${response.status}`);
+      throw new Error(`Failed to fetch station: ${response.status}`);
     }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching stations:', error);
-    return [];
+    
+    const data = await response.json();
+    
+    if (data.codigo !== "200" || !data.resposta || data.resposta.length === 0) {
+      throw new Error('Invalid response format or no data received');
+    }
+    
+    // We need to transform the response to match the Station type
+    // Interface for platform data from the API response
+    interface PlatformResponse {
+      stop_id: string;
+      destino: string;
+      comboio?: string;
+      comboio2?: string;
+      comboio3?: string;
+      tempoChegada1?: string;
+      tempoChegada2?: string;
+      tempoChegada3?: string;
+    }
+    
+    // Get the station data from the mappings using the stationId 
+    const stationData = getStationById(stationId) || 
+      (() => { throw new Error('Station data not found in mappings'); })();
+
+    const station: Station = {
+      id: stationId,
+      name: stationData?.name,
+      coordinates: stationData.coordinates,
+      lines: stationData.lines,
+      isTransfer: stationData.isTransfer,
+      nextTrains: data.resposta.flatMap((platform: PlatformResponse) => {
+        // Create separate NextTrainsResponse entries for each valid train
+        const trains: NextTrainsResponse = {
+          destination: '',
+          train1: '',
+          time1: '',
+          train2: '',
+          time2: '',
+          train3: '',
+          time3: ''
+        };
+        
+        if (platform.comboio && platform.tempoChegada1) {
+          trains.destination = getDestinationNameById(platform.destino) || platform.destino;
+          trains.train1 = platform.comboio;
+          trains.time1 = platform.tempoChegada1;
+        }
+        
+        if (platform.comboio2 && platform.tempoChegada2) {
+          trains.train2 = platform.comboio2;
+          trains.time2 = platform.tempoChegada2;
+        }
+        
+        if (platform.comboio3 && platform.tempoChegada3) {
+          trains.train3 = platform.comboio3;
+          trains.time3 = platform.tempoChegada3;
+        }
+        
+        return trains;
+      })
+    };
+    
+    return station;
+  }
+  catch (error) {
+    console.error('Error fetching station:', error);
+    return null;
   }
 };
 
@@ -83,5 +146,18 @@ export const fetchLinesState = async (): Promise<any> => {
   } catch (error) {
     console.error('Error fetching lines state:', error);
     return null;
+  }
+}
+
+export const fetchStations = async (): Promise<Station[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/infoEstacao/todos`, { headers: HEADERS });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch stations: ${response.status}`);
+    }
+    return await response.json(); 
+  } catch (error) {
+    console.error('Error fetching stations:', error);
+    return [];
   }
 }
