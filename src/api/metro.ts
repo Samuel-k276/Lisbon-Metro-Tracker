@@ -52,6 +52,7 @@ export const fetchStationWaitingTimes = async (stationId: string): Promise<Stati
       coordinates: stationData.coordinates,
       lines: stationData.lines,
       isTransfer: stationData.isTransfer,
+      isTerminal: stationData.isTerminal,
       nextTrains: data.resposta.flatMap((platform: PlatformResponse) => {
         // Create separate NextTrainsResponse entries for each valid train
         const trains: NextTrainsResponse = {
@@ -84,6 +85,22 @@ export const fetchStationWaitingTimes = async (stationId: string): Promise<Stati
       })
     };
     
+    // If is a Terminal Station remove duplicated destinations and the destination that is the same as the station name
+    if (station.isTerminal) {
+      const processedDestinations = new Set<string>();
+      station.nextTrains = station.nextTrains.filter(train => {
+        // Skip trains with destination same as station name
+        if (train.destination === station.name) return false;
+        
+        // Check if we've already processed this destination
+        if (processedDestinations.has(train.destination)) return false;
+        
+        // Add to processed set and keep this train
+        processedDestinations.add(train.destination);
+        return true;
+      });
+    }
+
     return station;
   }
   catch (error) {

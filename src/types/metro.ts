@@ -20,6 +20,7 @@ export interface Station {
   coordinates: Coordinates;
   lines: string[]; // Array of line IDs this station belongs to
   isTransfer: boolean; // Whether this is a transfer station
+  isTerminal: boolean; // Whether this is a terminal station
   nextTrains: NextTrainsResponse[]; // Next trains information (each index is a different destination)
 }
 
