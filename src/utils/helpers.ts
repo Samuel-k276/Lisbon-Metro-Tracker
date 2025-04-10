@@ -62,3 +62,15 @@ export const sortStationsByLine = (stations: Station[], line: Line): Station[] =
     return aIndex - bIndex;
   });
 };
+
+/**
+ * Passes the time in seconds to a string in mm:ss format
+ * @param seconds Time in seconds
+ * @return Formatted time string
+ */
+export const formatTimeInSeconds = (seconds: string): string => {
+  const totalSeconds = parseInt(seconds, 10);
+  const minutes = Math.floor(totalSeconds / 60);
+  const secs = totalSeconds % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+};

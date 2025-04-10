@@ -1,10 +1,37 @@
 import React from 'react';
 import { Typography, Box, Container, Paper, Chip } from '@mui/material';
 import { useStation } from '../hooks/useStation';
+import { formatTimeInSeconds } from '../utils/helpers';
 
 interface StationDetailProps {
    stationId: string;
 }
+
+// Map of the 4 possible line colors for Lisbon Metro
+const lineColors: Record<string, string> = {
+   'Azul': '#0075BF',
+   'Amarela': '#FFD800',
+   'Verde': '#00A9A6',
+   'Vermelha': '#ED1C24'
+};
+
+const LineCircle: React.FC<{ line: string }> = ({ line }) => {
+   const color = lineColors[line] || '#888888'; // Default color if line not found
+   return (
+      <Box
+         component="span"
+         sx={{
+            display: 'inline-block',
+            width: '25px',
+            height: '25px',
+            borderRadius: '50%',
+            backgroundColor: color,
+            marginLeft: 1,
+            verticalAlign: 'middle',
+         }}
+      />
+   );
+};
 
 const StationDetail: React.FC<StationDetailProps> = ({ stationId }) => {
    const { station, loading, error } = useStation(stationId);
@@ -17,8 +44,14 @@ const StationDetail: React.FC<StationDetailProps> = ({ stationId }) => {
       <Container maxWidth="lg">
          <Paper elevation={3} sx={{ p: 3, mt: 4, mb: 4 }}>
             <Box mb={3}>
-               <Typography variant="h4" gutterBottom>
+               <Typography variant="h4" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                   {station.name}
+                  {Array.isArray(station.lines) ? 
+                     station.lines.map((line, index) => (
+                        <LineCircle key={index} line={line} />
+                     )) : 
+                     <LineCircle line={station.lines} />
+                  }
                </Typography>
                
                <Box display="flex" gap={1} mb={2}>
@@ -63,9 +96,9 @@ const StationDetail: React.FC<StationDetailProps> = ({ stationId }) => {
                               station.nextTrains.map((train, index) => (
                                  <tr key={index}>
                                     <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{train.destination}</td>
-                                    <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{train.time1}</td>
-                                    <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{train.time2}</td>
-                                    <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{train.time3}</td>
+                                    <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{formatTimeInSeconds(train.time1)}</td>
+                                    <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{formatTimeInSeconds(train.time2)}</td>
+                                    <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{formatTimeInSeconds(train.time3)}</td>
                                  </tr>
                               ))
                            ) : (
