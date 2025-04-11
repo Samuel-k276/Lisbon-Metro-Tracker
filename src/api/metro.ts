@@ -67,6 +67,10 @@ export const fetchStationWaitingTimes = async (stationId: string): Promise<Stati
         
         if (platform.comboio && platform.tempoChegada1) {
           trains.destination = getDestinationNameById(platform.destino) || platform.destino;
+          if ((stationData?.name === "Alto dos Moinhos" || stationData?.name === "Amadora Este")
+              && trains.destination === "Terreiro do Paço") {
+            trains.destination = "Santa Apolónia";
+          }
           trains.train1 = platform.comboio;
           trains.time1 = platform.tempoChegada1;
         }
