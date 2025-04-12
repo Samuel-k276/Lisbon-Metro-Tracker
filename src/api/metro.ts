@@ -66,11 +66,7 @@ export const fetchStationWaitingTimes = async (stationId: string): Promise<Stati
         };
         
         if (platform.comboio && platform.tempoChegada1) {
-          trains.destination = getDestinationNameById(platform.destino) || platform.destino;
-          if ((stationData?.name === "Alto dos Moinhos" || stationData?.name === "Amadora Este")
-              && trains.destination === "Terreiro do Paço") {
-            trains.destination = "Santa Apolónia";
-          }
+          trains.destination = getDestinationNameById(platform.destino, stationId);
           trains.train1 = platform.comboio;
           trains.time1 = platform.tempoChegada1;
         }
@@ -197,24 +193,24 @@ export const fetchLineStateAll = async (): Promise<LineState[]> => {
     // Transform the response to match the LineState type
     const lineStates: LineState[] = [
       {
-        name: "Amarela",
-        status: data.resposta.amarela.trim(),
-        message: data.resposta.tipo_msg_am
+      name: "Amarela",
+      status: data.resposta.amarela.trim().replace(/^\w/, (c: string) => c.toUpperCase()),
+      message: data.resposta.tipo_msg_am
       },
       {
-        name: "Azul",
-        status: data.resposta.azul.trim(),
-        message: data.resposta.tipo_msg_az
+      name: "Azul",
+      status: data.resposta.azul.trim().replace(/^\w/, (c: string) => c.toUpperCase()),
+      message: data.resposta.tipo_msg_az
       },
       {
-        name: "Verde",
-        status: data.resposta.verde.trim(),
-        message: data.resposta.tipo_msg_vd
+      name: "Verde",
+      status: data.resposta.verde.trim().replace(/^\w/, (c: string) => c.toUpperCase()),
+      message: data.resposta.tipo_msg_vd
       },
       {
-        name: "Vermelha",
-        status: data.resposta.vermelha.trim(),
-        message: data.resposta.tipo_msg_vm
+      name: "Vermelha",
+      status: data.resposta.vermelha.trim().replace(/^\w/, (c: string) => c.toUpperCase()),
+      message: data.resposta.tipo_msg_vm
       }
     ];
 
