@@ -8,8 +8,8 @@ export interface Coordinates {
 
 // Metro Line
 export interface Line {
-  id: string;
-  name: string; // Line name the same as its color
+  name: string;
+  color: string; // Color for the line (e.g. '#00A9A6', '#FFD800')
   stations: string[]; // Array of station IDs
 }
 

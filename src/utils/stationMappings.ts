@@ -126,6 +126,14 @@ export const getStationById = (id: string): StationMapping | undefined => {
  * @param id Station ID
  * @returns Destination name or the ID if not found
  */
-export const getDestinationNameById = (id: string): string => {
-   return DestinationMapping[id] || id;
+export const getDestinationNameById = (id: string, stationId: string): string => {
+  if ((stationId === "AS" || stationId === "AH") && DestinationMapping[id] == "Terreiro do Paço") {
+    return "Santa Apolónia";
+  } 
+  
+  if ((stationId === "CP" || stationId === "SA" || stationId === "PI" || stationId === "MP") && DestinationMapping[id] == "Campo Grande") {
+    return "Odivelas";
+  }
+
+  return DestinationMapping[id] || id;
 }
