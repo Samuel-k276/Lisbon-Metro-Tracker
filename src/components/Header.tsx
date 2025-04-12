@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
   return (
-    <header className="header">
+    <header className="header" style={{ padding: '10px 20px', fontSize: '14px' }}>
       <div className="container">
         <div className="logo-container">
           <Link to="/">
@@ -11,7 +11,7 @@ const Header: React.FC = () => {
           </Link>
         </div>
         <nav className="main-nav">
-          <ul>
+          <ul style={{ display: 'flex', gap: '10px', margin: 0, padding: 0, listStyle: 'none' }}>
             <li><Link to="/">Mapa em Tempo Real</Link></li>
             <li><Link to="/linhas">Linhas</Link></li>
             <li><Link to="/horarios">Horários</Link></li>
