@@ -9,7 +9,6 @@ const Footer: React.FC = () => {
           <div className="footer-column">
             <h4>Metro de Lisboa</h4>
             <ul>
-              <li><Link to="/sobre">Sobre o Metro</Link></li>
               <li><Link to="/historia">História</Link></li>
               <li><Link to="/contactos">Contactos</Link></li>
               <li><Link to="/servicos">Serviços</Link></li>
@@ -18,7 +17,6 @@ const Footer: React.FC = () => {
           <div className="footer-column">
             <h4>Informações</h4>
             <ul>
-              <li><Link to="/horarios">Horários</Link></li>
               <li><Link to="/tarifarios">Tarifários</Link></li>
               <li><Link to="/planeador">Planear Viagem</Link></li>
               <li><Link to="/acessibilidade">Acessibilidade</Link></li>
