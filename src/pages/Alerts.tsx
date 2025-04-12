@@ -52,17 +52,10 @@ const Alerts: React.FC = () => {
 
    // Função para determinar o ícone do alerta com base no status
    const getStatusIcon = (status: string): string => {
-      switch (status.toLowerCase()) {
-         case "normal":
-            return "✓";
-         case "conditional":
-         case "conditioned":
-            return "⚠️";
-         case "interrupted":
-         case "closed":
-            return "✕";
-         default:
-            return "ℹ️";
+      if (status === "Ok") {
+         return "✓"; // Ícone de checkmark
+      } else {
+         return "⚠️"; // Ícone de aviso
       }
    };
 
@@ -245,8 +238,8 @@ const Alerts: React.FC = () => {
                            </Box>
                            
                            <CardContent sx={{ p: 3 }}>
-                              <Box sx={{ display: "flex", alignItems: "center", mb: lineState.message && lineState.message !== "0" ? 2 : 0 }}>
-                                 <Typography variant="body1" component="span" fontWeight="medium" sx={{ mr: 2 }}>
+                              <Box sx={{ display: "flex", alignItems: "flex-start", mb: lineState.message && lineState.message !== "0" ? 2 : 0 }}>
+                                 <Typography variant="body1" component="span" fontWeight="medium" sx={{ mr: 2, mt: 0.5 }}>
                                     Status:
                                  </Typography>
                                  <Chip
@@ -255,7 +248,16 @@ const Alerts: React.FC = () => {
                                           <Typography component="span" sx={{ mr: 1 }}>
                                              {getStatusIcon(lineState.status)}
                                           </Typography>
-                                          <Typography component="span">
+                                          <Typography 
+                                             component="span" 
+                                             sx={{
+                                                display: 'inline-block',
+                                                whiteSpace: 'normal', 
+                                                wordBreak: 'break-word',
+                                                textAlign: 'left',
+                                                lineHeight: 1.4
+                                             }}
+                                          >
                                              {lineState.status}
                                           </Typography>
                                        </Box>
@@ -266,6 +268,13 @@ const Alerts: React.FC = () => {
                                        fontWeight: "bold",
                                        borderRadius: "16px",
                                        border: `1px solid ${statusColor}`,
+                                       height: 'auto',
+                                       '& .MuiChip-label': {
+                                          display: 'block',
+                                          whiteSpace: 'normal',
+                                          py: 0.75,
+                                          px: 1
+                                       }
                                     }}
                                  />
                               </Box>
