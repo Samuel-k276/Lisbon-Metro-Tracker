@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { Stage, Layer, Circle, Text, Group, Image } from 'react-konva';
 import useImage from 'use-image'; // Adicione esta importação
-import mapaImg from '../assets/mapa.png'; // Importe a imagem diretamente
+import mapaImg from '../assets/mapa.png'; // Imagem do mapa
 
 import { stationMappings } from '../utils/stationMappings';
 import { stationCoordinates, lines } from '../utils/staticData';
