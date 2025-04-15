@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { Stage, Layer, Circle, Text, Line as KonvaLine, Group } from 'react-konva';
+import { Stage, Layer, Circle, Text, Group, Image } from 'react-konva';
+import useImage from 'use-image'; // Adicione esta importação
+import mapaImg from '../assets/mapa.png'; // Importe a imagem diretamente
 
 import { stationMappings } from '../utils/stationMappings';
 import { stationCoordinates, lines } from '../utils/staticData';
-
 
 // Helper function to get lines for a specific station
 const getStationLines = (stationId: string): string[] => {
@@ -19,29 +20,10 @@ const isTransferStation = (stationId: string): boolean => {
   return lines.length > 1;
 };
 
-
-
 const TrainMap: React.FC<any> = () => {
-  const [dimensions, _] = useState({ width: 1000, height: 800 });
+  const [dimensions, _] = useState({ width: 862 * 1.2, height: 600 * 1.2 }); // Updated: increased by 20%
   const navigate = useNavigate(); // Initialize navigate
-
-  // Generate line path points for a specific line
-  const generateLinePath = (stationIds: string[]) => {
-    if (stationIds.length < 2) return [];
-    
-    // Sort stations by their order in the array (assumes they're in correct order)
-    const points: number[] = [];
-    
-    stationIds.forEach(stationId => {
-      const coords = stationCoordinates[stationId];
-      if (coords) {
-        points.push(coords.x);
-        points.push(coords.y);
-      }
-    });
-    
-    return points;
-  };
+  const [backgroundImage] = useImage(mapaImg); // Use o caminho correto da imagem
 
   // Get color for the line
   const getLineColor = (lineName: string) => {
@@ -49,20 +31,19 @@ const TrainMap: React.FC<any> = () => {
   };
 
   return (
-    <div className="train-map">    
+    <div className="train-map" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Stage width={dimensions.width} height={dimensions.height}>
         <Layer>
-          {Object.values(lines).map((lineData, idx) => (
-            <KonvaLine
-              key={`line-${idx}`}
-              points={generateLinePath(lineData.stations)}
-              stroke={lineData.color}
-              strokeWidth={10}
-              tension={0}
-              lineCap="round"
-              lineJoin="round" /*"miter" "round" "bevel"*/
+          {/* Background Image - ajustada para caber completamente */}
+          {backgroundImage && (
+            <Image
+              image={backgroundImage}
+              width={dimensions.width}
+              height={dimensions.height}
+              scaleX={1}
+              scaleY={1}
             />
-          ))}
+          )}
           
           {/* Render all stations from all lines */}
           {Object.values(lines).flatMap(lineData => 

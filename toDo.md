@@ -1,8 +1,5 @@
 # Metro de Lisboa To-Do List
 
-## Alertas de Erro
-- [ ] Rever todos os códigos de erro existentes
-- [ ] Padronizar mensagens de erro para melhor compreensão
 
 ## Mapa em Tempo Real
 - [ ] Criar representação visual das linhas do metro
