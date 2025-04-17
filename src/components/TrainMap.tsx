@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { Stage, Layer, Circle, Text, Group, Image } from 'react-konva';
+import { Stage, Layer, Circle, Group, Image } from 'react-konva';
 import useImage from 'use-image'; // Adicione esta importação
 import mapaImg from '../assets/mapa.png'; // Imagem do mapa
 
 import { stationMappings } from '../utils/stationMappings';
 import { stationCoordinates, lines } from '../utils/staticData';
+import { fetchTrainData } from '../api/metro';
+import React from 'react';
 
 // Helper function to get lines for a specific station
 const getStationLines = (stationId: string): string[] => {
@@ -21,7 +22,7 @@ const isTransferStation = (stationId: string): boolean => {
 };
 
 const TrainMap: React.FC<any> = () => {
-  const [dimensions, _] = useState({ width: 862 * 1.2, height: 600 * 1.2 }); // Updated: increased by 20%
+  const dimensions = { width: 1034.4, height: 720 };
   const navigate = useNavigate(); // Initialize navigate
   const [backgroundImage] = useImage(mapaImg); // Use o caminho correto da imagem
 
@@ -29,6 +30,24 @@ const TrainMap: React.FC<any> = () => {
   const getLineColor = (lineName: string) => {
     return lines[lineName].color || "#888888"; // Default to gray if color not found
   };
+
+
+  // Fetch train data when the component mounts and every 10 seconds
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        fetchTrainData(); // Fetch train data from the API
+      } catch (error) {
+        console.error('Error fetching train data:', error);
+      }
+    };
+
+    fetchData(); // Fetch data immediately
+    const intervalId = setInterval(fetchData, 10000); // Fetch every 10 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
+
 
   return (
     <div className="train-map" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -53,7 +72,6 @@ const TrainMap: React.FC<any> = () => {
               
               const isTransfer = isTransferStation(stationId);
               const stationLines = getStationLines(stationId);
-              const stationName = stationMappings[stationId]?.name || stationId;
               
               return (
                 <Group 
@@ -95,12 +113,6 @@ const TrainMap: React.FC<any> = () => {
                     />
                   )}
                   
-                  <Text
-                    text={stationName}
-                    fontSize={12}
-                    fill="black"
-                    offsetY={-15}
-                  />
                 </Group>
               );
             })

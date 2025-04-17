@@ -1,5 +1,7 @@
-import { Station, Destination, NextTrainsResponse, LineState } from '../types/metro';
+import { Station, NextTrainsResponse, LineState } from '../types/metro';
 import { getStationById, getDestinationNameById } from '../utils/stationMappings';
+import { TrainArrival } from './responseTypes';
+import { addTrain, trains } from '../utils/staticData';
 
 // API URL for Lisbon Metro
 const API_BASE_URL = 'https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1';
@@ -109,73 +111,37 @@ export const fetchStationWaitingTimes = async (stationId: string): Promise<Stati
   }
 };
 
-// Fetch all metro destinations (i.e., the last stations of each line)
-export const fetchDestinations = async (): Promise<Destination[]> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/infoDestinos/todos`, { headers: HEADERS });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch destinations: ${response.status}`);
-    }
-    return await response.json(); 
-  } catch (error) {
-    console.error('Error fetching destinations:', error);
-    return [];
-  }
-};
-
-
 // Fetch all waiting times for all lines
-export const fetchWaitingTimes = async (): Promise<NextTrainsResponse[]> => {
+export const fetchTrainData = async (): Promise<void> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/tempoEspera/todos`, { headers: HEADERS });
+    const response = await fetch(`${API_BASE_URL}/tempoEspera/Estacao/todos`, { headers: HEADERS });
     if (!response.ok) {
       throw new Error(`Failed to fetch waiting times: ${response.status}`);
     }
-    return await response.json();
+
+    const data = await response.json();
+    if (data.codigo !== "200" || !data.resposta || data.resposta.length === 0) {
+      throw new Error('Invalid response format or no data received');
+    }
+
+    // Use the response to store the train data in ../utils/staticData.ts/trains
+    for (const response of data.resposta) {
+      const trainArrival: TrainArrival = response as TrainArrival;
+
+      if (!trainArrival.comboio || !trainArrival.tempoChegada1) continue; // Skip if no train or arrival time
+      addTrain(trainArrival.comboio, trainArrival.stop_id, trainArrival.tempoChegada1, trainArrival.destino);
+      
+      if (!trainArrival.comboio2 || !trainArrival.tempoChegada2) continue; // Skip if no train or arrival time
+      addTrain(trainArrival.comboio2, trainArrival.stop_id, trainArrival.tempoChegada2, trainArrival.destino);
+
+      if (!trainArrival.comboio3 || !trainArrival.tempoChegada3) continue; // Skip if no train or arrival time
+      addTrain(trainArrival.comboio3, trainArrival.stop_id, trainArrival.tempoChegada3, trainArrival.destino);
+    }
+
+    console.log('Train data fetched and stored successfully.');
+    console.log(trains);
   } catch (error) {
     console.error('Error fetching waiting times:', error);
-    return [];
-  }
-}
-
-// Fetch waiting times for a specific line
-export const fetchLineWaitingTimes = async (lineId: string): Promise<NextTrainsResponse[]> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/tempoEspera/Linha/${lineId}`, { headers: HEADERS });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch waiting times: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching waiting times:', error);
-    return [];
-  }
-};
-
-// Fetch the current line state for all lines
-export const fetchLinesState = async (): Promise<any> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/estadoLinha/todos`, { headers: HEADERS });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch lines state: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching lines state:', error);
-    return null;
-  }
-}
-
-export const fetchStations = async (): Promise<Station[]> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/infoEstacao/todos`, { headers: HEADERS });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch stations: ${response.status}`);
-    }
-    return await response.json(); 
-  } catch (error) {
-    console.error('Error fetching stations:', error);
-    return [];
   }
 }
 

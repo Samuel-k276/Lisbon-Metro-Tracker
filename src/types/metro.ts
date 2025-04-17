@@ -6,6 +6,15 @@ export interface Coordinates {
   y: number;
 }
 
+
+// User Location
+export interface UserLocation {
+  coordinates: Coordinates;
+  accuracy: number;
+  timestamp: number;
+}
+
+
 // Metro Line
 export interface Line {
   name: string;
@@ -24,21 +33,7 @@ export interface Station {
   nextTrains: NextTrainsResponse[]; // Next trains information (each index is a different destination)
 }
 
-// Train
-export interface Train {
-  id: string;
-  lineId: string;
-  currentStationId?: string;
-  nextStationId?: string;
-  coordinates: Coordinates;
-}
 
-// User Location
-export interface UserLocation {
-  coordinates: Coordinates;
-  accuracy: number;
-  timestamp: number;
-}
 
 // Next Trains response (3 next trains)
 export interface NextTrainsResponse {
@@ -62,4 +57,14 @@ export interface LineState {
   name: 'Amarela' | 'Azul' | 'Verde' | 'Vermelha';
   status: string;
   message: string;
+}
+
+// Train information
+export interface Train {
+  id: string;
+  nextStationId?: string;
+  nextStationArrivalTime?: number;
+  nextnextStationId?: string;
+  nextnextStationArrivalTime?: number;
+  destination: string; // So we can know where the train is going
 }
