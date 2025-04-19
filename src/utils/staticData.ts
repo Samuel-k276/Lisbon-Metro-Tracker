@@ -1,4 +1,4 @@
-import { Coordinates, Line, Train } from '../types/metro';
+import { Coordinates, Line } from '../types/metro';
 
 // Corrected station coordinates for rendering (x values increased by 130)
 export const stationCoordinates: Record<string, Coordinates> = {
@@ -56,63 +56,40 @@ export const stationCoordinates: Record<string, Coordinates> = {
 
 // Updated lines with stations in correct order from one terminal to another
 export const lines: Record<string, Line> = {
-   // Map metro line names to colors
-   'Azul': { 
-     name: 'Azul', 
-     color: '#0075BF',
-     stations: [
-       'RB', 'AS', 'AF', 'PO', 'CA', 'CM', 'AH', 'LA', 'JZ', 'PE', 'PA', 'MP', 
-       'AV', 'RE', 'BC', 'TP', 'SP'
-     ]
-   },
-   'Amarela': { 
-     name: 'Amarela',
-     color: '#FFD800', 
-     stations: [
-       'OD', 'SR', 'AX', 'LU', 'QC', 'CG', 'CU', 'EC', 'CP', 'SA', 'PI', 'MP', 'RA'
-     ]
-   },
-   'Verde': { 
-     name: 'Verde', 
-     color: '#00A9A6',
-     stations: [
-       'TE', 'CG', 'AL', 'RM', 'AE', 'AM', 'AR', 'AN', 'IN', 'MM', 'RO', 'BC', 'CS'
-     ]
-   },
-   'Vermelha': { 
-     name: 'Vermelha',
-     color: '#ED1C24', 
-     stations: [
-       'AP', 'EN', 'MO', 'OR', 'CR', 'OS', 'CH', 'BV', 'OL', 'AM', 'SA', 'SS'
-     ]
-   }
-};
-
-
-// Train data inicially empty
-export const trains: Record<string, Train> = {
-  
-};
-
-// Function to add a train to the trains object
-export const addTrain = (trainId: string, stationId: string, arrivalTime: string, destination: string) => {
-  if (!(trainId in trains) || !trains[trainId].nextStationId) {
-    trains[trainId] = {
-      id: trainId,
-      nextStationId: stationId,
-      nextStationArrivalTime: Number(arrivalTime),
-      destination: destination
-    };
-  }
-  else {
-    if (trains[trainId].nextStationArrivalTime && trains[trainId].nextStationArrivalTime > Number(arrivalTime)) {
-      trains[trainId].nextnextStationId = trains[trainId].nextStationId;
-      trains[trainId].nextnextStationArrivalTime = trains[trainId].nextStationArrivalTime;
-      trains[trainId].nextStationId = stationId;
-      trains[trainId].nextStationArrivalTime = Number(arrivalTime);
-    } else if (!trains[trainId].nextnextStationArrivalTime || trains[trainId].nextnextStationArrivalTime > Number(arrivalTime)) {
-    trains[trainId].nextnextStationId = stationId;
-    trains[trainId].nextnextStationArrivalTime = Number(arrivalTime);
-    }
+  // Map metro line names to colors
+  'Azul': { 
+    name: 'Azul', 
+    color: '#0075BF',
+    stations: [
+     'RB', 'AS', 'AF', 'PO', 'CA', 'CM', 'AH', 'LA', 'JZ', 'PE', 'PA', 'MP', 
+     'AV', 'RE', 'BC', 'TP', 'SP'
+    ],
+    destinations: { 'SP': 1, 'RB': -1, 'TP': 1 },
+  },
+  'Amarela': { 
+    name: 'Amarela',
+    color: '#FFD800', 
+    stations: [
+     'OD', 'SR', 'AX', 'LU', 'QC', 'CG', 'CU', 'EC', 'CP', 'SA', 'PI', 'MP', 'RA'
+    ],
+    destinations: { 'RA': 1, 'OD': -1, 'CG': -1 },
+  },
+  'Verde': { 
+    name: 'Verde', 
+    color: '#00A9A6',
+    stations: [
+     'TE', 'CG', 'AL', 'RM', 'AE', 'AM', 'AR', 'AN', 'IN', 'MM', 'RO', 'BC', 'CS'
+    ],
+    destinations: { 'CS': 1, 'TE': -1 }
+  },
+  'Vermelha': { 
+    name: 'Vermelha',
+    color: '#ED1C24', 
+    stations: [
+     'AP', 'EN', 'MO', 'OR', 'CR', 'OS', 'CH', 'BV', 'OL', 'AM', 'SA', 'SS'
+    ],
+    destinations: { 'SS': 1, 'AP': -1}
   }
 };
+
+

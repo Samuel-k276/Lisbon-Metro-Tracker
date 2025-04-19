@@ -44,6 +44,39 @@ export const DestinationMapping: Record<string, string> = {
   "60": "Aeroporto",
 };
 
+export const DestinationToID: Record<string, string> = {
+  "1": "RB",
+  "18": "SP",
+  "33": "RB",
+  "34": "AS",
+  "35": "PO",
+  "36": "CM",
+  "37": "LA",
+  "38": "SS",
+  "39": "AV",
+  "40": "BC",
+  "41": "TP",
+  "42": "SP",
+  "43": "OD",
+  "44": "LU",
+  "45": "CG",
+  "46": "CP",
+  "48": "RA",
+  "50": "TE",
+  "51": "AL",
+  "52": "AM",
+  "53": "MM",
+  "54": "CS",
+  "56": "BV",
+  "57": "CH",
+  "59": "MO",
+  "60": "AP",
+};
+
+export const getDestinationId = (id: string): string => {
+  // Get the destination ID from the mapping
+  return DestinationToID[id] || id;
+};
 
 // Dictionary of station IDs to names
 // Ìt's defined statically because the data is not expected to change frequently

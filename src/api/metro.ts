@@ -1,7 +1,7 @@
-import { Station, NextTrainsResponse, LineState } from '../types/metro';
-import { getStationById, getDestinationNameById } from '../utils/stationMappings';
+import { Station, NextTrainsResponse, LineState, Train } from '../types/metro';
+import { getStationById, getDestinationNameById, getDestinationId } from '../utils/stationMappings';
 import { TrainArrival } from './responseTypes';
-import { addTrain, trains } from '../utils/staticData';
+import { OrderedMap } from 'js-sdsl';
 
 // API URL for Lisbon Metro
 const API_BASE_URL = 'https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1';
@@ -112,7 +112,7 @@ export const fetchStationWaitingTimes = async (stationId: string): Promise<Stati
 };
 
 // Fetch all waiting times for all lines
-export const fetchTrainData = async (): Promise<void> => {
+export const fetchTrainData = async (): Promise<Record<string, Train>> => {
   try {
     const response = await fetch(`${API_BASE_URL}/tempoEspera/Estacao/todos`, { headers: HEADERS });
     if (!response.ok) {
@@ -124,24 +124,47 @@ export const fetchTrainData = async (): Promise<void> => {
       throw new Error('Invalid response format or no data received');
     }
 
+    // This will be our returned object
+    const trains: Record<string, Train> = {};
+
     // Use the response to store the train data in ../utils/staticData.ts/trains
     for (const response of data.resposta) {
       const trainArrival: TrainArrival = response as TrainArrival;
-
-      if (!trainArrival.comboio || !trainArrival.tempoChegada1) continue; // Skip if no train or arrival time
-      addTrain(trainArrival.comboio, trainArrival.stop_id, trainArrival.tempoChegada1, trainArrival.destino);
       
-      if (!trainArrival.comboio2 || !trainArrival.tempoChegada2) continue; // Skip if no train or arrival time
-      addTrain(trainArrival.comboio2, trainArrival.stop_id, trainArrival.tempoChegada2, trainArrival.destino);
-
-      if (!trainArrival.comboio3 || !trainArrival.tempoChegada3) continue; // Skip if no train or arrival time
-      addTrain(trainArrival.comboio3, trainArrival.stop_id, trainArrival.tempoChegada3, trainArrival.destino);
+      // Process all three potential trains in a cleaner way
+      const trainData = [
+        { id: trainArrival.comboio, time: trainArrival.tempoChegada1 },
+        { id: trainArrival.comboio2, time: trainArrival.tempoChegada2 },
+        { id: trainArrival.comboio3, time: trainArrival.tempoChegada3 }
+      ];
+      
+      for (const train of trainData) {
+        if (train.id && train.time) {
+          if (!trains[train.id]) {
+            // Create new train with a stationArrivals Map
+            trains[train.id] = {
+              id: train.id,
+              destination: getDestinationId(trainArrival.destino),
+              stationArrivals: new OrderedMap<number, string>([
+                [parseInt(train.time), trainArrival.stop_id.toString()] as [number, string]
+              ])
+            };
+          } else {
+            // Add the station arrival to the existing train's Map
+            trains[train.id].stationArrivals.setElement(parseInt(train.time), trainArrival.stop_id.toString());
+            // The Map will automatically sort entries by key (arrivalTime)
+          }
+        }
+      }
     }
 
     console.log('Train data fetched and stored successfully.');
     console.log(trains);
+
+    return trains;
   } catch (error) {
     console.error('Error fetching waiting times:', error);
+    return {};
   }
 }
 
