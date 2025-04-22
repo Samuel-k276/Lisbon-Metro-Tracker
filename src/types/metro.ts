@@ -64,8 +64,7 @@ export interface LineState {
 // Train information
 export interface Train {
   id: string;
-  destination: string; // So we can know where the train is going
   // TreeMap de tempos de chegada para IDs de estação
   // As chaves (tempos de chegada em segundos) são automaticamente mantidas em ordem crescente
-  stationArrivals: OrderedMap <number, string>;
+  stationArrivals: OrderedMap <number, [string, string]>; // [stationId, destinationId]
 }

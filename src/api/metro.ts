@@ -119,6 +119,7 @@ export const fetchTrainData = async (): Promise<Record<string, Train>> => {
       throw new Error(`Failed to fetch waiting times: ${response.status}`);
     }
 
+
     const data = await response.json();
     if (data.codigo !== "200" || !data.resposta || data.resposta.length === 0) {
       throw new Error('Invalid response format or no data received');
@@ -141,17 +142,19 @@ export const fetchTrainData = async (): Promise<Record<string, Train>> => {
       for (const train of trainData) {
         if (train.id && train.time) {
           if (!trains[train.id]) {
+            if (train.id === "009A") {
+              console.log(trainArrival.destino);
+            }
             // Create new train with a stationArrivals Map
             trains[train.id] = {
               id: train.id,
-              destination: getDestinationId(trainArrival.destino),
-              stationArrivals: new OrderedMap<number, string>([
-                [parseInt(train.time), trainArrival.stop_id.toString()] as [number, string]
+              stationArrivals: new OrderedMap<number, [string, string]>([
+                [parseInt(train.time), [trainArrival.stop_id.toString(), getDestinationId(trainArrival.destino)]] as [number, [string, string]]
               ])
             };
           } else {
             // Add the station arrival to the existing train's Map
-            trains[train.id].stationArrivals.setElement(parseInt(train.time), trainArrival.stop_id.toString());
+            trains[train.id].stationArrivals.setElement(parseInt(train.time), [trainArrival.stop_id.toString(), getDestinationId(trainArrival.destino)]);
             // The Map will automatically sort entries by key (arrivalTime)
           }
         }
