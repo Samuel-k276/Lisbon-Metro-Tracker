@@ -19,7 +19,6 @@ export const calculateDistance = (x1: number, y1: number, x2: number, y2: number
   return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 };
 
-
 /**
  * Find nearest station to given coordinates
  */
@@ -73,4 +72,79 @@ export const formatTimeInSeconds = (seconds: string): string => {
   const minutes = Math.floor(totalSeconds / 60);
   const secs = totalSeconds % 60;
   return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+};
+
+/**
+ * Get line name from destination name
+ * @param destinationName Destination name
+ */
+export const getLineNameFromDestination = (destinationName: string): string => {
+  // Map stations directly to their line names
+  const stationToLineMap: Record<string, string> = {
+    // Linha Amarela (Yellow Line)
+    'Odivelas': 'Amarela',
+    'Senhora da Rocha': 'Amarela',
+    'Ameixoeira': 'Amarela',
+    'Lumiar': 'Amarela',
+    'Quinta das Conchas': 'Amarela',
+    'Campo Grande': 'Amarela', // Note: Campo Grande is also on Verde (Green Line)
+    'Cidade Universitária': 'Amarela',
+    'Entrecampos': 'Amarela',
+    'Campo Pequeno': 'Amarela',
+    'Saldanha': 'Amarela', // Note: Saldanha is also on Vermelha (Red Line)
+    'Picoas': 'Amarela',
+    'Marquês de Pombal': 'Amarela', // Note: Marquês is also on Azul (Blue Line)
+    'Rato': 'Amarela',
+    
+    // Linha Azul (Blue Line)
+    'Reboleira': 'Azul',
+    'Amadora Este': 'Azul',
+    'Alfornelos': 'Azul',
+    'Pontinha': 'Azul',
+    'Carnide': 'Azul',
+    'Colégio Militar/Luz': 'Azul',
+    'Alto dos Moinhos': 'Azul',
+    'Laranjeiras': 'Azul',
+    'Jardim Zoológico': 'Azul',
+    'Praça de Espanha': 'Azul',
+    //'São Sebastião': 'Vermelha',  Note: São Sebastião is already on Vermelha (Red Line)
+    'Parque': 'Azul',
+    // 'Marquês de Pombal': 'Azul', // Already defined above
+    'Avenida': 'Azul',
+    'Restauradores': 'Azul',
+    'Baixa-Chiado': 'Azul', // Note: Baixa-Chiado is also on Verde (Green Line)
+    'Terreiro do Paço': 'Azul',
+    'Santa Apolónia': 'Azul',
+    
+    // Linha Verde (Green Line)
+    'Telheiras': 'Verde',
+    // 'Campo Grande': 'Verde', // Already defined above
+    'Alvalade': 'Verde',
+    'Roma': 'Verde',
+    'Areeiro': 'Verde',
+    'Alameda': 'Verde', // Note: Alameda is also on Vermelha (Red Line)
+    'Arroios': 'Verde',
+    'Anjos': 'Verde',
+    'Intendente': 'Verde',
+    'Martim Moniz': 'Verde',
+    'Rossio': 'Verde',
+    // 'Baixa-Chiado': 'Verde', // Already defined above
+    'Cais do Sodré': 'Verde',
+    
+    // Linha Vermelha (Red Line)
+    'São Sebastião': 'Vermelha',
+    // 'Saldanha': 'Vermelha', // Already defined above
+    // 'Alameda': 'Vermelha', // Already defined above
+    'Olaias': 'Vermelha',
+    'Bela Vista': 'Vermelha',
+    'Chelas': 'Vermelha',
+    'Olivais': 'Vermelha',
+    'Cabo Ruivo': 'Vermelha',
+    'Oriente': 'Vermelha',
+    'Moscavide': 'Vermelha',
+    'Encarnação': 'Vermelha',
+    'Aeroporto': 'Vermelha'
+  };
+
+  return stationToLineMap[destinationName] || '';
 };

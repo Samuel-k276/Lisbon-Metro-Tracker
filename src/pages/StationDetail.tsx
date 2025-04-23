@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Box, Container, Paper, Chip } from '@mui/material';
 import { useStation } from '../hooks/useStation';
-import { formatTimeInSeconds } from '../utils/helpers';
+import { formatTimeInSeconds, getLineNameFromDestination } from '../utils/helpers';
 
 interface StationDetailProps {
    stationId: string;
@@ -55,17 +55,30 @@ const StationDetail: React.FC<StationDetailProps> = ({ stationId }) => {
                </Typography>
                
                <Box display="flex" gap={1} mb={2}>
-                  {station.nextTrains && station.nextTrains.map(trains => (
-                     <Chip 
-                        key={trains.destination} 
-                        label={trains.destination} 
-                        color="primary"
-                        variant="outlined"
-                     />
-                  ))}
-                  {(!station.nextTrains || station.nextTrains.length === 0) && (
-                     <Typography variant="body2" color="textSecondary">No destinations available</Typography>
-                  )}
+                    {station.nextTrains && [...station.nextTrains]
+                      .sort((a, b) => {
+                        // Get the line for each destination
+                        const lineA = getLineNameFromDestination(a.destination);
+                        const lineB = getLineNameFromDestination(b.destination);
+                        
+                        // First sort by line name
+                        if (lineA !== lineB) {
+                           return lineA.localeCompare(lineB);
+                        }
+                        // Then by destination name
+                        return a.destination.localeCompare(b.destination);
+                      })
+                      .map(trains => (
+                        <Chip 
+                           key={trains.destination} 
+                           label={trains.destination} 
+                           color="primary"
+                           variant="outlined"
+                        />
+                      ))}
+                    {(!station.nextTrains || station.nextTrains.length === 0) && (
+                      <Typography variant="body2" color="textSecondary">No destinations available</Typography>
+                    )}
                </Box>
             </Box>
 
