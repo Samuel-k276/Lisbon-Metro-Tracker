@@ -54,6 +54,7 @@ tiles/
 *.json
 !package.json
 !tsconfig.json
+!vercel.json
 *.geojson
 *.kml
 *.shp
