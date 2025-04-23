@@ -2,10 +2,10 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { Stage, Layer, Circle, Group, Image, Arrow, Text } from 'react-konva';
 import useImage from 'use-image'; // Adicione esta importação
 import mapaImg from '../assets/mapa.png'; // Imagem do mapa
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 import { stationMappings } from '../utils/stationMappings';
-import { stationCoordinates, lines } from '../utils/staticData';
+import { stationCoordinates, lines, getTrainLine } from '../utils/staticData';
 import { fetchTrainData } from '../api/metro';
 import { Train } from '../types/metro';
 
@@ -20,25 +20,6 @@ const getStationLines = (stationId: string): string[] => {
 const isTransferStation = (stationId: string): boolean => {
   const lines = getStationLines(stationId);
   return lines.length > 1;
-};
-
-// Helper to find which line a station belongs to
-const getStationLine = (destinationId: string, nextStationId: string): string | null => {
-  const destinationToLine = stationMappings[destinationId]?.lines || null;
-  const nextStationToLine = stationMappings[nextStationId]?.lines || null;
-  
-  if (!destinationToLine || !nextStationToLine) return null;
-
-  // Return the common line between the two stations
-  for (const line of destinationToLine) {
-    if (nextStationToLine.includes(line)) {
-      return line;
-    }
-  }
-
-  // If no common line is found, return null
-  // This should not happen if the data is correct
-  return null;
 };
 
 // Helper to calculate train position
@@ -71,7 +52,7 @@ const TrainMap: React.FC<any> = () => {
   const navigate = useNavigate(); // Initialize navigate
   const [backgroundImage] = useImage(mapaImg); // Use o caminho correto da imagem
   const [trainData, setTrainData] = useState<Record<string, Train> | null>(null); // State to store train data
-
+  const [hoveredStation, setHoveredStation] = useState<string | null>(null); // State to track hovered station
 
   // Get color for the line
   const getLineColor = (lineName: string) => {
@@ -95,8 +76,9 @@ const TrainMap: React.FC<any> = () => {
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
-  // Prepare train data for rendering
-  const renderableTrains = () => {
+  // Memorize train calculations to avoid recalculations on hover
+  const memorizedTrains = useMemo(() => {
+    // Extract renderableTrains calculation logic
     if (!trainData) return [];
     
     const result = [];
@@ -107,20 +89,20 @@ const TrainMap: React.FC<any> = () => {
       if (stationArrivals.length < 1) continue;
       
       // Get the current waiting time and station ID
-      const [waitingTime, nextStationId] = stationArrivals[0];
+      const [waitingTime, stationInfo] = stationArrivals[0];
+      const [nextStationId, destinationId] = stationInfo;
          
       // Find which line this train belongs to based on the current station
-      const lineName = getStationLine(train.destination, nextStationId);
+      const lineName = getTrainLine(trainId);
       if (!lineName) {
-        console.log(`No line found for train ${trainId} between ${train.destination} and ${nextStationId}`);
+        console.log(`No line found for train ${trainId} at ${nextStationId}`);
         continue;
       }
       
       // Find the destination direction
-      const destination = train.destination;
-      const directionValue = lines[lineName].destinations[destination];
+      const directionValue = lines[lineName].destinations[destinationId];
       if (typeof directionValue === 'undefined') {
-        console.log(`No direction value found for destination ${destination} on line ${lineName}`);
+        console.log(`No direction value found for destination ${destinationId} on line ${lineName}`);
         continue;
       }
       
@@ -159,16 +141,16 @@ const TrainMap: React.FC<any> = () => {
         line: lineName,
         position: { x, y },
         angle: angle,
-        destination: destination,
+        destination: destinationId,
         waitingTime: waitingTime,
         nextStationId: nextStationId
       });
     }
     
-    console.log('Train data prepared for rendering:', result);
+    console.log('Train data:', result); // Log the train data for debugging
     return result;
-  };
-
+    
+  }, [trainData]); // Only recalculate when trainData changes
 
   return (
     <div className="train-map" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -203,34 +185,39 @@ const TrainMap: React.FC<any> = () => {
                     window.scrollTo(0, 0); // Scroll to the top
                     navigate(`/station/${stationId}`); // Redirect
                   }}
+                  onMouseEnter={() => setHoveredStation(stationId)}
+                  onMouseLeave={() => setHoveredStation(null)}
+                  cursor="pointer"
                 >
                   {isTransfer ? (
-                    // For transfer stations, draw multiple circles
+                    // For transfer stations, draw a circle with the color of the first line only
                     <>
                       <Circle
-                        radius={10}
+                        radius={hoveredStation === stationId ? 13 : 10}
                         fill="white"
-                        stroke="black"
-                        strokeWidth={1}
+                        stroke={hoveredStation === stationId ? "#2196F3" : getLineColor(stationLines[0])}
+                        strokeWidth={hoveredStation === stationId ? 2.5 : 1}
+                        shadowColor={hoveredStation === stationId ? "rgba(0,0,0,0.5)" : "transparent"}
+                        shadowBlur={hoveredStation === stationId ? 6 : 0}
+                        shadowOffset={hoveredStation === stationId ? { x: 0, y: 2 } : { x: 0, y: 0 }}
+                        shadowOpacity={0.6}
                       />
-                      {stationLines.map((lineName, idx) => (
-                        <Circle
-                          key={idx}
-                          radius={8}
-                          fill={getLineColor(lineName)}
-                          // Create a pie-chart-like effect for lines
-                          offsetX={idx % 2 === 0 ? 2 : -2}
-                          offsetY={idx < 2 ? 2 : -2}
-                        />
-                      ))}
+                      <Circle
+                        radius={hoveredStation === stationId ? 11 : 8}
+                        fill={getLineColor(stationLines[0])} // Use only the first line color
+                      />
                     </>
                   ) : (
                     // Regular stations get a single circle with the line color
                     <Circle
-                      radius={6}
+                      radius={hoveredStation === stationId ? 8 : 6}
                       fill="white"
-                      stroke={lineData.color}
-                      strokeWidth={2}
+                      stroke={hoveredStation === stationId ? "#2196F3" : lineData.color}
+                      strokeWidth={hoveredStation === stationId ? 2.5 : 2}
+                      shadowColor={hoveredStation === stationId ? "rgba(0,0,0,0.5)" : "transparent"}
+                      shadowBlur={hoveredStation === stationId ? 5 : 0}
+                      shadowOffset={hoveredStation === stationId ? { x: 0, y: 2 } : { x: 0, y: 0 }}
+                      shadowOpacity={0.6}
                     />
                   )}
                 </Group>
@@ -239,7 +226,7 @@ const TrainMap: React.FC<any> = () => {
           ).filter(Boolean)}
           
           {/* Render trains */}
-          {renderableTrains().map((train) => (
+          {memorizedTrains.map((train) => (
             <Group key={train.id} x={train.position.x} y={train.position.y}>
               {/* Train circle */}
               <Circle

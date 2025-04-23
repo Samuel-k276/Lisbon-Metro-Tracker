@@ -51,7 +51,7 @@ export const stationCoordinates: Record<string, Coordinates> = {
   'CH': { x: 875, y: 371 },
   'BV': { x: 844.5, y: 402 },
   'OL': { x: 813, y: 433 },
-  'SS': { x: 532, y: 450 }
+  'SS': { x: 531, y: 450 }
 };
 
 // Updated lines with stations in correct order from one terminal to another
@@ -61,7 +61,7 @@ export const lines: Record<string, Line> = {
     name: 'Azul', 
     color: '#0075BF',
     stations: [
-     'RB', 'AS', 'AF', 'PO', 'CA', 'CM', 'AH', 'LA', 'JZ', 'PE', 'PA', 'MP', 
+     'RB', 'AS', 'AF', 'PO', 'CA', 'CM', 'AH', 'LA', 'JZ', 'PE', 'SS', 'PA', 'MP', 
      'AV', 'RE', 'BC', 'TP', 'SP'
     ],
     destinations: { 'SP': 1, 'RB': -1, 'TP': 1 },
@@ -92,4 +92,18 @@ export const lines: Record<string, Line> = {
   }
 };
 
-
+export const getTrainLine = (trainId: string) => {
+  const lastChar = trainId.charAt(trainId.length - 1);
+  switch (lastChar) {
+    case 'A':
+      return 'Azul';
+    case 'B':
+      return 'Amarela';
+    case 'C':
+      return 'Verde';
+    case 'D':
+      return 'Vermelha';
+    default:
+      return 'Unknown';
+  }
+};  
