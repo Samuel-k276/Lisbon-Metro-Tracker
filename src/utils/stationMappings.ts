@@ -169,4 +169,5 @@ export const getDestinationNameById = (id: string, stationId: string): string =>
   }
 
   return DestinationMapping[id] || id;
+  
 }
