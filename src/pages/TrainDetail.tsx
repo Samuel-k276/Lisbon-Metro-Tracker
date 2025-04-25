@@ -86,7 +86,7 @@ const TrainDetail: React.FC<TrainDetailProps> = ({ trainId }) => {
               fontWeight="bold" 
               sx={{ ml: 1 }}
             >
-              {trainInfo.destination}
+              {getStationNameById(trainInfo.destination)}
             </Typography>
           </Box>
         </Box>
