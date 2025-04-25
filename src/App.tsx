@@ -8,6 +8,7 @@ import TrainDetailWrapper from './pages/TrainDetailWrapper';
 import Alerts from './pages/Alerts';
 import Sobre from './pages/Sobre';
 import Tarifarios from './pages/Tarifarios';
+import PlanearViagem from './pages/PlanearViagem';
 import './App.css';
 
 const App: React.FC = () => {
@@ -21,6 +22,7 @@ const App: React.FC = () => {
                <Route path="/sobre" element={<Sobre />} />
                <Route path="/alertas" element={<Alerts />} />
                <Route path="/tarifarios" element={<Tarifarios />} />
+               <Route path="/planear-viagem" element={<PlanearViagem />} />
                <Route path="/station/:stationId" element={<StationDetailWrapper />} />
                <Route path="/train/:trainId" element={<TrainDetailWrapper />} />
                <Route path="*" element={<div>404 Not Found</div>} />

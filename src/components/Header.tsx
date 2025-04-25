@@ -52,8 +52,8 @@ const Header: React.FC = () => {
             <li className={location.pathname === '/' ? 'active' : ''}>
               <Link to="/">Mapa em Tempo Real</Link>
             </li>
-            <li className={location.pathname === '/linhas' ? 'active' : ''}>
-              <Link to="/linhas">Linhas</Link>
+            <li className={location.pathname === '/planear-viagem' ? 'active' : ''}>
+              <Link to="/planear-viagem">Planeia Viagem</Link>
             </li>
             <li className={location.pathname === '/sobre' ? 'active' : ''}>
               <Link to="/sobre">Sobre</Link>
