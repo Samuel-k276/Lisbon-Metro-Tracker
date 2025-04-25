@@ -142,9 +142,6 @@ export const fetchTrainData = async (): Promise<Record<string, Train>> => {
       for (const train of trainData) {
         if (train.id && train.time) {
           if (!trains[train.id]) {
-            if (train.id === "009A") {
-              console.log(trainArrival.destino);
-            }
             // Create new train with a stationArrivals Map
             trains[train.id] = {
               id: train.id,
@@ -160,9 +157,6 @@ export const fetchTrainData = async (): Promise<Record<string, Train>> => {
         }
       }
     }
-
-    console.log('Train data fetched and stored successfully.');
-    console.log(trains);
 
     return trains;
   } catch (error) {

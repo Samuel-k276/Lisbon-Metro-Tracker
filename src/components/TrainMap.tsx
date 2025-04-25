@@ -53,6 +53,7 @@ const TrainMap: React.FC<any> = () => {
   const [backgroundImage] = useImage(mapaImg); // Use o caminho correto da imagem
   const [trainData, setTrainData] = useState<Record<string, Train> | null>(null); // State to store train data
   const [hoveredStation, setHoveredStation] = useState<string | null>(null); // State to track hovered station
+  const [hoveredTrain, setHoveredTrain] = useState<string | null>(null); // State to track hovered train
 
   // Get color for the line
   const getLineColor = (lineName: string) => {
@@ -147,7 +148,6 @@ const TrainMap: React.FC<any> = () => {
       });
     }
     
-    console.log('Train data:', result); // Log the train data for debugging
     return result;
     
   }, [trainData]); // Only recalculate when trainData changes
@@ -227,13 +227,28 @@ const TrainMap: React.FC<any> = () => {
           
           {/* Render trains */}
           {memorizedTrains.map((train) => (
-            <Group key={train.id} x={train.position.x} y={train.position.y}>
+            <Group 
+              key={train.id} 
+              x={train.position.x} 
+              y={train.position.y}
+              onClick={() => {
+                window.scrollTo(0, 0); // Scroll to the top
+                navigate(`/train/${train.id}`); // Redirect to train detail page
+              }}
+              onMouseEnter={() => setHoveredTrain(train.id)}
+              onMouseLeave={() => setHoveredTrain(null)}
+              cursor="pointer"
+            >
               {/* Train circle */}
               <Circle
-                radius={8}
+                radius={hoveredTrain === train.id ? 10 : 8}
                 fill="#ED1C24" // Red color for trains
                 stroke="white"
-                strokeWidth={1.5}
+                strokeWidth={hoveredTrain === train.id ? 2.5 : 1.5}
+                shadowColor={hoveredTrain === train.id ? "rgba(0,0,0,0.5)" : "transparent"}
+                shadowBlur={hoveredTrain === train.id ? 5 : 0}
+                shadowOffset={hoveredTrain === train.id ? { x: 0, y: 2 } : { x: 0, y: 0 }}
+                shadowOpacity={0.6}
               />
               
               {/* Direction arrow */}
@@ -249,8 +264,9 @@ const TrainMap: React.FC<any> = () => {
               {/* Train ID label - small and subtle */}
               <Text
                 text={train.id.substring(0, 4)}
-                fontSize={8}
-                fill="black"
+                fontSize={hoveredTrain === train.id ? 10 : 8}
+                fontStyle={hoveredTrain === train.id ? 'bold' : 'normal'}
+                fill={hoveredTrain === train.id ? "black" : "#333"}
                 offsetX={-8}
                 offsetY={-12}
               />

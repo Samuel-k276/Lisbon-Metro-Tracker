@@ -2,6 +2,8 @@ import React from 'react';
 import { Typography, Box, Container, Paper, Chip } from '@mui/material';
 import { useStation } from '../hooks/useStation';
 import { formatTimeInSeconds, getLineNameFromDestination } from '../utils/helpers';
+import { fetchStationWaitingTimes } from '../api/metro';
+import { useEffect } from 'react';
 
 interface StationDetailProps {
    stationId: string;
@@ -35,10 +37,26 @@ const LineCircle: React.FC<{ line: string }> = ({ line }) => {
 
 const StationDetail: React.FC<StationDetailProps> = ({ stationId }) => {
    const { station, loading, error } = useStation(stationId);
-   console.log('Station:', station); // Debugging line to check the station data
+
    if (loading) return <Typography>Loading...</Typography>;
    if (error) return <Typography color="error">Error loading station: {error}</Typography>;
    if (!station) return <Typography>Station not found</Typography>;
+
+   // Automatically update the next trains every 10 seconds
+   useEffect(() => {
+      const interval = setInterval(() => {
+         fetchStationWaitingTimes(stationId)
+            .then((updatedStation) => {
+               if (updatedStation) {
+                  station.nextTrains = updatedStation.nextTrains;
+               }
+            })
+            .catch((err) => console.error('Error fetching station data:', err));
+         station.nextTrains = [...station.nextTrains]; // Trigger a re-render
+      }, 10000); // 10 seconds
+
+      return () => clearInterval(interval); // Cleanup on unmount
+   }, [stationId]);
 
    return (
       <Container maxWidth="lg">
