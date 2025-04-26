@@ -14,24 +14,29 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Switch,
+  FormControlLabel
 } from '@mui/material';
 import { stationMappings } from '../utils/stationMappings';
+import { metroGraph } from '../utils/graph';
 import TrainIcon from '@mui/icons-material/Train';
 import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import CodeIcon from '@mui/icons-material/Code';
 
 const PlanearViagem: React.FC = () => {
   // Estado para a origem, destino e resultados
   const [origem, setOrigem] = useState<string>('');
   const [destino, setDestino] = useState<string>('');
+  const [enableLogging, setEnableLogging] = useState<boolean>(false);
   const [resultados, setResultados] = useState<{
     tempoTotal: number;
     estacoes: number;
-    transbordos: number;
+    trocasLinha: number;
     rota: Array<{
-      tipo: string;
+      tipo: 'viagem' | 'troca-linha';
       de: string;
       para: string;
       linha?: string;
@@ -56,7 +61,7 @@ const PlanearViagem: React.FC = () => {
     setDestino(temp);
   };
 
-  // Função para calcular a rota (versão mockada para o conceito)
+  // Função para calcular a rota usando o algoritmo de Dijkstra com custo adicional para trocas de linha
   const calcularRota = () => {
     // Verificar se origem e destino foram selecionados
     if (!origem || !destino) {
@@ -64,139 +69,31 @@ const PlanearViagem: React.FC = () => {
       return;
     }
 
-    // Implementação básica para demonstração do conceito
-    // Na versão final, isso usará algoritmos de roteamento, como Dijkstra
-    const origemStation = estacoes.find(s => s.id === origem);
-    const destinoStation = estacoes.find(s => s.id === destino);
-
-    if (!origemStation || !destinoStation) return;
-
-    // Mock de uma rota simples para demonstração
-    // Em uma implementação real, isso seria calculado por algoritmos de pathfinding
-    let rotaMock = [];
-    const tempoMedioEntreEstacoes = 3; // minutos em média
-
-    // Caso simples: mesma linha
-    if (origemStation.lines.some(l => destinoStation.lines.includes(l))) {
-      const linhaComum = origemStation.lines.find(l => destinoStation.lines.includes(l)) || '';
-      const estacoesDaLinha = Object.values(stationMappings)
-        .filter(s => s.lines.includes(linhaComum))
-        .map(s => s.id);
-      
-      const origemIndex = estacoesDaLinha.indexOf(origem);
-      const destinoIndex = estacoesDaLinha.indexOf(destino);
-      const numEstacoes = Math.abs(origemIndex - destinoIndex);
-
-      rotaMock.push({
-        tipo: 'viagem',
-        de: origemStation.name,
-        para: destinoStation.name,
-        linha: linhaComum,
-        tempo: numEstacoes * tempoMedioEntreEstacoes,
-        estacoes: numEstacoes
-      });
-    } 
-    // Caso com um transbordo
-    else {
-      // Encontrar uma estação de transbordo
-      const estacaoTransbordo = Object.values(stationMappings).find(s => 
-        s.isTransfer && 
-        origemStation.lines.some(l => s.lines.includes(l)) && 
-        destinoStation.lines.some(l => s.lines.includes(l))
-      );
-
-      if (estacaoTransbordo) {
-        const linhaOrigem = origemStation.lines.find(l => estacaoTransbordo.lines.includes(l)) || '';
-        const linhaDestino = destinoStation.lines.find(l => estacaoTransbordo.lines.includes(l)) || '';
+    // Usamos o algoritmo de Dijkstra do grafo do metro com logs habilitados se necessário
+    const resultado = metroGraph.shortestPath(
+      origem, 
+      destino, 
+    );
         
-        // Primeira parte da viagem
-        rotaMock.push({
-          tipo: 'viagem',
-          de: origemStation.name,
-          para: estacaoTransbordo.name,
-          linha: linhaOrigem,
-          tempo: 8,
-          estacoes: 4
-        });
-
-        // Transbordo
-        rotaMock.push({
-          tipo: 'transbordo',
-          de: linhaOrigem,
-          para: linhaDestino,
-          tempo: 3,
-          estacoes: 0
-        });
-
-        // Segunda parte da viagem
-        rotaMock.push({
-          tipo: 'viagem',
-          de: estacaoTransbordo.name,
-          para: destinoStation.name,
-          linha: linhaDestino,
-          tempo: 6,
-          estacoes: 3
-        });
-      } else {
-        // Caso complexo (exemplo simplificado)
-        const linhaOrigem = origemStation.lines[0];
-        const linhaDestino = destinoStation.lines[0];
-        
-        rotaMock.push({
-          tipo: 'viagem',
-          de: origemStation.name,
-          para: 'Saldanha',
-          linha: linhaOrigem,
-          tempo: 10,
-          estacoes: 5
-        });
-        
-        rotaMock.push({
-          tipo: 'transbordo',
-          de: linhaOrigem,
-          para: 'Amarela',
-          tempo: 3,
-          estacoes: 0
-        });
-        
-        rotaMock.push({
-          tipo: 'viagem',
-          de: 'Saldanha',
-          para: 'Campo Grande',
-          linha: 'Amarela',
-          tempo: 6,
-          estacoes: 3
-        });
-        
-        rotaMock.push({
-          tipo: 'transbordo',
-          de: 'Amarela',
-          para: linhaDestino,
-          tempo: 3,
-          estacoes: 0
-        });
-        
-        rotaMock.push({
-          tipo: 'viagem',
-          de: 'Campo Grande',
-          para: destinoStation.name,
-          linha: linhaDestino,
-          tempo: 8,
-          estacoes: 4
-        });
-      }
-    }
-
-    // Calcular totais
-    const tempoTotal = rotaMock.reduce((total, etapa) => total + etapa.tempo, 0);
-    const estacoesPart = rotaMock.reduce((total, etapa) => total + etapa.estacoes, 0);
-    const transbordos = rotaMock.filter(etapa => etapa.tipo === 'transbordo').length;
-
+    // Formatamos o resultado para exibição na UI
+    const rotaProcessada = metroGraph.formatPathForUI(resultado);
+    
+    // Calculamos o tempo total estimado (2 min por estação + tempo de trocas de linha)
+    const tempoTotal = rotaProcessada.segments.reduce((total, segment) => total + segment.tempo, 0);
+    
+    // Contamos o número total de estações
+    const estacoesPart = rotaProcessada.segments
+      .filter(segment => segment.tipo === 'viagem')
+      .reduce((total, segment) => total + segment.estacoes, 0);
+    
     setResultados({
       tempoTotal,
       estacoes: estacoesPart,
-      transbordos,
-      rota: rotaMock 
+      trocasLinha: rotaProcessada.transbordos,
+      rota: rotaProcessada.segments.map(segment => ({
+        ...segment,
+        tipo: segment.tipo === 'transbordo' ? 'troca-linha' : 'viagem'
+      }))
     });
   };
 
@@ -223,7 +120,7 @@ const PlanearViagem: React.FC = () => {
       <Box sx={{ mb: 4 }}>
         <Typography variant="body1" paragraph>
           Use este planejador para calcular a melhor rota entre duas estações do Metro de Lisboa. 
-          O sistema vai calcular o caminho mais rápido, incluindo transferências necessárias.
+          O sistema vai calcular o caminho mais rápido, incluindo trocas de linha necessárias.
         </Typography>
       </Box>
       
@@ -274,8 +171,26 @@ const PlanearViagem: React.FC = () => {
             </Select>
           </FormControl>
         </Box>
+
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+          <FormControlLabel
+            control={
+              <Switch 
+                checked={enableLogging} 
+                onChange={(e) => setEnableLogging(e.target.checked)} 
+                color="primary"
+              />
+            }
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <CodeIcon fontSize="small" />
+                <Typography variant="body2">Mostrar logs do algoritmo</Typography>
+              </Box>
+            }
+          />
+        </Box>
         
-        <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
           <Button 
             variant="contained" 
             size="large" 
@@ -349,10 +264,10 @@ const PlanearViagem: React.FC = () => {
               <SwapVertIcon sx={{ mr: 1, color: '#009048' }} />
               <Box>
                 <Typography variant="body2" color="text.secondary">
-                  Transbordos
+                  Trocas de Linha
                 </Typography>
                 <Typography variant="h6">
-                  {resultados.transbordos}
+                  {resultados.trocasLinha}
                 </Typography>
               </Box>
             </Box>
@@ -433,7 +348,7 @@ const PlanearViagem: React.FC = () => {
                       primary={
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           <Typography variant="body1">
-                            Transbordo: 
+                            Troca de Linha: 
                           </Typography>
                           <Chip 
                             label={etapa.de} 
@@ -465,7 +380,7 @@ const PlanearViagem: React.FC = () => {
               }
             })}
           </List>
-          
+                    
           <Box sx={{ mt: 3, p: 2, backgroundColor: '#e8f5e9', borderRadius: 1 }}>
             <Typography variant="body2" color="text.secondary">
               <strong>Nota:</strong> Este é um planejador conceitual. Os tempos são estimativas e podem variar 
