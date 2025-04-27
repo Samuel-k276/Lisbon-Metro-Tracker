@@ -9,6 +9,17 @@
   --text-light: #fff;
   --background-light: #f5f5f5;
   --background-dark: #222;
+  /* Configuração para a escala visual da aplicação */
+  font-size: 108%;
+}
+
+/* Configuração para zoom global */
+html, body {
+  transform: scale(1.08);
+  transform-origin: 0 0;
+  width: 92%;
+  height: auto;
+  overflow-x: hidden;
 }
 
 * {
