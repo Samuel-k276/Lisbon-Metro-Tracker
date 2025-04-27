@@ -15,6 +15,12 @@ import {
 } from '@mui/material';
 import { LINE_COLORS } from "../constants/metroLines";
 
+// Importar as imagens das linhas do metro
+import linhaAzulImg from "../assets/linhaAzul.png";
+import linhaAmarelaImg from "../assets/linhaAmarela.png";
+import linhaVerdeImg from "../assets/linhaVerde.png";
+import linhaVermelhaImg from "../assets/linhaVermelha.png";
+
 const Alerts: React.FC = () => {
    const [lineStates, setLineStates] = useState<LineState[]>([]);
    const [loading, setLoading] = useState(true);
@@ -110,6 +116,22 @@ const Alerts: React.FC = () => {
       return lineNames[lineName.toLowerCase()] || lineName;
    };
 
+   // Função para obter a imagem da linha correspondente
+   const getLineImage = (lineName: string): string => {
+      switch (lineName.toLowerCase()) {
+         case "azul":
+            return linhaAzulImg;
+         case "amarela":
+            return linhaAmarelaImg;
+         case "verde":
+            return linhaVerdeImg;
+         case "vermelha":
+            return linhaVermelhaImg;
+         default:
+            return linhaAzulImg; // Imagem padrão caso não encontre a linha
+      }
+   };
+
    return (
       <Box 
          sx={{ 
@@ -167,6 +189,7 @@ const Alerts: React.FC = () => {
                {lineStates.map((lineState, index) => {
                   const { primaryColor, gradientColor } = getLineStyle(lineState.name);
                   const statusColor = getStatusColor(lineState.status);
+                  const lineImage = getLineImage(lineState.name);
                   
                   return (
                      <Grow
@@ -208,21 +231,28 @@ const Alerts: React.FC = () => {
                            >
                               <Box 
                                  sx={{
-                                    width: 50,
-                                    height: 50,
+                                    width: 60,
+                                    height: 60,
                                     borderRadius: "50%",
-                                    backgroundColor: "rgba(255, 255, 255, 0.8)",
+                                    backgroundColor: "rgba(255, 255, 255, 0.9)",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    fontWeight: "bold",
-                                    fontSize: 24,
-                                    color: primaryColor,
-                                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                                    border: `2px solid ${primaryColor}`
+                                    boxShadow: "0 3px 5px rgba(0, 0, 0, 0.1)",
+                                    border: `1.5px solid ${primaryColor}`,
+                                    padding: "2px",
+                                    overflow: "hidden"
                                  }}
                               >
-                                 {lineState.name.charAt(0).toUpperCase()}
+                                 <img 
+                                    src={lineImage} 
+                                    alt={`Linha ${lineState.name}`}
+                                    style={{
+                                       maxWidth: "100%", // Reduzido de 80% para 60%
+                                       maxHeight: "100%", // Reduzido de 80% para 60%
+                                       objectFit: "contain",
+                                    }}
+                                 />
                               </Box>
                               <Typography 
                                  variant="h5" 

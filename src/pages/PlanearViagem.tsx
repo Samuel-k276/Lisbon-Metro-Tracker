@@ -103,8 +103,8 @@ const PlanearViagem: React.FC = () => {
       
       <Box sx={{ mb: 4 }}>
         <Typography variant="body1" paragraph>
-          Use este planejador para calcular a melhor rota entre duas estações do Metro de Lisboa. 
-          O sistema vai calcular o caminho mais rápido, incluindo trocas de linha necessárias.
+          Utilize este planeador para calcular a melhor rota entre duas estações do Metro de Lisboa. 
+          O sistema vai calcular o caminho mais rápido, incluindo mudanças de linha necessárias.
         </Typography>
       </Box>
       
@@ -230,7 +230,7 @@ const PlanearViagem: React.FC = () => {
               <SwapVertIcon sx={{ mr: 1, color: '#009048' }} />
               <Box>
                 <Typography variant="body2" color="text.secondary">
-                  Trocas de Linha
+                  Mudanças de Linha
                 </Typography>
                 <Typography variant="h6">
                   {resultados.trocasLinha}
@@ -314,7 +314,7 @@ const PlanearViagem: React.FC = () => {
                       primary={
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           <Typography variant="body1">
-                            Troca de Linha: 
+                            Mudança de Linha: 
                           </Typography>
                           <Chip 
                             label={etapa.de} 
@@ -349,8 +349,8 @@ const PlanearViagem: React.FC = () => {
                     
           <Box sx={{ mt: 3, p: 2, backgroundColor: '#e8f5e9', borderRadius: 1 }}>
             <Typography variant="body2" color="text.secondary">
-              <strong>Nota:</strong> Este é um planejador conceitual. Os tempos são estimativas e podem variar 
-              conforme o horário, lotação das estações e outros fatores. Este sistema não leva em conta 
+              <strong>Nota:</strong> Este é um planeador conceptual. Os tempos são estimativas e podem variar 
+              consoante o horário, ocupação das estações e outros fatores. Este sistema não tem em conta 
               horários específicos de operação ou possíveis perturbações no serviço.
             </Typography>
           </Box>

@@ -27,6 +27,14 @@ const LineCircle: React.FC<{ line: string }> = ({ line }) => {
    );
 };
 
+// Ordem das cores para ordenação (definida para corresponder à ordem visual desejada)
+const colorOrder: Record<string, number> = {
+   'Azul': 1,    // Primeiro
+   'Verde': 2,   // Segundo
+   'Amarela': 3, // Terceiro
+   'Vermelha': 4 // Quarto
+};
+
 const StationDetail: React.FC<StationDetailProps> = ({ stationId }) => {
    const { station, loading, error } = useStation(stationId);
 
@@ -55,11 +63,14 @@ const StationDetail: React.FC<StationDetailProps> = ({ stationId }) => {
                         const lineA = getLineNameFromDestination(a.destination);
                         const lineB = getLineNameFromDestination(b.destination);
                         
-                        // First sort by line name
-                        if (lineA !== lineB) {
-                           return lineA.localeCompare(lineB);
+                        // Primeiro ordenar pela ordem de cores (definida por colorOrder)
+                        const colorOrderA = colorOrder[lineA] || 999; // Valor grande para linhas desconhecidas
+                        const colorOrderB = colorOrder[lineB] || 999;
+                        
+                        if (colorOrderA !== colorOrderB) {
+                           return colorOrderA - colorOrderB;
                         }
-                        // Then by destination name
+                        // Depois ordenar por nome de destino
                         return a.destination.localeCompare(b.destination);
                       })
                       .map(trains => (
