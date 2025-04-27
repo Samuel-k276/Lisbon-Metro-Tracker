@@ -10,7 +10,7 @@ const API_BASE_URL = 'https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1';
 // And maybe in production too, but this is not recommended, the API should be fixed instead
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-const API_TOKEN = import.meta.env.VITE_API_TOKEN || '031145f2-3e04-3084-a60a-c2955c0d8f0b';
+const API_TOKEN = import.meta.env.VITE_METRO_API_TOKEN;
 
 const HEADERS = { 
   'Authorization': `Bearer ${API_TOKEN}`,
