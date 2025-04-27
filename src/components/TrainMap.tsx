@@ -41,6 +41,7 @@ const TrainMap: React.FC<any> = () => {
   const [hoveredStation, setHoveredStation] = useState<string | null>(null);
   const [hoveredTrain, setHoveredTrain] = useState<string | null>(null);
   const [stageScale, _] = useState(1);
+  const [debug, setDebug] = useState(false); // Para debugging quando necessário
 
   // Fetch train data when the component mounts and every 10 seconds
   useEffect(() => {
@@ -130,24 +131,59 @@ const TrainMap: React.FC<any> = () => {
     }
     
     return result;
-    
   }, [trainData]);
+
+  // Função de ajuda para ativar debug mode
+  const toggleDebug = () => {
+    setDebug(!debug);
+  };
+
+  // Adicionar event listener para debug com Ctrl+D
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'd') {
+        e.preventDefault();
+        toggleDebug();
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [debug]);
 
   return (
     <div className="train-map" style={{ 
       display: 'flex', 
       justifyContent: 'center', 
       alignItems: 'center',
-      touchAction: 'none' // Isto ajuda no comportamento de toque em dispositivos móveis
+      touchAction: 'none',
+      position: 'relative',
+      cursor: 'default'
     }}>
+      {/* Se debug estiver ativo, mostrar contadores */}
+      {debug && (
+        <div style={{
+          position: 'absolute',
+          top: 10,
+          left: 10,
+          backgroundColor: 'rgba(0,0,0,0.7)',
+          color: 'white',
+          padding: 10,
+          borderRadius: 5,
+          zIndex: 1000
+        }}>
+          <div>Estações: {Object.values(lines).flatMap(l => l.stations).length}</div>
+          <div>Comboios: {memorizedTrains.length}</div>
+        </div>
+      )}
+      
       <Stage 
         width={dimensions.width} 
         height={dimensions.height}
         scale={{ x: stageScale, y: stageScale }}
-        style={{ cursor: 'default' }} // Define o cursor padrão para o Stage
       >
-        <Layer>
-          {/* Background Image - ajustada para caber completamente */}
+        {/* Camada do fundo - apenas a imagem */}
+        <Layer name="background">
           {backgroundImage && (
             <Image
               image={backgroundImage}
@@ -155,11 +191,13 @@ const TrainMap: React.FC<any> = () => {
               height={dimensions.height}
               scaleX={1}
               scaleY={1}
-              listening={false} // A imagem não precisa responder a eventos
+              listening={false} // A imagem do fundo não deve capturar eventos
             />
           )}
-          
-          {/* Render all stations from all lines */}
+        </Layer>
+        
+        {/* Camada das estações - boa para interatividade */}
+        <Layer name="stations">
           {Object.values(lines).flatMap(lineData => 
             lineData.stations.map((stationId) => {
               const coords = stationCoordinates[stationId];
@@ -170,28 +208,33 @@ const TrainMap: React.FC<any> = () => {
               
               return (
                 <Group 
-                  key={stationId} 
+                  key={`station-${stationId}`}
                   x={coords.x} 
                   y={coords.y}
                   onClick={(e) => {
-                    e.cancelBubble = true; // Previne propagação do evento
-                    window.scrollTo(0, 0);
-                    navigate(`/station/${stationId}`);
-                  }}
-                  onTap={(e) => {
                     e.cancelBubble = true;
                     window.scrollTo(0, 0);
                     navigate(`/station/${stationId}`);
                   }}
+                  onTap={() => {
+                    window.scrollTo(0, 0);
+                    navigate(`/station/${stationId}`);
+                  }}
                   onMouseEnter={(e) => {
-                    e.target.getStage()!.container().style.cursor = 'pointer';
+                    const stage = e.target.getStage();
+                    if (stage) {
+                      stage.container().style.cursor = 'pointer';
+                    }
                     setHoveredStation(stationId);
                   }}
                   onMouseLeave={(e) => {
-                    e.target.getStage()!.container().style.cursor = 'default';
+                    const stage = e.target.getStage();
+                    if (stage) {
+                      stage.container().style.cursor = 'default';
+                    }
                     setHoveredStation(null);
                   }}
-                  hitStrokeWidth={20} // Aumenta a área de clique/toque
+                  hitStrokeWidth={25} // Área de clique ainda maior
                 >
                   {stationTransfer ? (
                     // For transfer stations, draw a circle with the color of the first line only
@@ -200,15 +243,15 @@ const TrainMap: React.FC<any> = () => {
                         radius={hoveredStation === stationId ? 13 : 10}
                         fill="white"
                         stroke={hoveredStation === stationId ? "#2196F3" : getLineColor(stationLines[0])}
-                        strokeWidth={hoveredStation === stationId ? 2.5 : 1}
-                        shadowColor={hoveredStation === stationId ? "rgba(0,0,0,0.5)" : "transparent"}
-                        shadowBlur={hoveredStation === stationId ? 6 : 0}
-                        shadowOffset={hoveredStation === stationId ? { x: 0, y: 2 } : { x: 0, y: 0 }}
+                        strokeWidth={hoveredStation === stationId ? 3 : 2}
+                        shadowColor="rgba(0,0,0,0.3)"
+                        shadowBlur={hoveredStation === stationId ? 8 : 4}
+                        shadowOffset={{ x: 0, y: 2 }}
                         shadowOpacity={0.6}
                       />
                       <Circle
                         radius={hoveredStation === stationId ? 11 : 8}
-                        fill={getLineColor(stationLines[0])} // Use only the first line color
+                        fill={getLineColor(stationLines[0])}
                       />
                     </>
                   ) : (
@@ -217,75 +260,120 @@ const TrainMap: React.FC<any> = () => {
                       radius={hoveredStation === stationId ? 8 : 6}
                       fill="white"
                       stroke={hoveredStation === stationId ? "#2196F3" : getLineColor(stationLines[0])}
-                      strokeWidth={hoveredStation === stationId ? 2.5 : 2}
-                      shadowColor={hoveredStation === stationId ? "rgba(0,0,0,0.5)" : "transparent"}
-                      shadowBlur={hoveredStation === stationId ? 5 : 0}
-                      shadowOffset={hoveredStation === stationId ? { x: 0, y: 2 } : { x: 0, y: 0 }}
+                      strokeWidth={hoveredStation === stationId ? 3 : 2}
+                      shadowColor="rgba(0,0,0,0.3)"
+                      shadowBlur={hoveredStation === stationId ? 8 : 4}
+                      shadowOffset={{ x: 0, y: 2 }}
                       shadowOpacity={0.6}
+                    />
+                  )}
+                  
+                  {/* Adicionar um círculo transparente maior para aumentar a área de clique */}
+                  <Circle
+                    radius={20}
+                    fill="transparent"
+                  />
+                  
+                  {/* Em debug mode, mostrar IDs das estações */}
+                  {debug && (
+                    <Text
+                      text={stationId}
+                      fontSize={10}
+                      fill="black"
+                      offsetX={0}
+                      offsetY={-20}
                     />
                   )}
                 </Group>
               );
             })
           ).filter(Boolean)}
-          
-          {/* Render trains */}
+        </Layer>
+        
+        {/* Camada dos comboios - fica por cima de tudo */}
+        <Layer name="trains">
           {memorizedTrains.map((train) => (
             <Group 
-              key={train.id} 
+              key={`train-${train.id}`}
               x={train.position.x} 
               y={train.position.y}
               onClick={(e) => {
-                e.cancelBubble = true; // Previne propagação do evento
-                window.scrollTo(0, 0);
-                navigate(`/train/${train.id}`);
-              }}
-              onTap={(e) => {
                 e.cancelBubble = true;
                 window.scrollTo(0, 0);
                 navigate(`/train/${train.id}`);
               }}
+              onTap={() => {
+                window.scrollTo(0, 0);
+                navigate(`/train/${train.id}`);
+              }}
               onMouseEnter={(e) => {
-                e.target.getStage()!.container().style.cursor = 'pointer';
+                const stage = e.target.getStage();
+                if (stage) {
+                  stage.container().style.cursor = 'pointer';
+                }
                 setHoveredTrain(train.id);
               }}
               onMouseLeave={(e) => {
-                e.target.getStage()!.container().style.cursor = 'default';
+                const stage = e.target.getStage();
+                if (stage) {
+                  stage.container().style.cursor = 'default';
+                }
                 setHoveredTrain(null);
               }}
-              hitStrokeWidth={20} // Aumenta a área de clique/toque
+              hitStrokeWidth={25} // Área de clique ainda maior
             >
-              {/* Train circle */}
+              {/* Círculo transparente maior para aumentar a área de clique */}
               <Circle
-                radius={hoveredTrain === train.id ? 10 : 8}
-                fill="#ED1C24" // Red color for trains
+                radius={20}
+                fill="transparent"
+              />
+              
+              {/* Train circle with enhanced visibility */}
+              <Circle
+                radius={hoveredTrain === train.id ? 12 : 10}
+                fill="#ED1C24" // Vermelho para comboios
                 stroke="white"
-                strokeWidth={hoveredTrain === train.id ? 2.5 : 1.5}
-                shadowColor={hoveredTrain === train.id ? "rgba(0,0,0,0.5)" : "transparent"}
-                shadowBlur={hoveredTrain === train.id ? 5 : 0}
-                shadowOffset={hoveredTrain === train.id ? { x: 0, y: 2 } : { x: 0, y: 0 }}
-                shadowOpacity={0.6}
+                strokeWidth={hoveredTrain === train.id ? 3 : 1.5}
+                shadowColor="rgba(0,0,0,0.5)"
+                shadowBlur={hoveredTrain === train.id ? 10 : 5}
+                shadowOffset={{ x: 0, y: 3 }}
+                shadowOpacity={0.7}
               />
               
               {/* Direction arrow */}
               <Arrow
                 points={[0, 0, Math.cos(train.angle) * 20, Math.sin(train.angle) * 20]}
-                pointerLength={5}
-                pointerWidth={5}
+                pointerLength={6}
+                pointerWidth={6}
                 fill="white"
                 stroke="white"
                 strokeWidth={2}
               />
               
-              {/* Train ID label - small and subtle */}
+              {/* Train ID label - clearer and more visible */}
               <Text
                 text={train.id.substring(0, 4)}
-                fontSize={hoveredTrain === train.id ? 10 : 8}
-                fontStyle={hoveredTrain === train.id ? 'bold' : 'normal'}
-                fill={hoveredTrain === train.id ? "black" : "#333"}
+                fontSize={hoveredTrain === train.id ? 12 : 10}
+                fontStyle="bold"
+                fill="white"
                 offsetX={-8}
                 offsetY={-12}
+                shadowColor="black"
+                shadowBlur={3}
+                shadowOffset={{ x: 1, y: 1 }}
+                shadowOpacity={0.8}
               />
+              
+              {/* Debug info */}
+              {debug && (
+                <Text
+                  text={`Dest: ${train.destination}`}
+                  fontSize={9}
+                  fill="black"
+                  offsetX={0}
+                  offsetY={20}
+                />
+              )}
             </Group>
           ))}
         </Layer>
