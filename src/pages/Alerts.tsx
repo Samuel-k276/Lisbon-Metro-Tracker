@@ -13,6 +13,7 @@ import {
    Fade,
    Grow
 } from '@mui/material';
+import { LINE_COLORS } from "../constants/metroLines";
 
 const Alerts: React.FC = () => {
    const [lineStates, setLineStates] = useState<LineState[]>([]);
@@ -65,24 +66,24 @@ const Alerts: React.FC = () => {
       
       switch (lineName.toLowerCase()) {
          case "azul":
-            primaryColor = "#3b82f6";
+            primaryColor = LINE_COLORS.Azul;
             lightColor = "#93c5fd";
-            gradientColor = "linear-gradient(135deg, #93c5fd 0%, #3b82f6 100%)";
+            gradientColor = `linear-gradient(135deg, #93c5fd 0%, ${LINE_COLORS.Azul} 100%)`;
             break;
          case "amarela":
-            primaryColor = "#fbbf24";
+            primaryColor = LINE_COLORS.Amarela;
             lightColor = "#fde68a";
-            gradientColor = "linear-gradient(135deg, #fde68a 0%, #fbbf24 100%)";
+            gradientColor = `linear-gradient(135deg, #fde68a 0%, ${LINE_COLORS.Amarela} 100%)`;
             break;
          case "verde":
-            primaryColor = "#10b981";
+            primaryColor = LINE_COLORS.Verde;
             lightColor = "#6ee7b7";
-            gradientColor = "linear-gradient(135deg, #6ee7b7 0%, #10b981 100%)";
+            gradientColor = `linear-gradient(135deg, #6ee7b7 0%, ${LINE_COLORS.Verde} 100%)`;
             break;
          case "vermelha":
-            primaryColor = "#ef4444";
+            primaryColor = LINE_COLORS.Vermelha;
             lightColor = "#fca5a5";
-            gradientColor = "linear-gradient(135deg, #fca5a5 0%, #ef4444 100%)";
+            gradientColor = `linear-gradient(135deg, #fca5a5 0%, ${LINE_COLORS.Vermelha} 100%)`;
             break;
          default:
             primaryColor = "#6b7280";

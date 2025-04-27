@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Train } from '../types/metro';
 import { fetchTrainData } from '../api/metro';
-import { getTrainLine } from '../utils/staticData';
-import { getDestinationNameById } from '../utils/stationMappings';
+import { getTrainLine, getStationNameById } from '../utils/metroUtils';
+import { LINE_COLORS, LineNames } from '../constants/metroLines';
 
 export const useTrain = (trainId: string | undefined) => {
   const [train, setTrain] = useState<Train | null>(null);
@@ -35,10 +35,7 @@ export const useTrain = (trainId: string | undefined) => {
         
         // Get the line color and name for the train
         const lineName = getTrainLine(trainId);
-        const lineColor = lineName === 'Azul' ? '#0075BF' : 
-                         lineName === 'Amarela' ? '#FFD800' :
-                         lineName === 'Verde' ? '#00A9A6' :
-                         lineName === 'Vermelha' ? '#ED1C24' : '#888888';
+        const lineColor = LINE_COLORS[lineName as LineNames] || '#888888';
         
         // Process train arrivals for UI display
         const stationArrivals = Array.from(data[trainId].stationArrivals);
@@ -52,7 +49,7 @@ export const useTrain = (trainId: string | undefined) => {
             const [stationId] = stationInfo;
             return {
               stationId,
-              stationName: stationId, // We'll replace this with real name in the component
+              stationName: getStationNameById(stationId),
               arrivalTime
             };
           });
@@ -60,7 +57,7 @@ export const useTrain = (trainId: string | undefined) => {
           setTrainInfo({
             line: lineName,
             lineColor,
-            destination: getDestinationNameById(destinationId, ''),
+            destination: getStationNameById(destinationId, ''),
             nextStations
           });
         }
@@ -77,9 +74,6 @@ export const useTrain = (trainId: string | undefined) => {
 
     // Fetch data only once when the component mounts or trainId changes
     getTrainData();
-    
-    // Removido o setInterval para evitar atualizações automáticas
-    
   }, [trainId]);
 
   return { train, trainInfo, loading, error };

@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import { stationMappings } from '../utils/stationMappings';
 import { metroGraph } from '../utils/graph';
-import { getLineColor } from '../utils/staticData';
+import { getLineColor } from '../utils/metroUtils';
 import TrainIcon from '@mui/icons-material/Train';
 import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';

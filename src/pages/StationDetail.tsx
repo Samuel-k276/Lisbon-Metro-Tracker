@@ -1,23 +1,16 @@
 import React from 'react';
 import { Typography, Box, Container, Paper, Chip } from '@mui/material';
 import { useStation } from '../hooks/useStation';
-import { formatTimeInSeconds, getLineNameFromDestination } from '../utils/helpers';
-
+import { formatTimeInSeconds } from '../utils/helpers';
+import { getLineNameFromDestination } from '../utils/helpers';
+import { getLineColor } from '../utils/metroUtils';
 
 interface StationDetailProps {
    stationId: string;
 }
 
-// Map of the 4 possible line colors for Lisbon Metro
-const lineColors: Record<string, string> = {
-   'Azul': '#0075BF',
-   'Amarela': '#FFD800',
-   'Verde': '#00A9A6',
-   'Vermelha': '#ED1C24'
-};
-
 const LineCircle: React.FC<{ line: string }> = ({ line }) => {
-   const color = lineColors[line] || '#888888'; // Default color if line not found
+   const color = getLineColor(line);
    return (
       <Box
          component="span"
@@ -129,6 +122,5 @@ const StationDetail: React.FC<StationDetailProps> = ({ stationId }) => {
       </Container>
    );
 };
-
 
 export default StationDetail;

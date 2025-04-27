@@ -1,4 +1,5 @@
 import { Coordinates, Line } from '../types/metro';
+import { LINE_COLORS } from '../constants/metroLines';
 
 // Corrected station coordinates for rendering (x values increased by 130)
 export const stationCoordinates: Record<string, Coordinates> = {
@@ -59,7 +60,7 @@ export const lines: Record<string, Line> = {
   // Map metro line names to colors
   'Azul': { 
     name: 'Azul', 
-    color: '#0075BF',
+    color: LINE_COLORS.Azul,
     stations: [
      'RB', 'AS', 'AF', 'PO', 'CA', 'CM', 'AH', 'LA', 'JZ', 'PE', 'SS', 'PA', 'MP', 
      'AV', 'RE', 'BC', 'TP', 'SP'
@@ -68,7 +69,7 @@ export const lines: Record<string, Line> = {
   },
   'Amarela': { 
     name: 'Amarela',
-    color: '#FFD800', 
+    color: LINE_COLORS.Amarela, 
     stations: [
      'OD', 'SR', 'AX', 'LU', 'QC', 'CG', 'CU', 'EC', 'CP', 'SA', 'PI', 'MP', 'RA'
     ],
@@ -76,7 +77,7 @@ export const lines: Record<string, Line> = {
   },
   'Verde': { 
     name: 'Verde', 
-    color: '#00A9A6',
+    color: LINE_COLORS.Verde,
     stations: [
      'TE', 'CG', 'AL', 'RM', 'AE', 'AM', 'AR', 'AN', 'IN', 'MM', 'RO', 'BC', 'CS'
     ],
@@ -84,7 +85,7 @@ export const lines: Record<string, Line> = {
   },
   'Vermelha': { 
     name: 'Vermelha',
-    color: '#ED1C24', 
+    color: LINE_COLORS.Vermelha, 
     stations: [
      'AP', 'EN', 'MO', 'OR', 'CR', 'OS', 'CH', 'BV', 'OL', 'AM', 'SA', 'SS'
     ],

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Typography, Box, Container, Paper, Chip, CircularProgress } from '@mui/material';
 import { useTrain } from '../hooks/useTrain';
-import { getStationNameById } from '../utils/stationMappings';
+import { getStationNameById } from '../utils/metroUtils';
+import { formatTimeInSeconds } from '../utils/helpers';
 import { lines } from '../utils/staticData';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import TrainIcon from '@mui/icons-material/Train';
@@ -12,14 +13,6 @@ interface TrainDetailProps {
 
 const TrainDetail: React.FC<TrainDetailProps> = ({ trainId }) => {
   const { train, trainInfo, loading, error } = useTrain(trainId);
-
-  // Format time in minutes and seconds
-  const formatTime = (seconds: number): string => {
-    if (seconds <= 0) return 'Chegando';
-    const min = Math.floor(seconds / 60);
-    const sec = seconds % 60;
-    return `${min}m ${sec}s`;
-  };
 
   if (loading) {
     return (
@@ -86,7 +79,7 @@ const TrainDetail: React.FC<TrainDetailProps> = ({ trainId }) => {
               fontWeight="bold" 
               sx={{ ml: 1 }}
             >
-              {getStationNameById(trainInfo.destination)}
+              {trainInfo.destination}
             </Typography>
           </Box>
         </Box>
@@ -123,7 +116,7 @@ const TrainDetail: React.FC<TrainDetailProps> = ({ trainId }) => {
                     boxShadow: '0 0 0 1px #ccc'
                   }} />
                   <Typography fontWeight={index === 0 ? 'bold' : 'regular'}>
-                    {getStationNameById(station.stationId)}
+                    {station.stationName}
                   </Typography>
                   {index === 0 && (
                     <Chip 
@@ -147,7 +140,7 @@ const TrainDetail: React.FC<TrainDetailProps> = ({ trainId }) => {
                     fontWeight: index === 0 ? 'bold' : 'regular'
                   }}
                 >
-                  {formatTime(station.arrivalTime)}
+                  {formatTimeInSeconds(station.arrivalTime)}
                 </Typography>
               </Box>
             ))}
@@ -158,7 +151,7 @@ const TrainDetail: React.FC<TrainDetailProps> = ({ trainId }) => {
           <Typography variant="h6" gutterBottom sx={{ borderBottom: '1px solid #eee', pb: 1 }}>
             Line Information
           </Typography>
-          
+
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 2 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Typography variant="body1">Line:</Typography>

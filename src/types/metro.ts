@@ -1,12 +1,12 @@
 // Define the types for the Metro Lisboa project
 import { OrderedMap  } from "js-sdsl";
+import { LineNames } from "../constants/metroLines";
 
 // Coordinates for positioning on the map
 export interface Coordinates {
   x: number;
   y: number;
 }
-
 
 // User Location
 export interface UserLocation {
@@ -15,10 +15,9 @@ export interface UserLocation {
   timestamp: number;
 }
 
-
 // Metro Line
 export interface Line {
-  name: string;
+  name: LineNames;
   color: string; // Color for the line (e.g. '#00A9A6', '#FFD800')
   stations: string[]; // Array of station IDs
   destinations: { [stationName: string]: number }; // Maps terminal stations to their directions
@@ -29,13 +28,11 @@ export interface Station {
   id: string;
   name: string;
   coordinates: Coordinates;
-  lines: string[]; // Array of line IDs this station belongs to
+  lines: LineNames[] | LineNames; // Array of line IDs this station belongs to
   isTransfer: boolean; // Whether this is a transfer station
   isTerminal: boolean; // Whether this is a terminal station
   nextTrains: NextTrainsResponse[]; // Next trains information (each index is a different destination)
 }
-
-
 
 // Next Trains response (3 next trains)
 export interface NextTrainsResponse {
@@ -56,7 +53,7 @@ export interface Destination {
 
 // Metro's lines state 
 export interface LineState {
-  name: 'Amarela' | 'Azul' | 'Verde' | 'Vermelha';
+  name: LineNames;
   status: string;
   message: string;
 }

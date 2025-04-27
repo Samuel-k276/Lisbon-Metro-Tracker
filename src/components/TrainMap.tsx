@@ -1,26 +1,13 @@
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import { Stage, Layer, Circle, Group, Image, Arrow, Text } from 'react-konva';
-import useImage from 'use-image'; // Adicione esta importação
+import useImage from 'use-image';
 import mapaImg from '../assets/mapa.png'; // Imagem do mapa
 import { useState, useEffect, useMemo } from 'react';
 
-import { stationMappings } from '../utils/stationMappings';
-import { stationCoordinates, lines, getTrainLine } from '../utils/staticData';
+import { stationCoordinates, lines } from '../utils/staticData';
+import { getStationLines, getTrainLine, getLineColor, isTransferStation } from '../utils/metroUtils';
 import { fetchTrainData } from '../api/metro';
 import { Train } from '../types/metro';
-
-// Helper function to get lines for a specific station
-const getStationLines = (stationId: string): string[] => {
-  const station = stationMappings[stationId];
-  if (!station) return [];
-  return Array.isArray(station.lines) ? station.lines : [station.lines];
-};
-
-// Helper to check if a station is a transfer station (has multiple lines)
-const isTransferStation = (stationId: string): boolean => {
-  const lines = getStationLines(stationId);
-  return lines.length > 1;
-};
 
 // Helper to calculate train position
 const calculateTrainPosition = (currentStationId: string, nextStationId: string, timeToNext: number): { x: number, y: number, angle: number } => {
@@ -34,7 +21,6 @@ const calculateTrainPosition = (currentStationId: string, nextStationId: string,
   // Calculate angle for the arrow (in radians)
   const angle = Math.atan2(nextCoords.y - currentCoords.y, nextCoords.x - currentCoords.x);
   
-  // Calculate midpoint between the two stations
   // Calculate position based on time
   // timeToNext is the remaining time to next station (in seconds)
   // 240 seconds = 100% of the distance, so we calculate the percentage of distance covered
@@ -49,37 +35,31 @@ const calculateTrainPosition = (currentStationId: string, nextStationId: string,
 
 const TrainMap: React.FC<any> = () => {
   const dimensions = { width: 1034.4, height: 720 };
-  const navigate = useNavigate(); // Initialize navigate
-  const [backgroundImage] = useImage(mapaImg); // Use o caminho correto da imagem
-  const [trainData, setTrainData] = useState<Record<string, Train> | null>(null); // State to store train data
-  const [hoveredStation, setHoveredStation] = useState<string | null>(null); // State to track hovered station
-  const [hoveredTrain, setHoveredTrain] = useState<string | null>(null); // State to track hovered train
-
-  // Get color for the line
-  const getLineColor = (lineName: string) => {
-    return lines[lineName].color || "#888888"; // Default to gray if color not found
-  };
+  const navigate = useNavigate();
+  const [backgroundImage] = useImage(mapaImg);
+  const [trainData, setTrainData] = useState<Record<string, Train> | null>(null);
+  const [hoveredStation, setHoveredStation] = useState<string | null>(null);
+  const [hoveredTrain, setHoveredTrain] = useState<string | null>(null);
 
   // Fetch train data when the component mounts and every 10 seconds
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchTrainData(); // Fetch train data from the API
-        setTrainData(data); // Store the returned data
+        const data = await fetchTrainData();
+        setTrainData(data);
       } catch (error) {
         console.error('Error fetching train data:', error);
       }
     };
 
-    fetchData(); // Fetch data immediately
-    const intervalId = setInterval(fetchData, 10000); // Fetch every 10 seconds
+    fetchData();
+    const intervalId = setInterval(fetchData, 10000);
 
-    return () => clearInterval(intervalId); // Cleanup on unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   // Memorize train calculations to avoid recalculations on hover
   const memorizedTrains = useMemo(() => {
-    // Extract renderableTrains calculation logic
     if (!trainData) return [];
     
     const result = [];
@@ -95,7 +75,7 @@ const TrainMap: React.FC<any> = () => {
          
       // Find which line this train belongs to based on the current station
       const lineName = getTrainLine(trainId);
-      if (!lineName) {
+      if (lineName === 'Unknown') {
         console.log(`No line found for train ${trainId} at ${nextStationId}`);
         continue;
       }
@@ -150,7 +130,7 @@ const TrainMap: React.FC<any> = () => {
     
     return result;
     
-  }, [trainData]); // Only recalculate when trainData changes
+  }, [trainData]);
 
   return (
     <div className="train-map" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -173,7 +153,7 @@ const TrainMap: React.FC<any> = () => {
               const coords = stationCoordinates[stationId];
               if (!coords) return null;
               
-              const isTransfer = isTransferStation(stationId);
+              const stationTransfer = isTransferStation(stationId);
               const stationLines = getStationLines(stationId);
               
               return (
@@ -182,14 +162,14 @@ const TrainMap: React.FC<any> = () => {
                   x={coords.x} 
                   y={coords.y}
                   onClick={() => {
-                    window.scrollTo(0, 0); // Scroll to the top
-                    navigate(`/station/${stationId}`); // Redirect
+                    window.scrollTo(0, 0);
+                    navigate(`/station/${stationId}`);
                   }}
                   onMouseEnter={() => setHoveredStation(stationId)}
                   onMouseLeave={() => setHoveredStation(null)}
                   cursor="pointer"
                 >
-                  {isTransfer ? (
+                  {stationTransfer ? (
                     // For transfer stations, draw a circle with the color of the first line only
                     <>
                       <Circle
@@ -212,7 +192,7 @@ const TrainMap: React.FC<any> = () => {
                     <Circle
                       radius={hoveredStation === stationId ? 8 : 6}
                       fill="white"
-                      stroke={hoveredStation === stationId ? "#2196F3" : lineData.color}
+                      stroke={hoveredStation === stationId ? "#2196F3" : getLineColor(stationLines[0])}
                       strokeWidth={hoveredStation === stationId ? 2.5 : 2}
                       shadowColor={hoveredStation === stationId ? "rgba(0,0,0,0.5)" : "transparent"}
                       shadowBlur={hoveredStation === stationId ? 5 : 0}
@@ -232,8 +212,8 @@ const TrainMap: React.FC<any> = () => {
               x={train.position.x} 
               y={train.position.y}
               onClick={() => {
-                window.scrollTo(0, 0); // Scroll to the top
-                navigate(`/train/${train.id}`); // Redirect to train detail page
+                window.scrollTo(0, 0);
+                navigate(`/train/${train.id}`);
               }}
               onMouseEnter={() => setHoveredTrain(train.id)}
               onMouseLeave={() => setHoveredTrain(null)}

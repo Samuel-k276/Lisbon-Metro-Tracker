@@ -2,6 +2,7 @@
 // This file provides mappings between station IDs and names
 // and utility functions to translate IDs to human-readable names
 
+import { LineNames } from "../constants/metroLines";
 import { Coordinates } from "../types/metro"; // Adjust the import path as necessary
 
 // Type for our station mapping
@@ -9,7 +10,7 @@ export interface StationMapping {
   id: string;
   name: string;
   coordinates: Coordinates;
-  lines: string[]; // Array of line IDs this station belongs to
+  lines: LineNames[] | LineNames; // Array of line IDs this station belongs to
   isTransfer: boolean; // Whether this is a transfer station
   isTerminal: boolean; // Whether this is a terminal station
 }
