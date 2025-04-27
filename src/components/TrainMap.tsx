@@ -40,6 +40,7 @@ const TrainMap: React.FC<any> = () => {
   const [trainData, setTrainData] = useState<Record<string, Train> | null>(null);
   const [hoveredStation, setHoveredStation] = useState<string | null>(null);
   const [hoveredTrain, setHoveredTrain] = useState<string | null>(null);
+  const [stageScale, _] = useState(1);
 
   // Fetch train data when the component mounts and every 10 seconds
   useEffect(() => {
@@ -133,8 +134,18 @@ const TrainMap: React.FC<any> = () => {
   }, [trainData]);
 
   return (
-    <div className="train-map" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <Stage width={dimensions.width} height={dimensions.height}>
+    <div className="train-map" style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center',
+      touchAction: 'none' // Isto ajuda no comportamento de toque em dispositivos móveis
+    }}>
+      <Stage 
+        width={dimensions.width} 
+        height={dimensions.height}
+        scale={{ x: stageScale, y: stageScale }}
+        style={{ cursor: 'default' }} // Define o cursor padrão para o Stage
+      >
         <Layer>
           {/* Background Image - ajustada para caber completamente */}
           {backgroundImage && (
@@ -144,6 +155,7 @@ const TrainMap: React.FC<any> = () => {
               height={dimensions.height}
               scaleX={1}
               scaleY={1}
+              listening={false} // A imagem não precisa responder a eventos
             />
           )}
           
@@ -161,13 +173,25 @@ const TrainMap: React.FC<any> = () => {
                   key={stationId} 
                   x={coords.x} 
                   y={coords.y}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.cancelBubble = true; // Previne propagação do evento
                     window.scrollTo(0, 0);
                     navigate(`/station/${stationId}`);
                   }}
-                  onMouseEnter={() => setHoveredStation(stationId)}
-                  onMouseLeave={() => setHoveredStation(null)}
-                  cursor="pointer"
+                  onTap={(e) => {
+                    e.cancelBubble = true;
+                    window.scrollTo(0, 0);
+                    navigate(`/station/${stationId}`);
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.getStage()!.container().style.cursor = 'pointer';
+                    setHoveredStation(stationId);
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.getStage()!.container().style.cursor = 'default';
+                    setHoveredStation(null);
+                  }}
+                  hitStrokeWidth={20} // Aumenta a área de clique/toque
                 >
                   {stationTransfer ? (
                     // For transfer stations, draw a circle with the color of the first line only
@@ -211,13 +235,25 @@ const TrainMap: React.FC<any> = () => {
               key={train.id} 
               x={train.position.x} 
               y={train.position.y}
-              onClick={() => {
+              onClick={(e) => {
+                e.cancelBubble = true; // Previne propagação do evento
                 window.scrollTo(0, 0);
                 navigate(`/train/${train.id}`);
               }}
-              onMouseEnter={() => setHoveredTrain(train.id)}
-              onMouseLeave={() => setHoveredTrain(null)}
-              cursor="pointer"
+              onTap={(e) => {
+                e.cancelBubble = true;
+                window.scrollTo(0, 0);
+                navigate(`/train/${train.id}`);
+              }}
+              onMouseEnter={(e) => {
+                e.target.getStage()!.container().style.cursor = 'pointer';
+                setHoveredTrain(train.id);
+              }}
+              onMouseLeave={(e) => {
+                e.target.getStage()!.container().style.cursor = 'default';
+                setHoveredTrain(null);
+              }}
+              hitStrokeWidth={20} // Aumenta a área de clique/toque
             >
               {/* Train circle */}
               <Circle
