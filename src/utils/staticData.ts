@@ -107,3 +107,7 @@ export const getTrainLine = (trainId: string) => {
       return 'Unknown';
   }
 };  
+
+export const getLineColor = (line: string) => {
+  return lines[line]?.color || '#888888'; // Default color if line not found
+}

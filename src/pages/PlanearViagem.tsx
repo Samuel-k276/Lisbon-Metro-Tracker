@@ -15,28 +15,25 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Switch,
-  FormControlLabel
 } from '@mui/material';
 import { stationMappings } from '../utils/stationMappings';
 import { metroGraph } from '../utils/graph';
+import { getLineColor } from '../utils/staticData';
 import TrainIcon from '@mui/icons-material/Train';
 import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
-import CodeIcon from '@mui/icons-material/Code';
 
 const PlanearViagem: React.FC = () => {
   // Estado para a origem, destino e resultados
   const [origem, setOrigem] = useState<string>('');
   const [destino, setDestino] = useState<string>('');
-  const [enableLogging, setEnableLogging] = useState<boolean>(false);
   const [resultados, setResultados] = useState<{
     tempoTotal: number;
     estacoes: number;
     trocasLinha: number;
     rota: Array<{
-      tipo: 'viagem' | 'troca-linha';
+      tipo: 'viagem' | 'troca de linha';
       de: string;
       para: string;
       linha?: string;
@@ -69,7 +66,7 @@ const PlanearViagem: React.FC = () => {
       return;
     }
 
-    // Usamos o algoritmo de Dijkstra do grafo do metro com logs habilitados se necessário
+    // Usamos o algoritmo de Dijkstra do grafo do metro
     const resultado = metroGraph.shortestPath(
       origem, 
       destino, 
@@ -92,24 +89,11 @@ const PlanearViagem: React.FC = () => {
       trocasLinha: rotaProcessada.transbordos,
       rota: rotaProcessada.segments.map(segment => ({
         ...segment,
-        tipo: segment.tipo === 'transbordo' ? 'troca-linha' : 'viagem'
+        tipo: segment.tipo === 'transbordo' ? 'troca de linha' : 'viagem'
       }))
     });
   };
 
-  // Função para obter a cor da linha do metro
-  const getLineColor = (lineName: string) => {
-    if (!lineName) return '#888';
-    
-    const lineColors: Record<string, string> = {
-      'Azul': '#0075BF',
-      'Amarela': '#FFD800',
-      'Verde': '#00A9A6',
-      'Vermelha': '#ED1C24'
-    };
-    
-    return lineColors[lineName] || '#888';
-  };
 
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -171,25 +155,7 @@ const PlanearViagem: React.FC = () => {
             </Select>
           </FormControl>
         </Box>
-
-        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
-          <FormControlLabel
-            control={
-              <Switch 
-                checked={enableLogging} 
-                onChange={(e) => setEnableLogging(e.target.checked)} 
-                color="primary"
-              />
-            }
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <CodeIcon fontSize="small" />
-                <Typography variant="body2">Mostrar logs do algoritmo</Typography>
-              </Box>
-            }
-          />
-        </Box>
-        
+       
         <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
           <Button 
             variant="contained" 
