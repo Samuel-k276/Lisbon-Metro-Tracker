@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_API_TOKEN: string;
+  readonly VITE_METRO_API_TOKEN: string;
 }
 
 interface ImportMeta {
