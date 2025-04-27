@@ -1,99 +1,106 @@
 # LisbonMetro
 
-Aplicação web interativa que fornece informações em tempo real sobre o Metropolitano de Lisboa, desenvolvida com React, TypeScript e Vite.
+Interactive web application providing real-time information about the Lisbon Metro system, built with React, TypeScript, and Vite.
 
-![Metropolitano de Lisboa](src/assets/metro-icon.png)
+![Lisbon Metro](src/assets/metro-icon.png)
 
-## 📋 Descrição
+## 📋 Description
 
-O LisbonMetro é uma aplicação web que permite aos usuários:
+LisbonMetro is a web application that allows users to:
 
-- Visualizar o mapa da rede do metro de Lisboa
-- Obter informações sobre estações e linhas em tempo real
-- Verificar os próximos comboios em cada estação
-- Consultar alertas e o estado atual de cada linha
-- Acessar informações sobre tarifas e horários
+- View the complete Lisbon metro network map with real-time train positions
+- Get detailed information about stations and lines
+- Check upcoming trains and waiting times at each station
+- Access service alerts and current status of each line
+- Plan journeys between any two stations on the network
+- View fare information and ticket options
 
-Esta aplicação consome dados em tempo real da API oficial do Metropolitano de Lisboa para fornecer informações atualizadas sobre o serviço.
+This application consumes real-time data from the official Lisbon Metro API to provide up-to-date information about the service.
 
-## 🚀 Tecnologias Utilizadas
+## 🚀 Technologies Used
 
-- **React 19** - Framework de UI
-- **TypeScript** - Tipagem estática
-- **Vite** - Build tool e dev server
-- **React Router** - Navegação entre páginas
-- **Material UI** - Componentes de interface
-- **Konva/React-Konva** - Renderização de gráficos para o mapa
-- **API do Metropolitano de Lisboa** - Dados em tempo real
+- **React 19** - UI Framework
+- **TypeScript** - Static typing for enhanced code quality
+- **Vite** - Fast build tool and dev server
+- **React Router** - Page navigation and routing
+- **Material UI** - Comprehensive component library
+- **Konva/React-Konva** - Canvas-based graphics rendering for the interactive map
+- **Lisbon Metro API** - Real-time train and service data
 
-## 🛠️ Instalação e Uso
+## 🛠️ Installation and Usage
 
-### Pré-requisitos
+### Prerequisites
 
 - Node.js (v18+)
-- npm ou yarn
+- npm or yarn
 
-### Instalação
+### Installation
 
-1. Clone o repositório:
+1. Clone the repository:
    ```
    git clone https://github.com/Samuel-k276/LisbonMetro.git
    cd LisbonMetro
    ```
 
-2. Instale as dependências:
+2. Install dependencies:
    ```
    npm install
    ```
 
-3. Configure as variáveis de ambiente:
-   Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
+3. Configure environment variables:
+   Create a `.env` file in the project root with the following content:
    ```
-   VITE_API_TOKEN=???
+   VITE_API_TOKEN=your_api_token_here
    ```
-   Devera requesitar um TOKEN para a API do Metro de Lisboa
+   You'll need to request an API token from the Lisbon Metro service.
 
-4. Inicie o servidor de desenvolvimento:
+4. Start the development server:
    ```
    npm run dev
    ```
 
-5. Acesse a aplicação em `http://localhost:5173`
+5. Access the application at `http://localhost:5173`
 
-### Compilação para produção
+### Production Build
 
 ```
 npm run build
 ```
 
-Os arquivos compilados estarão disponíveis na pasta `dist/`.
+The compiled files will be available in the `dist/` folder.
 
-## 📂 Estrutura do Projeto
+## 📂 Project Structure
 
-- `src/api/` - Funções para chamadas à API do Metro de Lisboa
-- `src/assets/` - Imagens e recursos estáticos
-- `src/components/` - Componentes React reutilizáveis
-- `src/hooks/` - Custom hooks React
-- `src/pages/` - Componentes de página
-- `src/types/` - Definições de tipos TypeScript
-- `src/utils/` - Funções utilitárias
+- `src/api/` - API client for Lisbon Metro service
+- `src/assets/` - Images and static resources
+- `src/components/` - Reusable React components
+- `src/constants/` - Application constants and configuration
+- `src/hooks/` - Custom React hooks for data fetching and state management
+- `src/pages/` - Page components and views
+- `src/types/` - TypeScript type definitions
+- `src/utils/` - Utility functions, including graph algorithms for route planning
 
-## 📱 Funcionalidades
+## 📱 Features
 
-- **Mapa Interativo**: Visualização da rede completa com estações
-- **Detalhes de Estações**: Informações detalhadas sobre cada estação
-- **Tempos de Espera**: Próximos comboios em cada estação
-- **Alertas**: Estado atual das linhas e eventuais perturbações
-- **Informações**: Tarifas e dados históricos sobre o metro
+- **Interactive Map**: Real-time visualization of the network with trains and stations
+- **Station Details**: Information about facilities, connections, and upcoming trains
+- **Journey Planner**: Calculate the optimal route between any two stations
+- **Service Alerts**: Real-time notifications about disruptions or maintenance
+- **Fare Information**: Comprehensive details about tickets, passes, and payment options
+- **Multi-language Support**: Available in both Portuguese and English
 
-## 📄 Licença
+## 🖥️ Deployment
 
-Este projeto está licenciado sob a licença MIT - veja o arquivo LICENSE para mais detalhes.
+This application is deployed using Vercel. The deployment configuration is included in the `vercel.json` file in the project root.
 
+## 🧪 Future Improvements
 
-Link do projeto: [https://github.com/Samuel-k276/LisbonMetro](https://github.com/Samuel-k276/LisbonMetro)
+- Mobile app version with notifications
+- Accessibility enhancements
+- Better algorithm for route planning
+
 
 ---
 
-⌨️ com ❤️ por [Samuel] (2025)
+⌨️ with ❤️ by [Samuel] (2025)
 
