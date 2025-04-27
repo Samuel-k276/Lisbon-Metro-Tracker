@@ -46,7 +46,6 @@ const TrainMap: React.FC<any> = () => {
     const fetchData = async () => {
       try {
         const data = await fetchTrainData();
-        console.log('Train data fetched:', data);
         setTrainData(data);
       } catch (error) {
         console.error('Error fetching train data:', error);
