@@ -19,7 +19,7 @@ const calculateTrainPosition = (currentStationId: string, nextStationId: string,
   }
   
   const angle = Math.atan2(nextCoords.y - currentCoords.y, nextCoords.x - currentCoords.x);
-  const percentageOfJourney = 1 - (timeToNext / 240);
+  const percentageOfJourney = timeToNext < 240 ? 1 - (timeToNext / 240) : 0;
   const x = currentCoords.x + (nextCoords.x - currentCoords.x) * percentageOfJourney;
   const y = currentCoords.y + (nextCoords.y - currentCoords.y) * percentageOfJourney;
   
