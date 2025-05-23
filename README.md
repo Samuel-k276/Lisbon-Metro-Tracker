@@ -87,7 +87,7 @@ The compiled files will be available in the `dist/` folder.
 - **Journey Planner**: Calculate the optimal route between any two stations
 - **Service Alerts**: Real-time notifications about disruptions or maintenance
 - **Fare Information**: Comprehensive details about tickets, passes, and payment options
-- **Multi-language Support**: Available in both Portuguese and English
+
 
 ## 🖥️ Deployment
 
