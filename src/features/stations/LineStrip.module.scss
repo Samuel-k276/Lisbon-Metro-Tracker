@@ -51,11 +51,11 @@
   text-decoration: none;
   color: $text-dark;
 
-  &:hover .dot {
+  &:not(.current):hover .dot {
     transform: scale(1.3);
   }
 
-  &:hover .label {
+  &:not(.current):hover .label {
     color: $primary-color;
   }
 }
