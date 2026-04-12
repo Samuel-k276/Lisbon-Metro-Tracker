@@ -28,6 +28,8 @@ const TRAIN_SHADOW = {
   opacity: 0.7,
 };
 
+const ALL_STATION_IDS = [...new Set(Object.values(lines).flatMap((line) => line.stations))];
+
 const TrainMap: React.FC = () => {
   const navigateTo = useNavigateTo();
   const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null);
@@ -53,34 +55,30 @@ const TrainMap: React.FC = () => {
 
       <div className={styles.stageWrapper}>
         {backgroundImage &&
-          Object.values(lines)
-            .flatMap((lineData) =>
-              lineData.stations.map((stationId) => {
-                const coords = stationCoordinates[stationId];
-                if (!coords) return null;
+          ALL_STATION_IDS.map((stationId) => {
+            const coords = stationCoordinates[stationId];
+            if (!coords) return null;
 
-                return (
-                  <div
-                    key={`overlay-station-${stationId}`}
-                    role='link'
-                    tabIndex={0}
-                    aria-label={`Station ${stationId}`}
-                    onClick={() => navigateTo(stationPath(stationId))}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        navigateTo(stationPath(stationId));
-                      }
-                    }}
-                    onMouseEnter={() => setHoveredStation(stationId)}
-                    onMouseLeave={() => setHoveredStation(null)}
-                    className={styles.stationOverlay}
-                    style={{ left: coords.x - OVERLAY_OFFSET, top: coords.y - OVERLAY_OFFSET }}
-                  />
-                );
-              }),
-            )
-            .filter(Boolean)}
+            return (
+              <div
+                key={`overlay-station-${stationId}`}
+                role='link'
+                tabIndex={0}
+                aria-label={`Station ${stationId}`}
+                onClick={() => navigateTo(stationPath(stationId))}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigateTo(stationPath(stationId));
+                  }
+                }}
+                onMouseEnter={() => setHoveredStation(stationId)}
+                onMouseLeave={() => setHoveredStation(null)}
+                className={styles.stationOverlay}
+                style={{ left: coords.x - OVERLAY_OFFSET, top: coords.y - OVERLAY_OFFSET }}
+              />
+            );
+          }).filter(Boolean)}
 
         {backgroundImage &&
           trainPositions.map((train) => (
@@ -119,49 +117,45 @@ const TrainMap: React.FC = () => {
           </Layer>
 
           <Layer name='stations'>
-            {Object.values(lines)
-              .flatMap((lineData) =>
-                lineData.stations.map((stationId) => {
-                  const coords = stationCoordinates[stationId];
-                  if (!coords) return null;
+            {ALL_STATION_IDS.map((stationId) => {
+              const coords = stationCoordinates[stationId];
+              if (!coords) return null;
 
-                  const isHovered = hoveredStation === stationId;
-                  const isTransfer = isTransferStation(stationId);
-                  const lineColor = getLineColor(getStationLines(stationId)[0] ?? '');
+              const isHovered = hoveredStation === stationId;
+              const isTransfer = isTransferStation(stationId);
+              const lineColor = getLineColor(getStationLines(stationId)[0] ?? '');
 
-                  return (
-                    <Group key={`station-${stationId}`} x={coords.x} y={coords.y} listening={false}>
-                      {isTransfer ? (
-                        <>
-                          <Circle
-                            radius={isHovered ? 13 : 10}
-                            fill='white'
-                            stroke={isHovered ? HOVER_COLOR : lineColor}
-                            strokeWidth={isHovered ? 3 : 2}
-                            shadowColor={SHADOW.color}
-                            shadowBlur={isHovered ? 8 : 4}
-                            shadowOffset={SHADOW.offset}
-                            shadowOpacity={SHADOW.opacity}
-                          />
-                          <Circle radius={isHovered ? 11 : 8} fill={lineColor} />
-                        </>
-                      ) : (
-                        <Circle
-                          radius={isHovered ? 8 : 6}
-                          fill='white'
-                          stroke={isHovered ? HOVER_COLOR : lineColor}
-                          strokeWidth={isHovered ? 3 : 2}
-                          shadowColor={SHADOW.color}
-                          shadowBlur={isHovered ? 8 : 4}
-                          shadowOffset={SHADOW.offset}
-                          shadowOpacity={SHADOW.opacity}
-                        />
-                      )}
-                    </Group>
-                  );
-                }),
-              )
-              .filter(Boolean)}
+              return (
+                <Group key={`station-${stationId}`} x={coords.x} y={coords.y} listening={false}>
+                  {isTransfer ? (
+                    <>
+                      <Circle
+                        radius={isHovered ? 13 : 10}
+                        fill='white'
+                        stroke={isHovered ? HOVER_COLOR : lineColor}
+                        strokeWidth={isHovered ? 3 : 2}
+                        shadowColor={SHADOW.color}
+                        shadowBlur={isHovered ? 8 : 4}
+                        shadowOffset={SHADOW.offset}
+                        shadowOpacity={SHADOW.opacity}
+                      />
+                      <Circle radius={isHovered ? 11 : 8} fill={lineColor} />
+                    </>
+                  ) : (
+                    <Circle
+                      radius={isHovered ? 8 : 6}
+                      fill='white'
+                      stroke={isHovered ? HOVER_COLOR : lineColor}
+                      strokeWidth={isHovered ? 3 : 2}
+                      shadowColor={SHADOW.color}
+                      shadowBlur={isHovered ? 8 : 4}
+                      shadowOffset={SHADOW.offset}
+                      shadowOpacity={SHADOW.opacity}
+                    />
+                  )}
+                </Group>
+              );
+            }).filter(Boolean)}
           </Layer>
 
           <Layer name='trains'>
