@@ -45,7 +45,7 @@ const calculateTrainPosition = (
   return { x, y, angle };
 };
 
-const REFRESH_INTERVAL = 10000;
+const REFRESH_INTERVAL = 15000;
 
 const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [trainData, setTrainData] = useState<Record<string, Train> | null>(null);

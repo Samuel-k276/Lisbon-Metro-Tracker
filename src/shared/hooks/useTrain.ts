@@ -1,81 +1,57 @@
-import { useState, useEffect } from "react";
-import type { Train } from "@/shared/types/metro";
-import { fetchTrainData } from "@/shared/api/metro";
+import { useMemo } from "react";
+import { useTrains } from "@/shared/contexts/TrainContext";
 import { getTrainLine, getStationNameById } from "@/shared/utils/metroUtils";
 import { LINE_COLORS } from "@/shared/data/metroLines";
 import type { LineNames } from "@/shared/data/metroLines";
+import type { Train } from "@/shared/types/metro";
+
+type TrainInfo = {
+  line: string;
+  lineColor: string;
+  destination: string;
+  nextStations: Array<{ stationId: string; stationName: string; arrivalTime: number }>;
+};
+
+const buildTrainInfo = (trainId: string, train: Train): TrainInfo | null => {
+  const lineName = getTrainLine(trainId);
+  const lineColor = LINE_COLORS[lineName as LineNames] || "#888888";
+
+  const stationArrivals = Array.from(train.stationArrivals);
+  if (stationArrivals.length === 0) return null;
+
+  const firstArrival = stationArrivals[0];
+  if (!firstArrival) return null;
+
+  const [, [, destinationId]] = firstArrival;
+
+  const nextStations = stationArrivals.map(([arrivalTime, stationInfo]) => {
+    const [stationId] = stationInfo;
+    return {
+      stationId,
+      stationName: getStationNameById(stationId),
+      arrivalTime,
+    };
+  });
+
+  return {
+    line: lineName,
+    lineColor,
+    destination: getStationNameById(destinationId, ""),
+    nextStations,
+  };
+};
 
 export const useTrain = (trainId: string | undefined) => {
-  const [train, setTrain] = useState<Train | null>(null);
-  const [trainInfo, setTrainInfo] = useState<{
-    line: string;
-    lineColor: string;
-    destination: string;
-    nextStations: Array<{ stationId: string; stationName: string; arrivalTime: number }>;
-  } | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { trainData, loading, error } = useTrains();
 
-  useEffect(() => {
-    if (!trainId) {
-      setLoading(false);
-      setError("No train ID provided");
-      return;
-    }
+  const train = trainId ? (trainData?.[trainId] ?? null) : null;
 
-    const getTrainData = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchTrainData();
+  const trainInfo = useMemo(() => {
+    if (!trainId || !train) return null;
+    return buildTrainInfo(trainId, train);
+  }, [trainId, train]);
 
-        if (!data[trainId]) {
-          throw new Error(`Train ${trainId} not found`);
-        }
+  const trainError = !loading && trainId && !train ? `Train ${trainId} not found` : error;
 
-        setTrain(data[trainId]);
-
-        // Get the line color and name for the train
-        const lineName = getTrainLine(trainId);
-        const lineColor = LINE_COLORS[lineName as LineNames] || "#888888";
-
-        // Process train arrivals for UI display
-        const stationArrivals = Array.from(data[trainId].stationArrivals);
-        if (stationArrivals.length > 0) {
-          // The first entry has the next station and destination info
-          const [_, firstStationInfo] = stationArrivals[0]!;
-          const [__, destinationId] = firstStationInfo;
-
-          // Format station arrivals into a more usable format for UI
-          const nextStations = stationArrivals.map(([arrivalTime, stationInfo]) => {
-            const [stationId] = stationInfo;
-            return {
-              stationId,
-              stationName: getStationNameById(stationId),
-              arrivalTime,
-            };
-          });
-
-          setTrainInfo({
-            line: lineName,
-            lineColor,
-            destination: getStationNameById(destinationId, ""),
-            nextStations,
-          });
-        }
-
-        setError(null);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "An unknown error occurred");
-        setTrain(null);
-        setTrainInfo(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // Fetch data only once when the component mounts or trainId changes
-    getTrainData();
-  }, [trainId]);
-
-  return { train, trainInfo, loading, error };
+  return { train, trainInfo, loading, error: trainError };
 };
