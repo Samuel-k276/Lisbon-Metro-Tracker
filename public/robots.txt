@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lisbon-metro-tracker.vercel.app/sitemap.xml
