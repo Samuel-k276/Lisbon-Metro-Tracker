@@ -1,0 +1,94 @@
+.strip {
+  margin-bottom: 1rem;
+}
+
+.lineName {
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.track {
+  position: relative;
+  overflow-x: auto;
+  padding: 1rem 0 0.5rem;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+  }
+}
+
+.rail {
+  position: absolute;
+  top: calc(1rem + 5px);
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.stations {
+  display: flex;
+  position: relative;
+  min-width: max-content;
+  gap: 0;
+}
+
+.station {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 70px;
+  text-decoration: none;
+  color: $text-dark;
+
+  &:hover .dot {
+    transform: scale(1.3);
+  }
+
+  &:hover .label {
+    color: $primary-color;
+  }
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 3px solid;
+  background: white;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.2s;
+}
+
+.current .dot {
+  width: 16px;
+  height: 16px;
+  border-width: 4px;
+}
+
+.label {
+  font-size: 0.65rem;
+  margin-top: 4px;
+  text-align: center;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.current .label {
+  font-weight: 700;
+  font-size: 0.7rem;
+}

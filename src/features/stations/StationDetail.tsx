@@ -7,6 +7,7 @@ import { useStation } from '@/shared/hooks/useStation';
 import { stationPath, slugToStationId } from '@/shared/routes';
 import { getLineNameFromDestination } from '@/shared/utils/helpers';
 
+import { LineStrip } from './LineStrip';
 import { NextTrainsTable } from './NextTrainsTable';
 import { StationInfo } from './StationInfo';
 
@@ -92,6 +93,10 @@ const StationDetail: React.FC = () => {
             )}
           </div>
         </div>
+
+        {(Array.isArray(station.lines) ? station.lines : [station.lines]).map((line) => (
+          <LineStrip key={line} lineName={line} currentStationId={stationId} />
+        ))}
 
         <div className={styles.grid}>
           <StationInfo station={station} />
