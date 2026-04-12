@@ -2973,11 +2973,6 @@ update-browserslist-db@^1.2.3:
     escalade "^3.2.0"
     picocolors "^1.1.1"
 
-use-image@^1.1.1:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/use-image/-/use-image-1.1.4.tgz#b67ce2b513214f187e68c1cdab5e44b244ebedd9"
-  integrity sha512-P+swhszzHHgEb2X2yQ+vQNPCq/8Ks3hyfdXAVN133pvnvK7UK++bUaZUa5E+A3S02Mw8xOCBr9O6CLhk2fjrWA==
-
 "vite@^6.0.0 || ^7.0.0 || ^8.0.0", vite@^6.2.5:
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/vite/-/vite-6.4.2.tgz#a4e548ca3a90ca9f3724582cab35e1ba15efc6f2"

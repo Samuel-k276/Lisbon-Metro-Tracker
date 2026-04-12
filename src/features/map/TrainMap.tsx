@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Stage, Layer, Circle, Group, Image, Arrow, Text } from "react-konva";
-import useImage from "use-image";
+import { Stage, Layer, Circle, Group, Image as KonvaImage, Arrow, Text } from "react-konva";
 import mapaImg from "@/assets/mapa.png";
 import { useState, useEffect, useRef } from "react";
 
@@ -14,7 +13,7 @@ const TrainMap: React.FC = () => {
   const stageRef = useRef<any>(null);
   const dimensions = { width: 1034.4, height: 720 };
   const navigate = useNavigate();
-  const [backgroundImage] = useImage(mapaImg);
+  const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null);
   const [hoveredStation, setHoveredStation] = useState<string | null>(null);
   const [hoveredTrain, setHoveredTrain] = useState<string | null>(null);
   const [stageScale] = useState(1);
@@ -23,10 +22,16 @@ const TrainMap: React.FC = () => {
   const { trainPositions, error: loadingError } = useTrains();
 
   useEffect(() => {
-    if (!backgroundImage) return;
-    const timer = setTimeout(() => setMapReady(true), 500);
-    return () => clearTimeout(timer);
-  }, [backgroundImage]);
+    const img = new window.Image();
+    img.src = mapaImg;
+    img.onload = () => {
+      setBackgroundImage(img);
+      setTimeout(() => setMapReady(true), 500);
+    };
+    return () => {
+      img.onload = null;
+    };
+  }, []);
 
   const handleStationClick = (stationId: string) => {
     window.scrollTo(0, 0);
@@ -101,7 +106,7 @@ const TrainMap: React.FC = () => {
         >
           <Layer name="background">
             {backgroundImage && (
-              <Image
+              <KonvaImage
                 image={backgroundImage}
                 width={dimensions.width}
                 height={dimensions.height}
