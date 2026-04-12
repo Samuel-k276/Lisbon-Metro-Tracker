@@ -167,9 +167,16 @@
     height: 100vh;
     background: $primary-color;
     padding: 80px 30px 30px;
-    transition: right 0.4s ease;
+    transition:
+      right 0.4s ease,
+      visibility 0.4s ease;
     z-index: 1000;
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    visibility: hidden;
+  }
+
+  .open {
+    visibility: visible;
   }
 
   .navLinks {

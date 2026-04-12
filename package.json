@@ -39,5 +39,8 @@
     "typescript": "^6",
     "vite": "^8",
     "vitest": "^4.1.4"
+  },
+  "resolutions": {
+    "vitest/vite": "^8"
   }
 }
