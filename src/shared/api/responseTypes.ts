@@ -1,7 +1,4 @@
-/**
- * Represents the arrival information for a train at a metro station
- */
-export interface TrainArrival {
+export type TrainArrival = {
   stop_id: string;
   cais: string;
   hora: string;
@@ -14,4 +11,4 @@ export interface TrainArrival {
   destino: string;
   sairServico: string;
   UT: string;
-}
+};

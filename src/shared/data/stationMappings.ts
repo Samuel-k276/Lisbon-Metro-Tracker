@@ -6,14 +6,14 @@ import type { LineNames } from "@/shared/data/metroLines";
 import type { Coordinates } from "@/shared/types/metro"; // Adjust the import path as necessary
 
 // Type for our station mapping
-export interface StationMapping {
+export type StationMapping = {
   id: string;
   name: string;
   coordinates: Coordinates;
-  lines: LineNames[] | LineNames; // Array of line IDs this station belongs to
-  isTransfer: boolean; // Whether this is a transfer station
-  isTerminal: boolean; // Whether this is a terminal station
-}
+  lines: LineNames[] | LineNames;
+  isTransfer: boolean;
+  isTerminal: boolean;
+};
 
 // Dictionary of destination IDs to names
 export const DestinationMapping: Record<string, string> = {

@@ -25,6 +25,7 @@ yarn test:watch # vitest (watch mode)
 
 - Always use `React.FC` for component typing
 - Named exports only — no default exports
+- Always use `type` instead of `interface` — use `enum` only when a type union gets unwieldy
 - Always use semicolons
 - Single quotes in JSX string props
 - Comments and variable names in English

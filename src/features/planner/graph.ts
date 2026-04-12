@@ -11,33 +11,27 @@ import TinyQueue from "tinyqueue";
 /**
  * Interface para representar um nó do grafo (uma estação)
  */
-export interface GraphNode {
-  id: string; // ID da estação (ex: "SS" para São Sebastião)
-  lines: string[]; // Linhas que passam pela estação
-  adjacent: string[]; // IDs das estações adjacentes
-}
+export type GraphNode = {
+  id: string;
+  lines: string[];
+  adjacent: string[];
+};
 
-/**
- * Interface para representar um segmento de caminho formatado para UI
- */
-export interface PathSegment {
+export type PathSegment = {
   tipo: "viagem" | "transbordo";
   de: string;
   para: string;
   linha?: string;
   tempo: number;
   estacoes: number;
-}
+};
 
-/**
- * Interface para representar o resultado formatado para UI
- */
-export interface FormattedPath {
+export type FormattedPath = {
   segments: PathSegment[];
   transbordos: number;
   tempoTotal: number;
   estacoes: number;
-}
+};
 
 /**
  * Classe que representa o Grafo do Metro de Lisboa

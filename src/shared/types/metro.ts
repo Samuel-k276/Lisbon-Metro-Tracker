@@ -1,41 +1,35 @@
-// Define the types for the Metro Lisboa project
 import { OrderedMap } from "js-sdsl";
 import type { LineNames } from "@/shared/data/metroLines";
 
-// Coordinates for positioning on the map
-export interface Coordinates {
+export type Coordinates = {
   x: number;
   y: number;
-}
+};
 
-// User Location
-export interface UserLocation {
+export type UserLocation = {
   coordinates: Coordinates;
   accuracy: number;
   timestamp: number;
-}
+};
 
-// Metro Line
-export interface Line {
+export type Line = {
   name: LineNames;
-  color: string; // Color for the line (e.g. '#00A9A6', '#FFD800')
-  stations: string[]; // Array of station IDs
-  destinations: { [stationName: string]: number }; // Maps terminal stations to their directions
-}
+  color: string;
+  stations: string[];
+  destinations: { [stationName: string]: number };
+};
 
-// Station
-export interface Station {
+export type Station = {
   id: string;
   name: string;
   coordinates: Coordinates;
-  lines: LineNames[] | LineNames; // Array of line IDs this station belongs to
-  isTransfer: boolean; // Whether this is a transfer station
-  isTerminal: boolean; // Whether this is a terminal station
-  nextTrains: NextTrainsResponse[]; // Next trains information (each index is a different destination)
-}
+  lines: LineNames[] | LineNames;
+  isTransfer: boolean;
+  isTerminal: boolean;
+  nextTrains: NextTrainsResponse[];
+};
 
-// Next Trains response (3 next trains)
-export interface NextTrainsResponse {
+export type NextTrainsResponse = {
   destination: string;
   train1: string;
   time1: string;
@@ -43,25 +37,20 @@ export interface NextTrainsResponse {
   time2: string;
   train3: string;
   time3: string;
-}
+};
 
-// Destinations
-export interface Destination {
+export type Destination = {
   id: string;
   name: string;
-}
+};
 
-// Metro's lines state
-export interface LineState {
+export type LineState = {
   name: LineNames;
   status: string;
   message: string;
-}
+};
 
-// Train information
-export interface Train {
+export type Train = {
   id: string;
-  // TreeMap de tempos de chegada para IDs de estação
-  // As chaves (tempos de chegada em segundos) são automaticamente mantidas em ordem crescente
-  stationArrivals: OrderedMap<number, [string, string]>; // [stationId, destinationId]
-}
+  stationArrivals: OrderedMap<number, [string, string]>;
+};
