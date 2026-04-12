@@ -46,6 +46,7 @@ const fetchTrainData = async (): Promise<Record<string, Train>> => {
 
     return trains;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching waiting times:', error);
     return {};
   }

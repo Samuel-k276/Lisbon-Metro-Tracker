@@ -47,6 +47,7 @@ const fetchLineStateAll = async (): Promise<LineState[]> => {
 
     return lineStates;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching line state:', error);
     return [];
   }

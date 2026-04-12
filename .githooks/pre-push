@@ -4,5 +4,5 @@ npx oxfmt --check src/ > /dev/null 2>&1 || { printf "\033[31m✗ Formatting issu
 printf "\033[32m✓ Formatting OK\033[0m\n"
 
 printf "\033[36m[pre-push]\033[0m Linting...\n"
-npx oxlint src/ > /dev/null 2>&1 || { printf "\033[31m✗ Lint errors found. Run 'yarn lint' for details.\033[0m\n"; exit 1; }
+npx oxlint -c .oxlintrc.json src/ > /dev/null 2>&1 || { printf "\033[31m✗ Lint errors found. Run 'yarn lint' for details.\033[0m\n"; exit 1; }
 printf "\033[32m✓ Lint OK\033[0m\n"

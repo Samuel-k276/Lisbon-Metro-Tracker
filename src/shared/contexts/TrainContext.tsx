@@ -65,6 +65,7 @@ const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         setTrainData(data);
         setError(null);
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Error fetching train data:', err);
         setError('Falha ao carregar dados dos comboios');
       } finally {
