@@ -133,7 +133,7 @@
 }
 
 // Mobile
-@media (max-width: $mobile) {
+@include mobile {
   .headerContainer {
     padding: 16px 0;
   }

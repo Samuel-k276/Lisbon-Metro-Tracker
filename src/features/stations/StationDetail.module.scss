@@ -69,7 +69,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
 
-  @media (max-width: $mobile) {
+  @include mobile {
     grid-template-columns: 1fr;
   }
 }

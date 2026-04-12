@@ -44,7 +44,7 @@
   padding: 0;
   margin: 0;
 
-  @media (max-width: $mobile) {
+  @include mobile {
     flex-direction: column;
   }
 }
