@@ -1,12 +1,12 @@
 .footer {
   background-color: $background-dark;
-  color: #888;
+  color: #aaa;
   padding: 1rem 0;
   font-size: 0.8rem;
   text-align: center;
 
   a {
-    color: #bbb;
+    color: #ccc;
     text-decoration: none;
 
     &:hover {
@@ -18,5 +18,5 @@
 .disclaimer {
   margin-top: 0.25rem;
   font-size: 0.7rem;
-  color: #666;
+  color: #999;
 }
