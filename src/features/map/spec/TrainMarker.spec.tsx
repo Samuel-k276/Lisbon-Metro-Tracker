@@ -8,7 +8,6 @@ const defaultProps = {
   cy: 200,
   angle: 0,
   label: 'T001',
-  isHovered: false,
 };
 
 const renderMarker = (overrides = {}) => {
@@ -33,27 +32,15 @@ describe('TrainMarker', () => {
     expect(screen.getByText('AB12')).toBeInTheDocument();
   });
 
-  it('uses correct radius when not hovered', () => {
-    const { container } = renderMarker({ isHovered: false });
+  it('has fixed radius of 10', () => {
+    const { container } = renderMarker();
     const circle = container.querySelector('circle');
     expect(circle).toHaveAttribute('r', '10');
   });
 
-  it('uses correct radius when hovered', () => {
-    const { container } = renderMarker({ isHovered: true });
+  it('does not have shadow filter', () => {
+    const { container } = renderMarker();
     const circle = container.querySelector('circle');
-    expect(circle).toHaveAttribute('r', '12');
-  });
-
-  it('uses correct shadow filter when not hovered', () => {
-    const { container } = renderMarker({ isHovered: false });
-    const circle = container.querySelector('circle');
-    expect(circle).toHaveAttribute('filter', 'url(#train-shadow)');
-  });
-
-  it('uses correct shadow filter when hovered', () => {
-    const { container } = renderMarker({ isHovered: true });
-    const circle = container.querySelector('circle');
-    expect(circle).toHaveAttribute('filter', 'url(#train-shadow-hover)');
+    expect(circle).not.toHaveAttribute('filter');
   });
 });

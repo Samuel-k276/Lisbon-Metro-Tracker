@@ -28,9 +28,16 @@
 .train {
   cursor: pointer;
   outline: none;
+  transition: transform 0.15s ease;
+  transform-box: fill-box;
+  transform-origin: center;
 
   &:focus-visible circle:first-child {
     stroke-width: 3;
     stroke: #2196f3;
   }
+}
+
+.train:hover {
+  transform: scale(1.2);
 }

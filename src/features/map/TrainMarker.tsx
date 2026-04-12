@@ -8,27 +8,17 @@ type TrainMarkerProps = {
   cy: number;
   angle: number;
   label: string;
-  isHovered: boolean;
 };
 
-const TrainMarker: React.FC<TrainMarkerProps> = ({ cx, cy, angle, label, isHovered }) => {
+const TrainMarker: React.FC<TrainMarkerProps> = ({ cx, cy, angle, label }) => {
   const tipX = Math.cos(angle) * ARROW_LENGTH;
   const tipY = Math.sin(angle) * ARROW_LENGTH;
   const perpX = Math.sin(angle) * ARROW_HEAD;
   const perpY = -Math.cos(angle) * ARROW_HEAD;
-  const shadowFilter = isHovered ? 'url(#train-shadow-hover)' : 'url(#train-shadow)';
 
   return (
     <>
-      <circle
-        cx={cx}
-        cy={cy}
-        r={isHovered ? 12 : 10}
-        fill='#ED1C24'
-        stroke='white'
-        strokeWidth={isHovered ? 3 : 1.5}
-        filter={shadowFilter}
-      />
+      <circle cx={cx} cy={cy} r={10} fill='#ED1C24' stroke='white' strokeWidth={1.5} />
       <polygon
         points={`
           ${cx + tipX},${cy + tipY}
@@ -48,7 +38,7 @@ const TrainMarker: React.FC<TrainMarkerProps> = ({ cx, cy, angle, label, isHover
       <text
         x={cx + 8}
         y={cy - 12}
-        fontSize={isHovered ? 12 : 10}
+        fontSize={10}
         fontWeight='bold'
         fill='white'
         filter='url(#text-shadow)'

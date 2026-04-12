@@ -33,7 +33,6 @@ const handleKeyNav = (callback: () => void) => (e: React.KeyboardEvent) => {
 const TrainMap: React.FC = () => {
   const navigateTo = useNavigateTo();
   const [hoveredStation, setHoveredStation] = useState<string | null>(null);
-  const [hoveredTrain, setHoveredTrain] = useState<string | null>(null);
 
   const { trainPositions, error: loadingError, lastUpdated } = useTrains();
 
@@ -50,24 +49,6 @@ const TrainMap: React.FC = () => {
         aria-label='Mapa do Metro de Lisboa com posições dos comboios em tempo real'
       >
         <defs>
-          <filter id='train-shadow'>
-            <feDropShadow
-              dx='0'
-              dy='3'
-              stdDeviation='2.5'
-              floodColor='rgba(0,0,0,0.5)'
-              floodOpacity='0.7'
-            />
-          </filter>
-          <filter id='train-shadow-hover'>
-            <feDropShadow
-              dx='0'
-              dy='3'
-              stdDeviation='5'
-              floodColor='rgba(0,0,0,0.5)'
-              floodOpacity='0.7'
-            />
-          </filter>
           <filter id='text-shadow'>
             <feDropShadow dx='1' dy='1' stdDeviation='1.5' floodColor='black' floodOpacity='0.8' />
           </filter>
@@ -117,8 +98,6 @@ const TrainMap: React.FC = () => {
                 className={styles.train}
                 onClick={navigate}
                 onKeyDown={handleKeyNav(navigate)}
-                onMouseEnter={() => setHoveredTrain(train.id)}
-                onMouseLeave={() => setHoveredTrain(null)}
                 tabIndex={0}
                 role='link'
                 aria-label={`Comboio ${train.id}`}
@@ -128,7 +107,6 @@ const TrainMap: React.FC = () => {
                   cy={train.position.y}
                   angle={train.angle}
                   label={train.id.substring(0, 4)}
-                  isHovered={hoveredTrain === train.id}
                 />
               </g>
             );
