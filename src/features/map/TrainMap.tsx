@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigateTo } from "@/shared/hooks/useNavigateTo";
 import { Stage, Layer, Circle, Group, Image as KonvaImage, Arrow, Text } from "react-konva";
 import mapaImg from "@/assets/mapa.png";
 import { useState, useEffect } from "react";
@@ -12,7 +12,7 @@ import styles from "./TrainMap.module.scss";
 const DIMENSIONS = { width: 1034.4, height: 720 };
 
 const TrainMap: React.FC = () => {
-  const navigate = useNavigate();
+  const navigateTo = useNavigateTo();
   const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null);
   const [hoveredStation, setHoveredStation] = useState<string | null>(null);
   const [hoveredTrain, setHoveredTrain] = useState<string | null>(null);
@@ -27,16 +27,6 @@ const TrainMap: React.FC = () => {
       img.onload = null;
     };
   }, []);
-
-  const handleStationClick = (stationId: string) => {
-    window.scrollTo(0, 0);
-    navigate(`/station/${stationId}`);
-  };
-
-  const handleTrainClick = (trainId: string) => {
-    window.scrollTo(0, 0);
-    navigate(`/train/${trainId}`);
-  };
 
   return (
     <div className={styles.container}>
@@ -56,7 +46,7 @@ const TrainMap: React.FC = () => {
                 return (
                   <div
                     key={`overlay-station-${stationId}`}
-                    onClick={() => handleStationClick(stationId)}
+                    onClick={() => navigateTo(`/station/${stationId}`)}
                     onMouseEnter={() => setHoveredStation(stationId)}
                     onMouseLeave={() => setHoveredStation(null)}
                     className={styles.stationOverlay}
@@ -76,7 +66,7 @@ const TrainMap: React.FC = () => {
           trainPositions.map((train) => (
             <div
               key={`overlay-train-${train.id}`}
-              onClick={() => handleTrainClick(train.id)}
+              onClick={() => navigateTo(`/train/${train.id}`)}
               onMouseEnter={() => setHoveredTrain(train.id)}
               onMouseLeave={() => setHoveredTrain(null)}
               className={styles.trainOverlay}
