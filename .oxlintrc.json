@@ -12,6 +12,8 @@
     "prefer-const": "warn",
     "eqeqeq": "error",
     "no-else-return": "warn",
+    "oxc/no-barrel-file": "warn",
+    "typescript/no-import-type-side-effects": "warn",
     "import/no-default-export": "warn",
     "import/no-cycle": "error",
     "import/no-self-import": "error",
