@@ -1,7 +1,10 @@
 import React from 'react';
-import { useLineStates } from '@/shared/hooks/useLineStates';
+
 import { Spinner } from '@/shared/components/Spinner';
+import { useLineStates } from '@/shared/hooks/useLineStates';
+
 import { LineStatusCard } from './LineStatusCard';
+
 import styles from './Alerts.module.scss';
 
 const Alerts: React.FC = () => {

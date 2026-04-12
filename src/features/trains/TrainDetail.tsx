@@ -1,10 +1,13 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+
+import { Spinner } from '@/shared/components/Spinner';
+import { lines } from '@/shared/data/staticData';
 import { useTrain } from '@/shared/hooks/useTrain';
 import { getStationNameById } from '@/shared/utils/metroUtils';
-import { lines } from '@/shared/data/staticData';
-import { Spinner } from '@/shared/components/Spinner';
+
 import { StationArrivalRow } from './StationArrivalRow';
+
 import styles from './TrainDetail.module.scss';
 
 const LINE_CLASS: Record<string, string> = {

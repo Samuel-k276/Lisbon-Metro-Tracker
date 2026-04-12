@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { logger } from '@/shared/utils/logger';
+
 import styles from './ErrorBoundary.module.scss';
 
 type ErrorBoundaryProps = {

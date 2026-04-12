@@ -1,6 +1,6 @@
-import type { Station, NextTrainsResponse } from '@/shared/types/metro';
-import { getStationById, getDestinationNameById } from '@/shared/data/stationMappings';
 import { apiFetch } from '@/shared/api/client';
+import { getStationById, getDestinationNameById } from '@/shared/data/stationMappings';
+import type { Station, NextTrainsResponse } from '@/shared/types/metro';
 import { logger } from '@/shared/utils/logger';
 
 type PlatformResponse = {

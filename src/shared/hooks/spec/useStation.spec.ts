@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.mock('@/shared/api/fetchStationWaitingTimes');
 
-import { useStation } from '@/shared/hooks/useStation';
 import { fetchStationWaitingTimes } from '@/shared/api/fetchStationWaitingTimes';
+import { useStation } from '@/shared/hooks/useStation';
 import type { Station } from '@/shared/types/metro';
 
 const mockStation: Station = {

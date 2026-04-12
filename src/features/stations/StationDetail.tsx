@@ -1,8 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useStation } from '@/shared/hooks/useStation';
+
 import { Spinner } from '@/shared/components/Spinner';
+import { useStation } from '@/shared/hooks/useStation';
 import { formatTimeInSeconds, getLineNameFromDestination } from '@/shared/utils/helpers';
+
 import styles from './StationDetail.module.scss';
 
 const COLOR_ORDER: Record<string, number> = {

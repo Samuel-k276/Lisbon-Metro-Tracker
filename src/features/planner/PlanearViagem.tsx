@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { stationMappings } from '@/shared/data/stationMappings';
+
 import { metroGraph } from '@/features/planner/graph';
+import { stationMappings } from '@/shared/data/stationMappings';
+
 import { RouteLeg } from './RouteLeg';
+
 import styles from './PlanearViagem.module.scss';
 
 type RouteSegment = {

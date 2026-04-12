@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.mock('@/shared/api/fetchLineState');
 
-import { useLineStates } from '@/shared/hooks/useLineStates';
 import { fetchLineStateAll } from '@/shared/api/fetchLineState';
+import { useLineStates } from '@/shared/hooks/useLineStates';
 import type { LineState } from '@/shared/types/metro';
 
 const mockLineStates: LineState[] = [

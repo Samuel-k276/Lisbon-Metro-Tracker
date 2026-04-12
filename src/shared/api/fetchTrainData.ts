@@ -1,6 +1,6 @@
-import type { Train } from '@/shared/types/metro';
-import { getDestinationId } from '@/shared/data/stationMappings';
 import { apiFetch } from '@/shared/api/client';
+import { getDestinationId } from '@/shared/data/stationMappings';
+import type { Train } from '@/shared/types/metro';
 import { logger } from '@/shared/utils/logger';
 
 type TrainArrival = {

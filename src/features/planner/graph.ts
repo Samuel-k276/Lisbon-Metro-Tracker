@@ -3,9 +3,9 @@
  * Utiliza uma estrutura de lista de adjacências para armazenar as conexões entre estações
  */
 
+import { lines } from '@/shared/data/staticData';
 // Importando os dados das estações e das linhas
 import { stationMappings } from '@/shared/data/stationMappings';
-import { lines } from '@/shared/data/staticData';
 
 /**
  * Interface para representar um nó do grafo (uma estação)

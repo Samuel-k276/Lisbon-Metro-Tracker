@@ -1,5 +1,5 @@
-import type { Coordinates, Line } from '@/shared/types/metro';
 import { LINE_COLORS } from '@/shared/data/metroLines';
+import type { Coordinates, Line } from '@/shared/types/metro';
 
 // Corrected station coordinates for rendering (x values increased by 130)
 const stationCoordinates: Record<string, Coordinates> = {

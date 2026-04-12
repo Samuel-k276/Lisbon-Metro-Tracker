@@ -1,13 +1,14 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
+import { Stage, Layer, Circle, Group, Image as KonvaImage, Arrow, Text } from 'react-konva';
+
+import mapaImg from '@/assets/mapa.png';
+import { useTrains } from '@/shared/contexts/TrainContext';
+import { stationCoordinates, lines } from '@/shared/data/staticData';
 import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
 import { stationPath, trainPath } from '@/shared/routes';
-import { Stage, Layer, Circle, Group, Image as KonvaImage, Arrow, Text } from 'react-konva';
-import mapaImg from '@/assets/mapa.png';
-import { useState, useEffect } from 'react';
-
-import { stationCoordinates, lines } from '@/shared/data/staticData';
 import { getStationLines, getLineColor, isTransferStation } from '@/shared/utils/metroUtils';
-import { useTrains } from '@/shared/contexts/TrainContext';
+
 import styles from './TrainMap.module.scss';
 
 const DIMENSIONS = { width: 1034.4, height: 720 };

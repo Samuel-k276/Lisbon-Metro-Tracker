@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { TrainMap } from '@/features/map/TrainMap';
+
 import styles from './Home.module.scss';
 
 const Home: React.FC = () => {

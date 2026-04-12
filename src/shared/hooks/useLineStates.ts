@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import type { LineState } from '@/shared/types/metro';
+
 import { fetchLineStateAll } from '@/shared/api/fetchLineState';
+import type { LineState } from '@/shared/types/metro';
 
 type UseLineStatesResult = {
   lineStates: LineState[];

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import { Routes } from '@/shared/routes';
+
 import styles from './NotFound.module.scss';
 
 const NotFound: React.FC = () => {

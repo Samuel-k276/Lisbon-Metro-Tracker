@@ -1,9 +1,11 @@
 import React from 'react';
-import type { LineState } from '@/shared/types/metro';
-import linhaAzulImg from '@/assets/linhaAzul.png';
+
 import linhaAmarelaImg from '@/assets/linhaAmarela.png';
+import linhaAzulImg from '@/assets/linhaAzul.png';
 import linhaVerdeImg from '@/assets/linhaVerde.png';
 import linhaVermelhaImg from '@/assets/linhaVermelha.png';
+import type { LineState } from '@/shared/types/metro';
+
 import styles from './Alerts.module.scss';
 
 const LINE_IMAGES: Record<string, string> = {

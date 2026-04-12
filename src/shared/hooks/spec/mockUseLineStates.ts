@@ -1,6 +1,7 @@
 import { vi } from 'vitest';
-import type { LineState } from '@/shared/types/metro';
+
 import { useLineStates } from '@/shared/hooks/useLineStates';
+import type { LineState } from '@/shared/types/metro';
 
 type UseLineStatesReturn = ReturnType<typeof useLineStates>;
 

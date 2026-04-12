@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
 import { Routes } from '@/shared/routes';
+
 import styles from './Header.module.scss';
 
 const Header: React.FC = () => {

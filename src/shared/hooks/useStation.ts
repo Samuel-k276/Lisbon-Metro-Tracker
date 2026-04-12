@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import type { Station } from '@/shared/types/metro';
+
 import { fetchStationWaitingTimes } from '@/shared/api/fetchStationWaitingTimes';
+import type { Station } from '@/shared/types/metro';
 
 type UseStationResult = {
   station: Station | null;

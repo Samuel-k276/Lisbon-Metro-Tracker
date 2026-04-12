@@ -1,5 +1,5 @@
-import type { LineState } from '@/shared/types/metro';
 import { apiFetch } from '@/shared/api/client';
+import type { LineState } from '@/shared/types/metro';
 import { logger } from '@/shared/utils/logger';
 
 type LineStateApiResponse = {

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { formatTimeInSeconds } from '@/shared/utils/helpers';
+
 import styles from './TrainDetail.module.scss';
 
 type StationArrivalRowProps = {

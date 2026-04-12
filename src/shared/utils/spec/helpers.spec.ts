@@ -1,11 +1,12 @@
 import { describe, it, expect } from 'vitest';
+
+import type { Station } from '@/shared/types/metro';
 import {
   formatTimeInSeconds,
   calculateDistance,
   findNearestStation,
   getLineNameFromDestination,
 } from '@/shared/utils/helpers';
-import type { Station } from '@/shared/types/metro';
 
 describe('formatTimeInSeconds', () => {
   it("returns 'Chegando' for 0 seconds", () => {

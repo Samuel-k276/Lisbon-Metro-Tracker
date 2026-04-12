@@ -1,6 +1,7 @@
 import { vi } from 'vitest';
-import type { Station } from '@/shared/types/metro';
+
 import { useStation } from '@/shared/hooks/useStation';
+import type { Station } from '@/shared/types/metro';
 
 type UseStationReturn = ReturnType<typeof useStation>;
 
