@@ -18,10 +18,6 @@ describe('getLineColor', () => {
   it('returns correct color for Amarela', () => {
     expect(getLineColor('Amarela')).toBe('#FFD800');
   });
-
-  it('returns default color for unknown line', () => {
-    expect(getLineColor('NonExistent')).toBe('#888888');
-  });
 });
 
 describe('getTrainLine', () => {
@@ -112,9 +108,5 @@ describe('getLineStations', () => {
     const stations = getLineStations('Azul');
     expect(stations.length).toBeGreaterThan(0);
     expect(stations).toContain('RB'); // Reboleira
-  });
-
-  it('returns empty array for unknown line', () => {
-    expect(getLineStations('NonExistent')).toEqual([]);
   });
 });

@@ -4,7 +4,7 @@ import { stationMappings } from '@/shared/data/stationMappings';
 
 type GraphNode = {
   id: string;
-  lines: string[];
+  lines: LineNames[];
   adjacent: string[];
 };
 
@@ -266,7 +266,7 @@ class MetroGraph {
     return Array.from(this.nodes.values()).filter((node) => node.lines.length > 1);
   }
 
-  getStationsByLine(lineName: string): GraphNode[] {
+  getStationsByLine(lineName: LineNames): GraphNode[] {
     return Array.from(this.nodes.values()).filter((node) => node.lines.includes(lineName));
   }
 
