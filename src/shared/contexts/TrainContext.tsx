@@ -55,7 +55,7 @@ const calculateTrainPosition = (
   return { x, y, angle };
 };
 
-const REFRESH_INTERVAL = 15000;
+const REFRESH_INTERVAL = 25000;
 const MAX_TIME_BETWEEN_STATIONS = 240;
 
 const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
