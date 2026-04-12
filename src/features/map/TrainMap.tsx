@@ -59,7 +59,16 @@ const TrainMap: React.FC = () => {
                 return (
                   <div
                     key={`overlay-station-${stationId}`}
+                    role='link'
+                    tabIndex={0}
+                    aria-label={`Station ${stationId}`}
                     onClick={() => navigateTo(stationPath(stationId))}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        navigateTo(stationPath(stationId));
+                      }
+                    }}
                     onMouseEnter={() => setHoveredStation(stationId)}
                     onMouseLeave={() => setHoveredStation(null)}
                     className={styles.stationOverlay}
@@ -74,7 +83,16 @@ const TrainMap: React.FC = () => {
           trainPositions.map((train) => (
             <div
               key={`overlay-train-${train.id}`}
+              role='link'
+              tabIndex={0}
+              aria-label={`Train ${train.id}`}
               onClick={() => navigateTo(trainPath(train.id))}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  navigateTo(trainPath(train.id));
+                }
+              }}
               onMouseEnter={() => setHoveredTrain(train.id)}
               onMouseLeave={() => setHoveredTrain(null)}
               className={styles.trainOverlay}

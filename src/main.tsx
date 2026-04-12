@@ -20,8 +20,11 @@ const App: React.FC = () => {
   return (
     <Router>
       <TrainProvider>
+        <a href='#main-content' className='skip-link'>
+          Skip to content
+        </a>
         <Header />
-        <main className='main-content'>
+        <main id='main-content' className='main-content'>
           <RouterRoutes>
             <Route path={Routes.HOME} element={<Home />} />
             <Route path={Routes.ALERTS} element={<Alerts />} />

@@ -71,7 +71,8 @@ const PlanearViagem: React.FC = () => {
       </p>
 
       <div className={styles.card}>
-        <div className={styles.formRow}>
+        <fieldset className={styles.formRow}>
+          <legend className={styles.srOnly}>Selecionar estações de origem e destino</legend>
           <div className={styles.selectWrapper}>
             <label htmlFor='origem-select'>Estação de Origem</label>
             <select id='origem-select' value={origem} onChange={(e) => setOrigem(e.target.value)}>
@@ -103,7 +104,7 @@ const PlanearViagem: React.FC = () => {
               ))}
             </select>
           </div>
-        </div>
+        </fieldset>
 
         <div className={styles.submitRow}>
           <button className={styles.submitButton} onClick={calcularRota}>
@@ -113,7 +114,7 @@ const PlanearViagem: React.FC = () => {
       </div>
 
       {resultados && (
-        <div className={styles.card}>
+        <div className={styles.card} aria-live='polite'>
           <h2 className={styles.sectionTitle}>Resultado</h2>
 
           <div className={styles.statsRow}>

@@ -86,3 +86,28 @@ button {
   padding: 2rem 0;
   min-height: calc(100vh - 180px);
 }
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 9999;
+
+  &:focus {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: auto;
+    height: auto;
+    padding: 0.75em 1.5em;
+    background: $primary-color;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 4px;
+    text-decoration: none;
+    clip: auto;
+  }
+}

@@ -19,9 +19,27 @@ const StationDetail: React.FC = () => {
   const { station, loading, error } = useStation(stationId);
 
   if (!stationId) return <p>Station ID not found</p>;
-  if (loading) return <Spinner />;
-  if (error) return <p className={styles.error}>Error loading station: {error}</p>;
-  if (!station) return <p>Station not found</p>;
+
+  if (loading)
+    return (
+      <div aria-live='polite'>
+        <Spinner />
+      </div>
+    );
+  if (error)
+    return (
+      <div aria-live='polite'>
+        <p className={styles.error} role='alert'>
+          Error loading station: {error}
+        </p>
+      </div>
+    );
+  if (!station)
+    return (
+      <div aria-live='polite'>
+        <p>Station not found</p>
+      </div>
+    );
 
   const sortedTrains = station.nextTrains
     ? [...station.nextTrains].sort((a, b) => {
@@ -33,7 +51,7 @@ const StationDetail: React.FC = () => {
     : [];
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} aria-live='polite'>
       <div className={styles.card}>
         <div className={styles.header}>
           <h1 className={styles.title}>

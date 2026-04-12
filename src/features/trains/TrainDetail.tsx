@@ -31,13 +31,20 @@ const TrainDetail: React.FC = () => {
     );
   }
 
-  if (loading) return <Spinner />;
+  if (loading)
+    return (
+      <div aria-live='polite'>
+        <Spinner />
+      </div>
+    );
 
   if (error || !train || !trainInfo) {
     return (
-      <div className={styles.container}>
+      <div className={styles.container} aria-live='polite'>
         <div className={styles.card}>
-          <h2 className={styles.error}>{error || 'Train information not available'}</h2>
+          <h2 className={styles.error} role='alert'>
+            {error || 'Train information not available'}
+          </h2>
           <p>
             The train you're looking for may have completed its journey or the information is
             temporarily unavailable.
@@ -50,7 +57,7 @@ const TrainDetail: React.FC = () => {
   const lineStations = lines[trainInfo.line]?.stations;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} aria-live='polite'>
       <div className={`${styles.card} ${LINE_CLASS[trainInfo.line] ?? ''}`}>
         <div className={styles.titleRow}>
           <span className={styles.trainIcon}>🚇</span>
