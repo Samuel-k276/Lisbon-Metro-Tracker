@@ -16,6 +16,11 @@ export default defineConfig({
     modules: {
       localsConvention: "camelCase",
     },
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "@/shared/styles/variables" as *;\n`,
+      },
+    },
   },
   build: {
     target: "es2022",
