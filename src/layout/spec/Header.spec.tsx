@@ -2,8 +2,9 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { Header } from "@/layout/Header";
+import { Routes } from "@/shared/routes";
 
-const renderHeader = (initialRoute = "/") => {
+const renderHeader = (initialRoute = Routes.HOME) => {
   return render(
     <MemoryRouter initialEntries={[initialRoute]}>
       <Header />
@@ -33,13 +34,13 @@ describe("Header", () => {
 
   it("has correct link destinations", () => {
     renderHeader();
-    expect(screen.getByText("Mapa em Tempo Real").closest("a")).toHaveAttribute("href", "/");
-    expect(screen.getByText("Planeia Viagem").closest("a")).toHaveAttribute(
+    expect(screen.getByText("Mapa em Tempo Real").closest("a")).toHaveAttribute(
       "href",
-      "/planear-viagem",
+      Routes.HOME,
     );
-    expect(screen.getByText("Sobre").closest("a")).toHaveAttribute("href", "/sobre");
-    expect(screen.getByText("Tarifários").closest("a")).toHaveAttribute("href", "/tarifarios");
-    expect(screen.getByText("Alertas").closest("a")).toHaveAttribute("href", "/alertas");
+    expect(screen.getByText("Planeia Viagem").closest("a")).toHaveAttribute("href", Routes.PLANNER);
+    expect(screen.getByText("Sobre").closest("a")).toHaveAttribute("href", Routes.ABOUT);
+    expect(screen.getByText("Tarifários").closest("a")).toHaveAttribute("href", Routes.FARES);
+    expect(screen.getByText("Alertas").closest("a")).toHaveAttribute("href", Routes.ALERTS);
   });
 });

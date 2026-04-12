@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigateTo } from "@/shared/hooks/useNavigateTo";
+import { stationPath, trainPath } from "@/shared/routes";
 import { Stage, Layer, Circle, Group, Image as KonvaImage, Arrow, Text } from "react-konva";
 import mapaImg from "@/assets/mapa.png";
 import { useState, useEffect } from "react";
@@ -46,7 +47,7 @@ const TrainMap: React.FC = () => {
                 return (
                   <div
                     key={`overlay-station-${stationId}`}
-                    onClick={() => navigateTo(`/station/${stationId}`)}
+                    onClick={() => navigateTo(stationPath(stationId))}
                     onMouseEnter={() => setHoveredStation(stationId)}
                     onMouseLeave={() => setHoveredStation(null)}
                     className={styles.stationOverlay}
@@ -66,7 +67,7 @@ const TrainMap: React.FC = () => {
           trainPositions.map((train) => (
             <div
               key={`overlay-train-${train.id}`}
-              onClick={() => navigateTo(`/train/${train.id}`)}
+              onClick={() => navigateTo(trainPath(train.id))}
               onMouseEnter={() => setHoveredTrain(train.id)}
               onMouseLeave={() => setHoveredTrain(null)}
               className={styles.trainOverlay}

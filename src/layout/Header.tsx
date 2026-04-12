@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Routes } from "@/shared/routes";
 import styles from "./Header.module.scss";
 
 const Header: React.FC = () => {
@@ -24,7 +25,7 @@ const Header: React.FC = () => {
     <header className={`${styles.header} ${isScrolled ? styles.headerScrolled : ""}`}>
       <div className={`container ${styles.headerContainer}`}>
         <div className={styles.logoContainer}>
-          <Link to="/">
+          <Link to={Routes.HOME}>
             <div className={styles.logoWrapper}>
               <span className={styles.logoIcon}>M</span>
               <span className={styles.logoText}>Metro Lisboa</span>
@@ -46,20 +47,20 @@ const Header: React.FC = () => {
 
         <nav className={`${styles.mainNav} ${mobileMenuOpen ? styles.open : ""}`}>
           <ul className={styles.navLinks}>
-            <li className={location.pathname === "/" ? styles.navLinkActive : ""}>
-              <Link to="/">Mapa em Tempo Real</Link>
+            <li className={location.pathname === Routes.HOME ? styles.navLinkActive : ""}>
+              <Link to={Routes.HOME}>Mapa em Tempo Real</Link>
             </li>
-            <li className={location.pathname === "/planear-viagem" ? styles.navLinkActive : ""}>
-              <Link to="/planear-viagem">Planeia Viagem</Link>
+            <li className={location.pathname === Routes.PLANNER ? styles.navLinkActive : ""}>
+              <Link to={Routes.PLANNER}>Planeia Viagem</Link>
             </li>
-            <li className={location.pathname === "/sobre" ? styles.navLinkActive : ""}>
-              <Link to="/sobre">Sobre</Link>
+            <li className={location.pathname === Routes.ABOUT ? styles.navLinkActive : ""}>
+              <Link to={Routes.ABOUT}>Sobre</Link>
             </li>
-            <li className={location.pathname === "/tarifarios" ? styles.navLinkActive : ""}>
-              <Link to="/tarifarios">Tarifários</Link>
+            <li className={location.pathname === Routes.FARES ? styles.navLinkActive : ""}>
+              <Link to={Routes.FARES}>Tarifários</Link>
             </li>
-            <li className={location.pathname === "/alertas" ? styles.navLinkActive : ""}>
-              <Link to="/alertas" className={styles.alertLink}>
+            <li className={location.pathname === Routes.ALERTS ? styles.navLinkActive : ""}>
+              <Link to={Routes.ALERTS} className={styles.alertLink}>
                 <span>Alertas</span>
                 <div className={styles.alertIndicator}></div>
               </Link>

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes as RouterRoutes, Route } from "react-router-dom";
 import { Home } from "@/features/map/Home";
 import { Header } from "@/layout/Header";
 import { Footer } from "@/layout/Footer";
@@ -10,6 +10,7 @@ import { Sobre } from "@/features/about/Sobre";
 import { Tarifarios } from "@/features/fares/Tarifarios";
 import { PlanearViagem } from "@/features/planner/PlanearViagem";
 import { TrainProvider } from "@/shared/contexts/TrainContext";
+import { Routes } from "@/shared/routes";
 
 const App: React.FC = () => {
   return (
@@ -18,16 +19,16 @@ const App: React.FC = () => {
         <div className="app">
           <Header />
           <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/sobre" element={<Sobre />} />
-              <Route path="/alertas" element={<Alerts />} />
-              <Route path="/tarifarios" element={<Tarifarios />} />
-              <Route path="/planear-viagem" element={<PlanearViagem />} />
-              <Route path="/station/:stationId" element={<StationDetail />} />
-              <Route path="/train/:trainId" element={<TrainDetail />} />
+            <RouterRoutes>
+              <Route path={Routes.HOME} element={<Home />} />
+              <Route path={Routes.ABOUT} element={<Sobre />} />
+              <Route path={Routes.ALERTS} element={<Alerts />} />
+              <Route path={Routes.FARES} element={<Tarifarios />} />
+              <Route path={Routes.PLANNER} element={<PlanearViagem />} />
+              <Route path={Routes.STATION} element={<StationDetail />} />
+              <Route path={Routes.TRAIN} element={<TrainDetail />} />
               <Route path="*" element={<div>404 Not Found</div>} />
-            </Routes>
+            </RouterRoutes>
           </main>
           <Footer />
         </div>
