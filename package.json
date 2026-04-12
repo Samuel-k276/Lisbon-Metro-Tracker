@@ -29,9 +29,11 @@
     "use-image": "^1.1.1"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
+    "terser": "^5.16.0",
     "@types/node": "^22.14.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
@@ -44,5 +46,8 @@
     "typescript": "^5.0.2",
     "vite": "^6.2.5",
     "vitest": "^4.1.4"
+  },
+  "resolutions": {
+    "vitest/vite": "^6.2.5"
   }
 }

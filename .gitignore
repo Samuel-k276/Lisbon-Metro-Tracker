@@ -4,7 +4,6 @@ npm-debug.log
 yarn-debug.log
 yarn-error.log
 package-lock.json
-yarn.lock
 
 # Build outputs
 dist/
@@ -54,6 +53,7 @@ tiles/
 *.json
 !package.json
 !tsconfig.json
+!.oxfmtrc.json
 !vercel.json
 *.geojson
 *.kml

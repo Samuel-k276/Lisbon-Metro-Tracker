@@ -5,19 +5,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Development
 
 ```bash
-npm run dev       # Vite dev server
-npm run build     # tsc && vite build
-npm run preview   # Preview production build
-npm run lint      # oxlint src/
-npm run fmt       # oxfmt src/ (auto-fix)
-npm run fmt:check # oxfmt --check src/
-npm run test      # vitest run (all tests)
-npm run test:watch # vitest (watch mode)
+yarn dev       # Vite dev server
+yarn build     # tsc && vite build
+yarn preview   # Preview production build
+yarn lint      # oxlint src/
+yarn fmt       # oxfmt src/ (auto-fix)
+yarn fmt:check # oxfmt --check src/
+yarn test      # vitest run (all tests)
+yarn test:watch # vitest (watch mode)
 ```
 
 **Required env var**: `VITE_METRO_API_TOKEN` — Bearer token for the Lisbon Metro API.
 
-**Git hooks** (`.githooks/`, activated via `npm run prepare`):
+**Git hooks** (`.githooks/`, activated via `yarn prepare`):
 - pre-commit: auto-formats with oxfmt
 - pre-push: checks formatting + lint, blocks if failing
 
