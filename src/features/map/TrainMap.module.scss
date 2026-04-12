@@ -10,6 +10,8 @@
 
 .stageWrapper {
   position: relative;
+  width: 1034.4px;
+  height: 720px;
 }
 
 .errorBanner {
@@ -24,16 +26,26 @@
   z-index: 1000;
 }
 
-.stationOverlay {
+.overlay {
   position: absolute;
   border-radius: 50%;
   cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+
+.stationOverlay {
+  composes: overlay;
   z-index: 20;
 }
 
 .trainOverlay {
-  position: absolute;
-  border-radius: 50%;
-  cursor: pointer;
+  composes: overlay;
   z-index: 30;
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

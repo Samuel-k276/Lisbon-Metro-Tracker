@@ -11,6 +11,20 @@ import { useTrains } from '@/shared/contexts/TrainContext';
 import styles from './TrainMap.module.scss';
 
 const DIMENSIONS = { width: 1034.4, height: 720 };
+const OVERLAY_OFFSET = 15;
+const HOVER_COLOR = '#2196F3';
+
+const SHADOW = {
+  color: 'rgba(0,0,0,0.3)',
+  offset: { x: 0, y: 2 },
+  opacity: 0.6,
+};
+
+const TRAIN_SHADOW = {
+  color: 'rgba(0,0,0,0.5)',
+  offset: { x: 0, y: 3 },
+  opacity: 0.7,
+};
 
 const TrainMap: React.FC = () => {
   const navigateTo = useNavigateTo();
@@ -33,10 +47,7 @@ const TrainMap: React.FC = () => {
     <div className={styles.container}>
       {loadingError && <div className={styles.errorBanner}>{loadingError}</div>}
 
-      <div
-        className={styles.stageWrapper}
-        style={{ width: DIMENSIONS.width, height: DIMENSIONS.height }}
-      >
+      <div className={styles.stageWrapper}>
         {backgroundImage &&
           Object.values(lines)
             .flatMap((lineData) =>
@@ -51,12 +62,7 @@ const TrainMap: React.FC = () => {
                     onMouseEnter={() => setHoveredStation(stationId)}
                     onMouseLeave={() => setHoveredStation(null)}
                     className={styles.stationOverlay}
-                    style={{
-                      left: coords.x - 15,
-                      top: coords.y - 15,
-                      width: 30,
-                      height: 30,
-                    }}
+                    style={{ left: coords.x - OVERLAY_OFFSET, top: coords.y - OVERLAY_OFFSET }}
                   />
                 );
               }),
@@ -72,19 +78,13 @@ const TrainMap: React.FC = () => {
               onMouseLeave={() => setHoveredTrain(null)}
               className={styles.trainOverlay}
               style={{
-                left: train.position.x - 15,
-                top: train.position.y - 15,
-                width: 30,
-                height: 30,
+                left: train.position.x - OVERLAY_OFFSET,
+                top: train.position.y - OVERLAY_OFFSET,
               }}
             />
           ))}
 
-        <Stage
-          width={DIMENSIONS.width}
-          height={DIMENSIONS.height}
-          style={{ position: 'absolute', top: 0, left: 0 }}
-        >
+        <Stage width={DIMENSIONS.width} height={DIMENSIONS.height} className={styles.stage}>
           <Layer name='background'>
             {backgroundImage && (
               <KonvaImage
@@ -103,46 +103,36 @@ const TrainMap: React.FC = () => {
                   const coords = stationCoordinates[stationId];
                   if (!coords) return null;
 
-                  const stationTransfer = isTransferStation(stationId);
-                  const stationLines = getStationLines(stationId);
+                  const isHovered = hoveredStation === stationId;
+                  const isTransfer = isTransferStation(stationId);
+                  const lineColor = getLineColor(getStationLines(stationId)[0] ?? '');
 
                   return (
                     <Group key={`station-${stationId}`} x={coords.x} y={coords.y} listening={false}>
-                      {stationTransfer ? (
+                      {isTransfer ? (
                         <>
                           <Circle
-                            radius={hoveredStation === stationId ? 13 : 10}
+                            radius={isHovered ? 13 : 10}
                             fill='white'
-                            stroke={
-                              hoveredStation === stationId
-                                ? '#2196F3'
-                                : getLineColor(stationLines[0] ?? '')
-                            }
-                            strokeWidth={hoveredStation === stationId ? 3 : 2}
-                            shadowColor='rgba(0,0,0,0.3)'
-                            shadowBlur={hoveredStation === stationId ? 8 : 4}
-                            shadowOffset={{ x: 0, y: 2 }}
-                            shadowOpacity={0.6}
+                            stroke={isHovered ? HOVER_COLOR : lineColor}
+                            strokeWidth={isHovered ? 3 : 2}
+                            shadowColor={SHADOW.color}
+                            shadowBlur={isHovered ? 8 : 4}
+                            shadowOffset={SHADOW.offset}
+                            shadowOpacity={SHADOW.opacity}
                           />
-                          <Circle
-                            radius={hoveredStation === stationId ? 11 : 8}
-                            fill={getLineColor(stationLines[0] ?? '')}
-                          />
+                          <Circle radius={isHovered ? 11 : 8} fill={lineColor} />
                         </>
                       ) : (
                         <Circle
-                          radius={hoveredStation === stationId ? 8 : 6}
+                          radius={isHovered ? 8 : 6}
                           fill='white'
-                          stroke={
-                            hoveredStation === stationId
-                              ? '#2196F3'
-                              : getLineColor(stationLines[0] ?? '')
-                          }
-                          strokeWidth={hoveredStation === stationId ? 3 : 2}
-                          shadowColor='rgba(0,0,0,0.3)'
-                          shadowBlur={hoveredStation === stationId ? 8 : 4}
-                          shadowOffset={{ x: 0, y: 2 }}
-                          shadowOpacity={0.6}
+                          stroke={isHovered ? HOVER_COLOR : lineColor}
+                          strokeWidth={isHovered ? 3 : 2}
+                          shadowColor={SHADOW.color}
+                          shadowBlur={isHovered ? 8 : 4}
+                          shadowOffset={SHADOW.offset}
+                          shadowOpacity={SHADOW.opacity}
                         />
                       )}
                     </Group>
@@ -153,45 +143,49 @@ const TrainMap: React.FC = () => {
           </Layer>
 
           <Layer name='trains'>
-            {trainPositions.map((train) => (
-              <Group
-                key={`train-${train.id}`}
-                x={train.position.x}
-                y={train.position.y}
-                listening={false}
-              >
-                <Circle
-                  radius={hoveredTrain === train.id ? 12 : 10}
-                  fill='#ED1C24'
-                  stroke='white'
-                  strokeWidth={hoveredTrain === train.id ? 3 : 1.5}
-                  shadowColor='rgba(0,0,0,0.5)'
-                  shadowBlur={hoveredTrain === train.id ? 10 : 5}
-                  shadowOffset={{ x: 0, y: 3 }}
-                  shadowOpacity={0.7}
-                />
-                <Arrow
-                  points={[0, 0, Math.cos(train.angle) * 20, Math.sin(train.angle) * 20]}
-                  pointerLength={6}
-                  pointerWidth={6}
-                  fill='white'
-                  stroke='white'
-                  strokeWidth={2}
-                />
-                <Text
-                  text={train.id.substring(0, 4)}
-                  fontSize={hoveredTrain === train.id ? 12 : 10}
-                  fontStyle='bold'
-                  fill='white'
-                  offsetX={-8}
-                  offsetY={-12}
-                  shadowColor='black'
-                  shadowBlur={3}
-                  shadowOffset={{ x: 1, y: 1 }}
-                  shadowOpacity={0.8}
-                />
-              </Group>
-            ))}
+            {trainPositions.map((train) => {
+              const isHovered = hoveredTrain === train.id;
+
+              return (
+                <Group
+                  key={`train-${train.id}`}
+                  x={train.position.x}
+                  y={train.position.y}
+                  listening={false}
+                >
+                  <Circle
+                    radius={isHovered ? 12 : 10}
+                    fill='#ED1C24'
+                    stroke='white'
+                    strokeWidth={isHovered ? 3 : 1.5}
+                    shadowColor={TRAIN_SHADOW.color}
+                    shadowBlur={isHovered ? 10 : 5}
+                    shadowOffset={TRAIN_SHADOW.offset}
+                    shadowOpacity={TRAIN_SHADOW.opacity}
+                  />
+                  <Arrow
+                    points={[0, 0, Math.cos(train.angle) * 20, Math.sin(train.angle) * 20]}
+                    pointerLength={6}
+                    pointerWidth={6}
+                    fill='white'
+                    stroke='white'
+                    strokeWidth={2}
+                  />
+                  <Text
+                    text={train.id.substring(0, 4)}
+                    fontSize={isHovered ? 12 : 10}
+                    fontStyle='bold'
+                    fill='white'
+                    offsetX={-8}
+                    offsetY={-12}
+                    shadowColor='black'
+                    shadowBlur={3}
+                    shadowOffset={{ x: 1, y: 1 }}
+                    shadowOpacity={0.8}
+                  />
+                </Group>
+              );
+            })}
           </Layer>
         </Stage>
       </div>
