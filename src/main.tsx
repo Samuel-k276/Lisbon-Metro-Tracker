@@ -11,6 +11,7 @@ import { PlanearViagem } from '@/features/planner/PlanearViagem';
 import { TrainProvider } from '@/shared/contexts/TrainContext';
 import { Routes } from '@/shared/routes';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
+import { NotFound } from '@/shared/components/NotFound';
 import '@/shared/styles/global.scss';
 
 const App: React.FC = () => {
@@ -25,7 +26,7 @@ const App: React.FC = () => {
             <Route path={Routes.PLANNER} element={<PlanearViagem />} />
             <Route path={Routes.STATION} element={<StationDetail />} />
             <Route path={Routes.TRAIN} element={<TrainDetail />} />
-            <Route path='*' element={<div>404 Not Found</div>} />
+            <Route path='*' element={<NotFound />} />
           </RouterRoutes>
         </main>
         <Footer />

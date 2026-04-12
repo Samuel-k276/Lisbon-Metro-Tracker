@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useStation } from '@/shared/hooks/useStation';
+import { Spinner } from '@/shared/components/Spinner';
 import { formatTimeInSeconds, getLineNameFromDestination } from '@/shared/utils/helpers';
-import { getLineColor } from '@/shared/utils/metroUtils';
 import styles from './StationDetail.module.scss';
 
 const COLOR_ORDER: Record<string, number> = {
@@ -17,7 +17,7 @@ const StationDetail: React.FC = () => {
   const { station, loading, error } = useStation(stationId);
 
   if (!stationId) return <p>Station ID not found</p>;
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p className={styles.error}>Error loading station: {error}</p>;
   if (!station) return <p>Station not found</p>;
 
@@ -37,11 +37,7 @@ const StationDetail: React.FC = () => {
           <h1 className={styles.title}>
             {station.name}
             {(Array.isArray(station.lines) ? station.lines : [station.lines]).map((line, i) => (
-              <span
-                key={i}
-                className={styles.lineCircle}
-                style={{ backgroundColor: getLineColor(line) }}
-              />
+              <span key={i} className={`${styles.lineCircle} ${styles[`line${line}`] ?? ''}`} />
             ))}
           </h1>
 
@@ -98,7 +94,7 @@ const StationDetail: React.FC = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={4} style={{ textAlign: 'center' }}>
+                      <td colSpan={4} className={styles.emptyCell}>
                         No upcoming trains
                       </td>
                     </tr>

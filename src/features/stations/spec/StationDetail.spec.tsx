@@ -23,10 +23,10 @@ describe('StationDetail', () => {
     mockUseStation();
   });
 
-  it('shows loading state', () => {
+  it('shows loading spinner', () => {
     mockUseStation({ station: null, loading: true });
     renderWithRoute('AM');
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(document.querySelector("[class*='spinner']")).toBeInTheDocument();
   });
 
   it('shows error state', () => {

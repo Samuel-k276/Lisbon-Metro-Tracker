@@ -33,6 +33,21 @@
   height: 25px;
   border-radius: 50%;
   vertical-align: middle;
+  background-color: var(--line-color);
+}
+
+// Line color variants for circles
+.lineAzul {
+  --line-color: #{$blue-line};
+}
+.lineAmarela {
+  --line-color: #{$yellow-line};
+}
+.lineVerde {
+  --line-color: #{$green-line};
+}
+.lineVermelha {
+  --line-color: #{$red-line};
 }
 
 .destinations {
@@ -94,6 +109,10 @@
   th {
     font-weight: 600;
   }
+}
+
+.emptyCell {
+  text-align: center;
 }
 
 .muted {
