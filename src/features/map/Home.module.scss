@@ -1,12 +1,20 @@
+@use '../../shared/styles/variables' as *;
+
 .homePage {
+  max-width: 1100px;
+  margin: 0 auto;
+
   h1 {
     text-align: center;
-    margin-bottom: 1rem;
+    color: $text-dark;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
   }
 }
 
 .mapContainer {
-  height: 800px;
-  width: 100%;
-  border: 1px solid #ccc;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
 }

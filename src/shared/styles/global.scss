@@ -10,16 +10,6 @@
   --text-light: #{$text-light};
   --background-light: #{$background-light};
   --background-dark: #{$background-dark};
-  font-size: 108%;
-}
-
-html,
-body {
-  transform: scale(1.08);
-  transform-origin: 0 0;
-  width: 92%;
-  height: auto;
-  overflow-x: hidden;
 }
 
 * {
@@ -33,7 +23,6 @@ body {
   line-height: 1.6;
   color: $text-dark;
   background-color: $background-light;
-  margin: 0;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -49,9 +38,9 @@ a {
 }
 
 h1 {
-  font-size: 2.4em;
-  line-height: 1.1;
-  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
 }
 
 button {
@@ -83,8 +72,8 @@ button {
 }
 
 .main-content {
-  padding: 2rem 0;
-  min-height: calc(100vh - 180px);
+  padding: 1.5rem 1rem;
+  min-height: calc(100vh - 120px);
 }
 
 .skip-link {
