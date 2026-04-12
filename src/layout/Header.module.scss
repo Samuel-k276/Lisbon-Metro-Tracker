@@ -5,7 +5,7 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1100;
   transition: all 0.3s ease;
 }
 
@@ -150,6 +150,8 @@
     display: flex;
     width: 32px;
     height: 24px;
+    position: relative;
+    z-index: 1100;
   }
 
   .logoIcon {
