@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "lint": "oxlint src/",
     "fmt": "oxfmt src/",
-    "fmt:check": "oxfmt --check src/"
+    "fmt:check": "oxfmt --check src/",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

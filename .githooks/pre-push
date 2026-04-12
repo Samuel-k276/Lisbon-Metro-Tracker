@@ -1,0 +1,6 @@
+#!/bin/sh
+echo "Running oxfmt check..."
+npx oxfmt --check src/ || exit 1
+
+echo "Running oxlint..."
+npx oxlint src/ || exit 1
