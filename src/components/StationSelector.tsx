@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Station } from '../types/metro';
+import styles from './StationSelector.module.scss';
 
-interface StationSelectorProps {
+type StationSelectorProps = {
   stations: Station[];
   onSelectStation: (station: Station) => void;
-}
+};
 
 const StationSelector: React.FC<StationSelectorProps> = ({ stations, onSelectStation }) => {
   const [selectedStation, setSelectedStation] = useState<Station | null>(null);
-  
-  // Ensure stations is always an array
+
   const safeStations = Array.isArray(stations) ? stations : [];
 
   const handleStationClick = (station: Station) => {
@@ -18,13 +18,13 @@ const StationSelector: React.FC<StationSelectorProps> = ({ stations, onSelectSta
   };
 
   return (
-    <div className="station-selector">
+    <div className={styles.stationSelector}>
       <h3>Metro Stations</h3>
-      <div className="station-list">
+      <div className={styles.stationList}>
         {safeStations.map((station) => (
-          <div 
+          <div
             key={station.id}
-            className={`station-item ${selectedStation?.id === station.id ? 'selected' : ''}`}
+            className={`${styles.stationItem} ${selectedStation?.id === station.id ? styles.selected : ''}`}
             onClick={() => handleStationClick(station)}
           >
             {station.name}
@@ -38,4 +38,4 @@ const StationSelector: React.FC<StationSelectorProps> = ({ stations, onSelectSta
   );
 };
 
-export default StationSelector;
+export { StationSelector };

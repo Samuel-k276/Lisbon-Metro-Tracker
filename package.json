@@ -30,6 +30,7 @@
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-legacy": "^6.1.0",
     "@vitejs/plugin-react": "^4.0.3",
+    "sass": "^1.99.0",
     "typescript": "^5.0.2",
     "vite": "^6.2.5"
   }

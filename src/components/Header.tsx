@@ -1,70 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import styles from './Header.module.scss';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  
-  // Detectar scroll para mudar a aparência do header
+
   useEffect(() => {
     const handleScroll = () => {
-      const offset = window.scrollY;
-      if (offset > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 50);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
-  // Fechar menu quando mudar de página
+
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location]);
 
   return (
-    <header className={`header ${isScrolled ? 'header-scrolled' : ''}`}>
-      <div className="container header-container">
-        <div className="logo-container">
+    <header className={`${styles.header} ${isScrolled ? styles.headerScrolled : ''}`}>
+      <div className={`container ${styles.headerContainer}`}>
+        <div className={styles.logoContainer}>
           <Link to="/">
-            <div className="logo-wrapper">
-              <span className="logo-icon">M</span>
-              <span className="logo-text">Metro Lisboa</span>
+            <div className={styles.logoWrapper}>
+              <span className={styles.logoIcon}>M</span>
+              <span className={styles.logoText}>Metro Lisboa</span>
             </div>
           </Link>
         </div>
-        
-        <div className="hamburger-menu" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          <div className={`hamburger-line ${mobileMenuOpen ? 'active' : ''}`}></div>
-          <div className={`hamburger-line ${mobileMenuOpen ? 'active' : ''}`}></div>
-          <div className={`hamburger-line ${mobileMenuOpen ? 'active' : ''}`}></div>
+
+        <div className={styles.hamburgerMenu} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <div className={`${styles.hamburgerLine} ${mobileMenuOpen ? styles.hamburgerLineActive : ''}`}></div>
+          <div className={`${styles.hamburgerLine} ${mobileMenuOpen ? styles.hamburgerLineActive : ''}`}></div>
+          <div className={`${styles.hamburgerLine} ${mobileMenuOpen ? styles.hamburgerLineActive : ''}`}></div>
         </div>
-        
-        <nav className={`main-nav ${mobileMenuOpen ? 'open' : ''}`}>
-          <ul className="nav-links">
-            <li className={location.pathname === '/' ? 'active' : ''}>
+
+        <nav className={`${styles.mainNav} ${mobileMenuOpen ? styles.open : ''}`}>
+          <ul className={styles.navLinks}>
+            <li className={location.pathname === '/' ? styles.navLinkActive : ''}>
               <Link to="/">Mapa em Tempo Real</Link>
             </li>
-            <li className={location.pathname === '/planear-viagem' ? 'active' : ''}>
+            <li className={location.pathname === '/planear-viagem' ? styles.navLinkActive : ''}>
               <Link to="/planear-viagem">Planeia Viagem</Link>
             </li>
-            <li className={location.pathname === '/sobre' ? 'active' : ''}>
+            <li className={location.pathname === '/sobre' ? styles.navLinkActive : ''}>
               <Link to="/sobre">Sobre</Link>
             </li>
-            <li className={location.pathname === '/tarifarios' ? 'active' : ''}>
+            <li className={location.pathname === '/tarifarios' ? styles.navLinkActive : ''}>
               <Link to="/tarifarios">Tarifários</Link>
             </li>
-            <li className={location.pathname === '/alertas' ? 'active' : ''}>
-              <Link to="/alertas" className="alert-link">
+            <li className={location.pathname === '/alertas' ? styles.navLinkActive : ''}>
+              <Link to="/alertas" className={styles.alertLink}>
                 <span>Alertas</span>
-                <div className="alert-indicator"></div>
+                <div className={styles.alertIndicator}></div>
               </Link>
             </li>
           </ul>
@@ -74,4 +65,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export { Header };
