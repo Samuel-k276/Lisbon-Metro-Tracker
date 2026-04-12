@@ -53,10 +53,13 @@ const LineStrip: React.FC<LineStripProps> = ({ lineName, currentStationId }) => 
               >
                 <span
                   className={styles.dot}
-                  style={{
-                    borderColor: lineColor,
-                    backgroundColor: isCurrent ? lineColor : 'white',
-                  }}
+                  style={
+                    {
+                      '--line-color': lineColor,
+                      borderColor: isCurrent ? 'white' : lineColor,
+                      backgroundColor: isCurrent ? lineColor : 'white',
+                    } as React.CSSProperties
+                  }
                 />
                 <span className={styles.label}>{name}</span>
               </Link>
