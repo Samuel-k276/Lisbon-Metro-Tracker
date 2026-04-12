@@ -14,6 +14,36 @@ type PlatformResponse = {
   tempoChegada3?: string;
 };
 
+const parsePlatform = (
+  platform: PlatformResponse,
+  stationId: string,
+): NextTrainsResponse | null => {
+  if (!platform.comboio || !platform.tempoChegada1) return null;
+
+  return {
+    destination: getDestinationNameById(platform.destino, stationId),
+    train1: platform.comboio,
+    time1: platform.tempoChegada1,
+    train2: platform.comboio2 ?? '',
+    time2: platform.tempoChegada2 ?? '',
+    train3: platform.comboio3 ?? '',
+    time3: platform.tempoChegada3 ?? '',
+  };
+};
+
+const deduplicateTerminalTrains = (
+  trains: NextTrainsResponse[],
+  stationName: string,
+): NextTrainsResponse[] => {
+  const seen = new Set<string>();
+  return trains.filter((train) => {
+    if (train.destination === stationName) return false;
+    if (seen.has(train.destination)) return false;
+    seen.add(train.destination);
+    return true;
+  });
+};
+
 const fetchStationWaitingTimes = async (stationId: string): Promise<Station | null> => {
   try {
     const response = await apiFetch(`/tempoEspera/Estacao/${stationId}`);
@@ -26,55 +56,21 @@ const fetchStationWaitingTimes = async (stationId: string): Promise<Station | nu
     const stationData = getStationById(stationId);
     if (!stationData) throw new Error('Station data not found in mappings');
 
-    const station: Station = {
+    const nextTrains = (data.resposta as PlatformResponse[])
+      .map((platform) => parsePlatform(platform, stationId))
+      .filter((train): train is NextTrainsResponse => train !== null);
+
+    return {
       id: stationId,
       name: stationData.name,
       coordinates: stationData.coordinates,
       lines: stationData.lines,
       isTransfer: stationData.isTransfer,
       isTerminal: stationData.isTerminal,
-      nextTrains: data.resposta.flatMap((platform: PlatformResponse) => {
-        const trains: NextTrainsResponse = {
-          destination: '',
-          train1: '',
-          time1: '',
-          train2: '',
-          time2: '',
-          train3: '',
-          time3: '',
-        };
-
-        if (platform.comboio && platform.tempoChegada1) {
-          trains.destination = getDestinationNameById(platform.destino, stationId);
-          trains.train1 = platform.comboio;
-          trains.time1 = platform.tempoChegada1;
-        }
-
-        if (platform.comboio2 && platform.tempoChegada2) {
-          trains.train2 = platform.comboio2;
-          trains.time2 = platform.tempoChegada2;
-        }
-
-        if (platform.comboio3 && platform.tempoChegada3) {
-          trains.train3 = platform.comboio3;
-          trains.time3 = platform.tempoChegada3;
-        }
-
-        return trains;
-      }),
+      nextTrains: stationData.isTerminal
+        ? deduplicateTerminalTrains(nextTrains, stationData.name)
+        : nextTrains,
     };
-
-    if (station.isTerminal) {
-      const processedDestinations = new Set<string>();
-      station.nextTrains = station.nextTrains.filter((train) => {
-        if (train.destination === station.name) return false;
-        if (processedDestinations.has(train.destination)) return false;
-        processedDestinations.add(train.destination);
-        return true;
-      });
-    }
-
-    return station;
   } catch (error) {
     logger.error('Error fetching station:', error);
     return null;

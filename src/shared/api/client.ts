@@ -1,6 +1,11 @@
-const API_BASE_URL = 'https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1';
+import { logger } from '@/shared/utils/logger';
 
+const API_BASE_URL = 'https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1';
 const API_TOKEN = import.meta.env.VITE_METRO_API_TOKEN;
+
+if (!API_TOKEN) {
+  logger.error('VITE_METRO_API_TOKEN is not set');
+}
 
 const HEADERS = {
   Authorization: `Bearer ${API_TOKEN}`,

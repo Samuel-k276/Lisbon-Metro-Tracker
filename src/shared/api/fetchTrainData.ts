@@ -29,32 +29,26 @@ const fetchTrainData = async (): Promise<Record<string, Train>> => {
 
     const trains: Record<string, Train> = {};
 
-    for (const response of data.resposta) {
-      const trainArrival = response as TrainArrival;
-
-      const trainData = [
-        { id: trainArrival.comboio, time: trainArrival.tempoChegada1 },
-        { id: trainArrival.comboio2, time: trainArrival.tempoChegada2 },
-        { id: trainArrival.comboio3, time: trainArrival.tempoChegada3 },
+    for (const arrival of data.resposta as TrainArrival[]) {
+      const candidates = [
+        { id: arrival.comboio, time: arrival.tempoChegada1 },
+        { id: arrival.comboio2, time: arrival.tempoChegada2 },
+        { id: arrival.comboio3, time: arrival.tempoChegada3 },
       ];
 
-      for (const train of trainData) {
-        if (train.id && train.time) {
-          if (!trains[train.id]) {
-            trains[train.id] = {
-              id: train.id,
-              stationArrivals: [],
-            };
-          }
-          trains[train.id]!.stationArrivals.push([
-            parseInt(train.time),
-            [trainArrival.stop_id.toString(), getDestinationId(trainArrival.destino)],
-          ]);
+      for (const candidate of candidates) {
+        if (!candidate.id || !candidate.time) continue;
+
+        if (!trains[candidate.id]) {
+          trains[candidate.id] = { id: candidate.id, stationArrivals: [] };
         }
+        trains[candidate.id]!.stationArrivals.push([
+          parseInt(candidate.time, 10),
+          [arrival.stop_id.toString(), getDestinationId(arrival.destino)],
+        ]);
       }
     }
 
-    // Sort each train's arrivals by time ascending
     for (const train of Object.values(trains)) {
       train.stationArrivals.sort((a, b) => a[0] - b[0]);
     }

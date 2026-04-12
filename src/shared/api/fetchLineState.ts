@@ -16,18 +16,18 @@ type LineStateApiResponse = {
   };
 };
 
+const capitalize = (s: string) => s.trim().replace(/^\w/, (c) => c.toUpperCase());
+
 const fetchLineStateAll = async (): Promise<LineState[]> => {
   try {
     const response = await apiFetch('/estadoLinha/todos');
     const data: LineStateApiResponse = await response.json();
 
     if (data.codigo !== '200' || !data.resposta) {
-      throw new Error('Invalid response format or no data received, code: ' + data.codigo);
+      throw new Error(`Invalid response format or no data received, code: ${data.codigo}`);
     }
 
-    const capitalize = (s: string) => s.trim().replace(/^\w/, (c) => c.toUpperCase());
-
-    const lineStates: LineState[] = [
+    return [
       {
         name: 'Amarela',
         status: capitalize(data.resposta.amarela),
@@ -45,8 +45,6 @@ const fetchLineStateAll = async (): Promise<LineState[]> => {
         message: data.resposta.tipo_msg_vm,
       },
     ];
-
-    return lineStates;
   } catch (error) {
     logger.error('Error fetching line state:', error);
     return [];
