@@ -1,16 +1,7 @@
-/**
- * Implementação de um grafo não pesado para representar o sistema do Metro de Lisboa
- * Utiliza uma estrutura de lista de adjacências para armazenar as conexões entre estações
- */
-
 import type { LineNames } from '@/shared/data/metroLines';
 import { lines } from '@/shared/data/staticData';
-// Importando os dados das estações e das linhas
 import { stationMappings } from '@/shared/data/stationMappings';
 
-/**
- * Interface para representar um nó do grafo (uma estação)
- */
 type GraphNode = {
   id: string;
   lines: string[];
@@ -33,9 +24,6 @@ type FormattedPath = {
   stations: number;
 };
 
-/**
- * Classe que representa o Grafo do Metro de Lisboa
- */
 class MetroGraph {
   private nodes: Map<string, GraphNode>;
 
@@ -44,11 +32,7 @@ class MetroGraph {
     this.buildGraph();
   }
 
-  /**
-   * Constrói o grafo a partir dos dados estáticos do metro
-   */
   private buildGraph(): void {
-    // Primeiro, criar todos os nós (estações)
     for (const [id, station] of Object.entries(stationMappings)) {
       this.nodes.set(id, {
         id,
@@ -57,28 +41,22 @@ class MetroGraph {
       });
     }
 
-    // Agora, adicionar as arestas (conexões entre estações)
     for (const lineName of Object.keys(lines) as LineNames[]) {
       const lineData = lines[lineName];
       if (!lineData) continue;
       const stations = lineData.stations;
 
-      // Para cada par de estações consecutivas na linha, adicionar conexão
       for (let i = 0; i < stations.length - 1; i++) {
         const current = stations[i];
         const next = stations[i + 1];
         if (!current || !next) continue;
 
-        // Adicionar conexão em ambas as direções (grafo não direcionado)
         this.addEdge(current, next);
         this.addEdge(next, current);
       }
     }
   }
 
-  /**
-   * Adiciona uma aresta entre dois nós do grafo
-   */
   private addEdge(from: string, to: string): void {
     const node = this.nodes.get(from);
     if (node && !node.adjacent.includes(to)) {
@@ -86,23 +64,14 @@ class MetroGraph {
     }
   }
 
-  /**
-   * Retorna todos os nós do grafo
-   */
   getAllNodes(): GraphNode[] {
     return Array.from(this.nodes.values());
   }
 
-  /**
-   * Obtém um nó específico pelo seu ID
-   */
   getNode(id: string): GraphNode | undefined {
     return this.nodes.get(id);
   }
 
-  /**
-   * Retorna os vizinhos de um nó
-   */
   getNeighbors(id: string): GraphNode[] {
     const node = this.nodes.get(id);
     if (!node) return [];
@@ -112,31 +81,23 @@ class MetroGraph {
       .filter((node): node is GraphNode => node !== undefined);
   }
 
-  /**
-   * Verifica se dois nós são adjacentes
-   */
   areAdjacent(id1: string, id2: string): boolean {
     const node = this.nodes.get(id1);
     return node ? node.adjacent.includes(id2) : false;
   }
 
   /**
-   * Encontra o caminho mais curto entre duas estações usando uma variação do algoritmo de Dijkstra
-   * que penaliza as trocas de linha com um custo adicional.
-   *
-   * @param fromId ID da estação de origem
-   * @param toId ID da estação de destino
-   * @returns Um objeto contendo o caminho, informações detalhadas
+   * Finds the shortest path between two stations using a modified Dijkstra's algorithm
+   * that penalizes line transfers with additional cost.
    */
   shortestPath(fromId: string, toId: string): string[] {
-    const distances = new Map<string, [number, string[]]>(); // [distância, linhas[]]
+    const distances = new Map<string, [number, string[]]>();
     const previous = new Map<string, string[] | null>();
     const visited = new Set<string>();
-    // Queue with priority based on distance [distance, nodeId]
     const queue: Array<[number, string]> = [];
 
     for (const node of this.nodes.values()) {
-      distances.set(node.id, [Infinity, ['']]); // [distância, linha]
+      distances.set(node.id, [Infinity, ['']]);
       previous.set(node.id, null);
     }
 
@@ -156,18 +117,16 @@ class MetroGraph {
       }
 
       for (const neighbor of currentNode.adjacent) {
-        // There is at max one line in common between the two stations
         const commonLine = this.nodes
           .get(neighbor)!
           .lines.filter((line) => distances.get(currentId)![1].includes(line));
-        const weight = commonLine.length > 0 ? 1 : 3; // Penaliza troca de linha
+        const weight = commonLine.length > 0 ? 1 : 3;
         const newDistance = currentDistance + weight;
         if (newDistance < distances.get(neighbor)![0]) {
           distances.set(neighbor, [newDistance, commonLine]);
           previous.set(neighbor, [currentId]);
           queue.push([newDistance, neighbor]);
         } else if (newDistance === distances.get(neighbor)![0]) {
-          // Se a distância for a mesma, adiciona as linhas e os predecessores
           const existingLines = distances.get(neighbor)![1];
           const newLines = [
             ...existingLines,
@@ -179,37 +138,25 @@ class MetroGraph {
       }
     }
 
-    // Recupera o caminho mais curto
     const path: string[] = [];
     let currentNodeId = toId;
 
     while (currentNodeId !== fromId) {
       const prev = previous.get(currentNodeId)!;
       path.unshift(currentNodeId);
-      currentNodeId = prev[0]!; // Pega o primeiro predecessor
+      currentNodeId = prev[0]!;
     }
 
-    // Adicionar a estação de origem ao início do caminho
     path.unshift(fromId);
 
-    // Existe sempre um caminho entre as estações, então não precisamos verificar se o caminho é vazio
     return path;
   }
 
-  /**
-   * Formata o caminho para exibição na UI, agrupando por linhas e identificando trocas de linha
-   *
-   * @param path Array de IDs das estações no caminho
-   * @param tempoEstacaoMin Tempo estimado em minutos para viagem entre estações (padrão: 2)
-   * @param tempoTransbordoMin Tempo estimado em minutos para transbordo (padrão: 4)
-   * @returns Um objeto contendo segmentos de viagem e informações para UI
-   */
   formatPathForUI(
     path: string[],
     minutesPerStation: number = 2,
     minutesPerTransfer: number = 4,
   ): FormattedPath {
-    // Se não há caminho ou só tem uma estação, retornar vazio
     if (!path || path.length === 0) {
       return { segments: [], transfers: 0, totalTime: 0, stations: 0 };
     }
@@ -223,18 +170,9 @@ class MetroGraph {
       };
     }
 
-    // Processar o caminho manualmente
     return this.processPathManually(path, minutesPerStation, minutesPerTransfer);
   }
 
-  /**
-   * Processa manualmente o caminho para exibição na UI quando não temos informações de segmentos
-   *
-   * @param path Array com IDs de estações no caminho
-   * @param tempoEstacaoMin Tempo estimado em minutos para viagem entre estações
-   * @param tempoTransbordoMin Tempo estimado em minutos para transbordo
-   * @returns Objeto formatado com segmentos e informações para UI
-   */
   private processPathManually(
     path: string[],
     minutesPerStation: number,
@@ -243,11 +181,9 @@ class MetroGraph {
     const segments: PathSegment[] = [];
     let transfers = 0;
 
-    // Precisamos determinar a linha para cada parte do percurso
     let currentLine = '';
     let segmentStartIndex = 0;
 
-    // Para cada par de estações no caminho, determinar a linha mais apropriada
     for (let i = 0; i < path.length - 1; i++) {
       const currentId = path[i]!;
       const nextId = path[i + 1]!;
@@ -255,20 +191,15 @@ class MetroGraph {
       const currentNode = this.nodes.get(currentId)!;
       const nextNode = this.nodes.get(nextId)!;
 
-      // Encontrar linha em comum (se existir)
       const commonLines = currentNode.lines.filter((line) => nextNode.lines.includes(line));
       const lineBetweenStations = commonLines.length > 0 ? commonLines[0]! : '';
 
-      // Se mudar de linha ou for a primeira iteração, definir a linha atual
       if (i === 0 || lineBetweenStations !== currentLine) {
-        // Se não for a primeira iteração, finalizar o segmento atual
         if (i > 0) {
-          // Adicionar segmento de viagem
           const segmentStart = this.nodes.get(path[segmentStartIndex]!)!;
           const segmentEnd = this.nodes.get(path[i]!)!;
           const stationCount = i - segmentStartIndex + 1;
 
-          // Obter os nomes das estações do stationMappings
           const startName = stationMappings[segmentStart.id]?.name || segmentStart.id;
           const endName = stationMappings[segmentEnd.id]?.name || segmentEnd.id;
 
@@ -277,11 +208,10 @@ class MetroGraph {
             from: startName,
             to: endName,
             line: currentLine,
-            time: (stationCount - 1) * minutesPerStation, // -1 porque contamos conexões, não estações
+            time: (stationCount - 1) * minutesPerStation,
             stations: stationCount,
           });
 
-          // Se mudou de linha, adicionar transbordo
           if (lineBetweenStations !== currentLine) {
             transfers++;
             segments.push({
@@ -293,20 +223,17 @@ class MetroGraph {
             });
           }
 
-          // Iniciar novo segmento
           segmentStartIndex = i;
         }
 
         currentLine = lineBetweenStations;
       }
 
-      // Para o último par de estações
       if (i === path.length - 2) {
         const segmentStart = this.nodes.get(path[segmentStartIndex]!)!;
         const segmentEnd = this.nodes.get(nextId!)!;
         const stationCount = i + 1 - segmentStartIndex + 1;
 
-        // Obter os nomes das estações do stationMappings
         const startName = stationMappings[segmentStart.id]?.name || segmentStart.id;
         const endName = stationMappings[segmentEnd.id]?.name || segmentEnd.id;
 
@@ -321,12 +248,11 @@ class MetroGraph {
       }
     }
 
-    // Calcular tempo total e número de estações
     const totalTime = segments.reduce((total, segment) => total + segment.time, 0);
     const stations =
       segments
         .filter((segment) => segment.type === 'travel')
-        .reduce((total, segment) => total + segment.stations, 0) - transfers; // Corrigir contagem duplicada
+        .reduce((total, segment) => total + segment.stations, 0) - transfers;
 
     return {
       segments,
@@ -336,29 +262,19 @@ class MetroGraph {
     };
   }
 
-  /**
-   * Encontra todas as estações onde é possível fazer trocas de linha
-   */
   getTransferStations(): GraphNode[] {
     return Array.from(this.nodes.values()).filter((node) => node.lines.length > 1);
   }
 
-  /**
-   * Retorna todas as estações de uma linha específica
-   */
   getStationsByLine(lineName: string): GraphNode[] {
     return Array.from(this.nodes.values()).filter((node) => node.lines.includes(lineName));
   }
 
-  /**
-   * Encontra todas as estações terminais (com apenas uma estação adjacente)
-   */
   getTerminalStations(): GraphNode[] {
     return Array.from(this.nodes.values()).filter((node) => node.adjacent.length === 1);
   }
 }
 
-// Exporta uma instância já inicializada do grafo para uso em toda a aplicação
 const metroGraph = new MetroGraph();
 
 export { MetroGraph, metroGraph };

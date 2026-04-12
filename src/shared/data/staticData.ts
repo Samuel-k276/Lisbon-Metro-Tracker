@@ -2,7 +2,6 @@ import { LINE_COLORS } from '@/shared/data/metroLines';
 import type { LineNames } from '@/shared/data/metroLines';
 import type { Coordinates, Line } from '@/shared/types/metro';
 
-// Corrected station coordinates for rendering (x values increased by 130)
 const stationCoordinates: Record<string, Coordinates> = {
   RB: { x: 69.5, y: 172 },
   AS: { x: 130, y: 173 },
@@ -56,9 +55,7 @@ const stationCoordinates: Record<string, Coordinates> = {
   SS: { x: 531, y: 450 },
 };
 
-// Updated lines with stations in correct order from one terminal to another
 const lines: Record<LineNames, Line> = {
-  // Map metro line names to colors
   Azul: {
     name: 'Azul',
     color: LINE_COLORS.Azul,

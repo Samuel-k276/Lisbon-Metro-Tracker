@@ -1,11 +1,6 @@
-// Station mappings and related utilities
-// This file provides mappings between station IDs and names
-// and utility functions to translate IDs to human-readable names
-
 import type { LineNames } from '@/shared/data/metroLines';
-import type { Coordinates } from '@/shared/types/metro'; // Adjust the import path as necessary
+import type { Coordinates } from '@/shared/types/metro';
 
-// Type for our station mapping
 type StationMapping = {
   id: string;
   name: string;
@@ -15,7 +10,6 @@ type StationMapping = {
   isTerminal: boolean;
 };
 
-// Dictionary of destination IDs to names
 const DestinationMapping: Record<string, string> = {
   '1': 'Reboleira',
   '18': 'Santa Apolónia',
@@ -75,16 +69,10 @@ const DestinationToID: Record<string, string> = {
 };
 
 const getDestinationId = (id: string): string => {
-  // Get the destination ID from the mapping
   return DestinationToID[id] || id;
 };
 
-// Dictionary of station IDs to names
-// Ìt's defined statically because the data is not expected to change frequently
-// and it allows for better performance and easier maintenance
-// as we don't need to fetch it from an external source every time
 const stationMappings: Record<string, StationMapping> = {
-  // Lisbon Metro stations with their data
   AM: {
     id: 'AM',
     name: 'Alameda',
