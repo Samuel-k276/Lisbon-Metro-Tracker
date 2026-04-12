@@ -11,6 +11,8 @@ npm run preview   # Preview production build
 npm run lint      # oxlint src/
 npm run fmt       # oxfmt src/ (auto-fix)
 npm run fmt:check # oxfmt --check src/
+npm run test      # vitest run (all tests)
+npm run test:watch # vitest (watch mode)
 ```
 
 **Required env var**: `VITE_METRO_API_TOKEN` — Bearer token for the Lisbon Metro API.
