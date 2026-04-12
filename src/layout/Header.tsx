@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router';
 
+import { useLineStates } from '@/shared/hooks/useLineStates';
 import { Routes } from '@/shared/routes';
 
 import styles from './Header.module.scss';
@@ -9,6 +10,11 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { lineStates } = useLineStates();
+
+  const hasAlerts = lineStates.some(
+    (line) => line.status.toLowerCase() !== 'normal' && line.status.toLowerCase() !== 'ok',
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,7 +77,7 @@ const Header: React.FC = () => {
             >
               <Link to={Routes.ALERTS} className={styles.alertLink}>
                 <span>Alertas</span>
-                <div className={styles.alertIndicator}></div>
+                {hasAlerts && <span className={styles.alertIndicator} />}
               </Link>
             </li>
           </ul>
