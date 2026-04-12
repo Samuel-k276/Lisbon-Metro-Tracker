@@ -16,10 +16,8 @@
     "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
-    "konva": "^10",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-konva": "^19.0.3",
     "react-router-dom": "^7"
   },
   "devDependencies": {

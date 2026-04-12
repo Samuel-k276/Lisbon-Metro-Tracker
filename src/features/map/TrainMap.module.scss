@@ -3,15 +3,6 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  touch-action: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-}
-
-.stageWrapper {
-  position: relative;
-  width: 1034.4px;
-  height: 720px;
 }
 
 .errorBanner {
@@ -26,26 +17,19 @@
   z-index: 1000;
 }
 
-.overlay {
-  position: absolute;
-  border-radius: 50%;
+.map {
+  width: 1034.4px;
+  height: 720px;
+  max-width: 100%;
+}
+
+.station,
+.train {
   cursor: pointer;
-  width: 30px;
-  height: 30px;
-}
+  outline: none;
 
-.stationOverlay {
-  composes: overlay;
-  z-index: 20;
-}
-
-.trainOverlay {
-  composes: overlay;
-  z-index: 30;
-}
-
-.stage {
-  position: absolute;
-  top: 0;
-  left: 0;
+  &:focus-visible circle:first-child {
+    stroke-width: 3;
+    stroke: #2196f3;
+  }
 }

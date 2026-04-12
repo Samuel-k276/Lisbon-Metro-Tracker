@@ -1,210 +1,151 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { Stage, Layer, Circle, Group, Image as KonvaImage, Arrow, Text } from 'react-konva';
+import { useState } from 'react';
 
 import mapaImg from '@/assets/mapa.png';
 import { useTrains } from '@/shared/contexts/TrainContext';
 import { stationCoordinates, lines } from '@/shared/data/staticData';
 import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
 import { stationPath, trainPath } from '@/shared/routes';
-import { logger } from '@/shared/utils/logger';
 import { getStationLines, getLineColor, isTransferStation } from '@/shared/utils/metroUtils';
+
+import { StationMarker } from './StationMarker';
+import { TrainMarker } from './TrainMarker';
 
 import styles from './TrainMap.module.scss';
 
 const DIMENSIONS = { width: 1034.4, height: 720 };
-const OVERLAY_OFFSET = 15;
 const HOVER_COLOR = '#2196F3';
-
-const SHADOW = {
-  color: 'rgba(0,0,0,0.3)',
-  offset: { x: 0, y: 2 },
-  opacity: 0.6,
-};
-
-const TRAIN_SHADOW = {
-  color: 'rgba(0,0,0,0.5)',
-  offset: { x: 0, y: 3 },
-  opacity: 0.7,
-};
 
 const ALL_STATION_IDS = [...new Set(Object.values(lines).flatMap((line) => line.stations))];
 
+const handleKeyNav = (callback: () => void) => (e: React.KeyboardEvent) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    callback();
+  }
+};
+
 const TrainMap: React.FC = () => {
   const navigateTo = useNavigateTo();
-  const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null);
   const [hoveredStation, setHoveredStation] = useState<string | null>(null);
   const [hoveredTrain, setHoveredTrain] = useState<string | null>(null);
 
   const { trainPositions, error: loadingError } = useTrains();
 
-  useEffect(() => {
-    const img = new window.Image();
-    img.src = mapaImg;
-    img.onload = () => setBackgroundImage(img);
-    img.onerror = () => logger.error('Failed to load map background image');
-    return () => {
-      img.onload = null;
-      img.onerror = null;
-    };
-  }, []);
-
   return (
     <div className={styles.container}>
       {loadingError && <div className={styles.errorBanner}>{loadingError}</div>}
 
-      <div className={styles.stageWrapper}>
-        {backgroundImage &&
-          ALL_STATION_IDS.map((stationId) => {
+      <svg
+        className={styles.map}
+        viewBox={`0 0 ${DIMENSIONS.width} ${DIMENSIONS.height}`}
+        role='img'
+        aria-label='Lisbon Metro map with real-time train positions'
+      >
+        <defs>
+          <filter id='station-shadow'>
+            <feDropShadow
+              dx='0'
+              dy='2'
+              stdDeviation='2'
+              floodColor='rgba(0,0,0,0.3)'
+              floodOpacity='0.6'
+            />
+          </filter>
+          <filter id='station-shadow-hover'>
+            <feDropShadow
+              dx='0'
+              dy='2'
+              stdDeviation='4'
+              floodColor='rgba(0,0,0,0.3)'
+              floodOpacity='0.6'
+            />
+          </filter>
+          <filter id='train-shadow'>
+            <feDropShadow
+              dx='0'
+              dy='3'
+              stdDeviation='2.5'
+              floodColor='rgba(0,0,0,0.5)'
+              floodOpacity='0.7'
+            />
+          </filter>
+          <filter id='train-shadow-hover'>
+            <feDropShadow
+              dx='0'
+              dy='3'
+              stdDeviation='5'
+              floodColor='rgba(0,0,0,0.5)'
+              floodOpacity='0.7'
+            />
+          </filter>
+          <filter id='text-shadow'>
+            <feDropShadow dx='1' dy='1' stdDeviation='1.5' floodColor='black' floodOpacity='0.8' />
+          </filter>
+        </defs>
+
+        <image href={mapaImg} width={DIMENSIONS.width} height={DIMENSIONS.height} />
+
+        <g>
+          {ALL_STATION_IDS.map((stationId) => {
             const coords = stationCoordinates[stationId];
             if (!coords) return null;
 
+            const navigate = () => navigateTo(stationPath(stationId));
+
             return (
-              <div
-                key={`overlay-station-${stationId}`}
-                role='link'
-                tabIndex={0}
-                aria-label={`Station ${stationId}`}
-                onClick={() => navigateTo(stationPath(stationId))}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    navigateTo(stationPath(stationId));
-                  }
-                }}
+              <g
+                key={stationId}
+                className={styles.station}
+                onClick={navigate}
+                onKeyDown={handleKeyNav(navigate)}
                 onMouseEnter={() => setHoveredStation(stationId)}
                 onMouseLeave={() => setHoveredStation(null)}
-                className={styles.stationOverlay}
-                style={{ left: coords.x - OVERLAY_OFFSET, top: coords.y - OVERLAY_OFFSET }}
-              />
+                tabIndex={0}
+                role='link'
+                aria-label={`Station ${stationId}`}
+              >
+                <StationMarker
+                  cx={coords.x}
+                  cy={coords.y}
+                  lineColor={getLineColor(getStationLines(stationId)[0] ?? '')}
+                  isTransfer={isTransferStation(stationId)}
+                  isHovered={hoveredStation === stationId}
+                  hoverColor={HOVER_COLOR}
+                />
+              </g>
             );
           }).filter(Boolean)}
+        </g>
 
-        {backgroundImage &&
-          trainPositions.map((train) => (
-            <div
-              key={`overlay-train-${train.id}`}
-              role='link'
-              tabIndex={0}
-              aria-label={`Train ${train.id}`}
-              onClick={() => navigateTo(trainPath(train.id))}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  navigateTo(trainPath(train.id));
-                }
-              }}
-              onMouseEnter={() => setHoveredTrain(train.id)}
-              onMouseLeave={() => setHoveredTrain(null)}
-              className={styles.trainOverlay}
-              style={{
-                left: train.position.x - OVERLAY_OFFSET,
-                top: train.position.y - OVERLAY_OFFSET,
-              }}
-            />
-          ))}
+        <g>
+          {trainPositions.map((train) => {
+            const navigate = () => navigateTo(trainPath(train.id));
 
-        <Stage width={DIMENSIONS.width} height={DIMENSIONS.height} className={styles.stage}>
-          <Layer name='background'>
-            {backgroundImage && (
-              <KonvaImage
-                image={backgroundImage}
-                width={DIMENSIONS.width}
-                height={DIMENSIONS.height}
-                listening={false}
-              />
-            )}
-          </Layer>
-
-          <Layer name='stations'>
-            {ALL_STATION_IDS.map((stationId) => {
-              const coords = stationCoordinates[stationId];
-              if (!coords) return null;
-
-              const isHovered = hoveredStation === stationId;
-              const isTransfer = isTransferStation(stationId);
-              const lineColor = getLineColor(getStationLines(stationId)[0] ?? '');
-
-              return (
-                <Group key={`station-${stationId}`} x={coords.x} y={coords.y} listening={false}>
-                  {isTransfer ? (
-                    <>
-                      <Circle
-                        radius={isHovered ? 13 : 10}
-                        fill='white'
-                        stroke={isHovered ? HOVER_COLOR : lineColor}
-                        strokeWidth={isHovered ? 3 : 2}
-                        shadowColor={SHADOW.color}
-                        shadowBlur={isHovered ? 8 : 4}
-                        shadowOffset={SHADOW.offset}
-                        shadowOpacity={SHADOW.opacity}
-                      />
-                      <Circle radius={isHovered ? 11 : 8} fill={lineColor} />
-                    </>
-                  ) : (
-                    <Circle
-                      radius={isHovered ? 8 : 6}
-                      fill='white'
-                      stroke={isHovered ? HOVER_COLOR : lineColor}
-                      strokeWidth={isHovered ? 3 : 2}
-                      shadowColor={SHADOW.color}
-                      shadowBlur={isHovered ? 8 : 4}
-                      shadowOffset={SHADOW.offset}
-                      shadowOpacity={SHADOW.opacity}
-                    />
-                  )}
-                </Group>
-              );
-            }).filter(Boolean)}
-          </Layer>
-
-          <Layer name='trains'>
-            {trainPositions.map((train) => {
-              const isHovered = hoveredTrain === train.id;
-
-              return (
-                <Group
-                  key={`train-${train.id}`}
-                  x={train.position.x}
-                  y={train.position.y}
-                  listening={false}
-                >
-                  <Circle
-                    radius={isHovered ? 12 : 10}
-                    fill='#ED1C24'
-                    stroke='white'
-                    strokeWidth={isHovered ? 3 : 1.5}
-                    shadowColor={TRAIN_SHADOW.color}
-                    shadowBlur={isHovered ? 10 : 5}
-                    shadowOffset={TRAIN_SHADOW.offset}
-                    shadowOpacity={TRAIN_SHADOW.opacity}
-                  />
-                  <Arrow
-                    points={[0, 0, Math.cos(train.angle) * 20, Math.sin(train.angle) * 20]}
-                    pointerLength={6}
-                    pointerWidth={6}
-                    fill='white'
-                    stroke='white'
-                    strokeWidth={2}
-                  />
-                  <Text
-                    text={train.id.substring(0, 4)}
-                    fontSize={isHovered ? 12 : 10}
-                    fontStyle='bold'
-                    fill='white'
-                    offsetX={-8}
-                    offsetY={-12}
-                    shadowColor='black'
-                    shadowBlur={3}
-                    shadowOffset={{ x: 1, y: 1 }}
-                    shadowOpacity={0.8}
-                  />
-                </Group>
-              );
-            })}
-          </Layer>
-        </Stage>
-      </div>
+            return (
+              <g
+                key={train.id}
+                className={styles.train}
+                onClick={navigate}
+                onKeyDown={handleKeyNav(navigate)}
+                onMouseEnter={() => setHoveredTrain(train.id)}
+                onMouseLeave={() => setHoveredTrain(null)}
+                tabIndex={0}
+                role='link'
+                aria-label={`Train ${train.id}`}
+              >
+                <TrainMarker
+                  cx={train.position.x}
+                  cy={train.position.y}
+                  angle={train.angle}
+                  label={train.id.substring(0, 4)}
+                  isHovered={hoveredTrain === train.id}
+                />
+              </g>
+            );
+          })}
+        </g>
+      </svg>
     </div>
   );
 };
