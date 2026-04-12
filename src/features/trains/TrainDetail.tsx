@@ -46,9 +46,10 @@ const TrainDetail: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.lineStripe} style={{ backgroundColor: trainInfo.lineColor }} />
-
+      <div
+        className={styles.card}
+        style={{ "--line-color": trainInfo.lineColor } as React.CSSProperties}
+      >
         <div className={styles.titleRow}>
           <span className={styles.trainIcon}>🚇</span>
           <h1 className={styles.title}>Train {trainId}</h1>
@@ -63,58 +64,54 @@ const TrainDetail: React.FC = () => {
           </span>
         </div>
 
-        <div className={styles.direction}>
+        <p className={styles.direction}>
           Direction: <strong>{trainInfo.destination}</strong>
-        </div>
+        </p>
 
-        <div className={styles.section}>
+        <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Journey Information</h2>
-          <div className={styles.stationList}>
-            {trainInfo.nextStations.map((station, index) => (
-              <div key={`${station.stationId}-${index}`} className={styles.stationRow}>
-                <div className={styles.stationLeft}>
-                  <span
-                    className={styles.stationDot}
-                    style={{ backgroundColor: trainInfo.lineColor }}
-                  />
-                  <span style={{ fontWeight: index === 0 ? "bold" : "normal" }}>
-                    {station.stationName}
-                  </span>
-                  {index === 0 && <span className={styles.nextBadge}>Next station</span>}
-                </div>
-                <span className={`${styles.arrivalTime} ${index === 0 ? styles.highlight : ""}`}>
-                  {formatTimeInSeconds(station.arrivalTime)}
+          {trainInfo.nextStations.map((station, index) => (
+            <div key={`${station.stationId}-${index}`} className={styles.stationRow}>
+              <span className={styles.stationLeft}>
+                <span
+                  className={styles.stationDot}
+                  style={{ backgroundColor: trainInfo.lineColor }}
+                />
+                <span style={{ fontWeight: index === 0 ? "bold" : "normal" }}>
+                  {station.stationName}
                 </span>
-              </div>
-            ))}
-          </div>
-        </div>
+                {index === 0 && <span className={styles.nextBadge}>Next station</span>}
+              </span>
+              <span className={`${styles.arrivalTime} ${index === 0 ? styles.highlight : ""}`}>
+                {formatTimeInSeconds(station.arrivalTime)}
+              </span>
+            </div>
+          ))}
+        </section>
 
-        <div className={styles.section}>
+        <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Line Information</h2>
-          <div className={styles.infoRows}>
-            <div className={styles.infoRow}>
-              <span>Line:</span>
-              <strong>{trainInfo.line}</strong>
-            </div>
-            <div className={styles.infoRow}>
-              <span>Terminals:</span>
-              <div className={styles.terminals}>
-                {lineStations && (
-                  <>
-                    <span>{getStationNameById(lineStations[0])}</span>
-                    <span>→</span>
-                    <span>{getStationNameById(lineStations[lineStations.length - 1])}</span>
-                  </>
-                )}
-              </div>
-            </div>
-            <div className={styles.infoRow}>
-              <span>Total Stations:</span>
-              <strong>{lineStations?.length ?? "N/A"}</strong>
-            </div>
+          <div className={styles.infoRow}>
+            <span>Line:</span>
+            <strong>{trainInfo.line}</strong>
           </div>
-        </div>
+          <div className={styles.infoRow}>
+            <span>Terminals:</span>
+            <span className={styles.terminals}>
+              {lineStations && (
+                <>
+                  <span>{getStationNameById(lineStations[0])}</span>
+                  <span>→</span>
+                  <span>{getStationNameById(lineStations[lineStations.length - 1])}</span>
+                </>
+              )}
+            </span>
+          </div>
+          <div className={styles.infoRow}>
+            <span>Total Stations:</span>
+            <strong>{lineStations?.length ?? "N/A"}</strong>
+          </div>
+        </section>
       </div>
     </div>
   );

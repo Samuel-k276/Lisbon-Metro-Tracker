@@ -8,27 +8,29 @@
 
 .card {
   padding: 1.5rem;
+  padding-top: 2rem;
   margin: 2rem 0;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
-}
 
-.lineStripe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 8px;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background-color: var(--line-color);
+  }
 }
 
 .titleRow {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding-top: 1rem;
   margin-bottom: 0.5rem;
 }
 
@@ -78,13 +80,6 @@
   margin-bottom: 1rem;
 }
 
-.stationList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-
 .stationRow {
   display: flex;
   justify-content: space-between;
@@ -129,21 +124,15 @@
   }
 }
 
-.infoRows {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-}
-
 .infoRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.25rem 0;
 }
 
 .terminals {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
 }

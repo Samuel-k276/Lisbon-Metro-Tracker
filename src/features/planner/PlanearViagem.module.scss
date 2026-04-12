@@ -114,18 +114,21 @@
 }
 
 .statCard {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
   align-items: center;
+  column-gap: 0.75rem;
   padding: 0.75rem;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   min-width: 150px;
-  gap: 0.75rem;
 }
 
 .statIcon {
   font-size: 1.5rem;
   color: $primary-color;
+  grid-row: 1 / -1;
 }
 
 .statLabel {

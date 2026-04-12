@@ -116,24 +116,18 @@ const PlanearViagem: React.FC = () => {
           <div className={styles.statsRow}>
             <div className={styles.statCard}>
               <span className={styles.statIcon}>⏱</span>
-              <div>
-                <div className={styles.statLabel}>Tempo Total</div>
-                <div className={styles.statValue}>{resultados.tempoTotal} min</div>
-              </div>
+              <span className={styles.statLabel}>Tempo Total</span>
+              <span className={styles.statValue}>{resultados.tempoTotal} min</span>
             </div>
             <div className={styles.statCard}>
               <span className={styles.statIcon}>🚇</span>
-              <div>
-                <div className={styles.statLabel}>Estações</div>
-                <div className={styles.statValue}>{resultados.estacoes}</div>
-              </div>
+              <span className={styles.statLabel}>Estações</span>
+              <span className={styles.statValue}>{resultados.estacoes}</span>
             </div>
             <div className={styles.statCard}>
               <span className={styles.statIcon}>🔄</span>
-              <div>
-                <div className={styles.statLabel}>Mudanças de Linha</div>
-                <div className={styles.statValue}>{resultados.trocasLinha}</div>
-              </div>
+              <span className={styles.statLabel}>Mudanças de Linha</span>
+              <span className={styles.statValue}>{resultados.trocasLinha}</span>
             </div>
           </div>
 
