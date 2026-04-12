@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Routes as RouterRoutes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes as RouterRoutes, Route } from 'react-router';
 
 import { Home } from '@/features/map/Home';
 import { Footer } from '@/layout/Footer';
