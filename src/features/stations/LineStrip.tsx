@@ -28,8 +28,6 @@ const LineStrip: React.FC<LineStripProps> = ({ lineName, currentStationId }) => 
     track.scrollLeft = Math.max(0, offset);
   }, [currentStationId]);
 
-  if (!lineData) return null;
-
   const lineColor = getLineColor(lineName);
 
   return (
