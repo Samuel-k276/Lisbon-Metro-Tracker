@@ -39,6 +39,7 @@ const TrainMap: React.FC = () => {
       <svg
         className={styles.map}
         viewBox={`0 0 ${DIMENSIONS.width} ${DIMENSIONS.height}`}
+        preserveAspectRatio='xMinYMin meet'
         role='img'
         aria-label='Mapa do Metro de Lisboa com posições dos comboios em tempo real'
       >
