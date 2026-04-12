@@ -12,6 +12,7 @@
     "fmt:check": "oxfmt --check src/",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
