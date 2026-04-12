@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
@@ -39,5 +40,30 @@ describe('Header', () => {
     );
     expect(screen.getByText('Planeia Viagem').closest('a')).toHaveAttribute('href', Routes.PLANNER);
     expect(screen.getByText('Alertas').closest('a')).toHaveAttribute('href', Routes.ALERTS);
+  });
+
+  it('hamburger button has correct aria-label', () => {
+    renderHeader();
+    expect(
+      screen.getByRole('button', { name: 'Abrir/fechar menu de navegação' }),
+    ).toBeInTheDocument();
+  });
+
+  it('hamburger button toggles aria-expanded on click', async () => {
+    const user = userEvent.setup();
+    renderHeader();
+    const button = screen.getByRole('button', { name: 'Abrir/fechar menu de navegação' });
+    expect(button).toHaveAttribute('aria-expanded', 'false');
+
+    await user.click(button);
+    expect(button).toHaveAttribute('aria-expanded', 'true');
+
+    await user.click(button);
+    expect(button).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('navigation has aria-label', () => {
+    renderHeader();
+    expect(screen.getByRole('navigation', { name: 'Main navigation' })).toBeInTheDocument();
   });
 });
