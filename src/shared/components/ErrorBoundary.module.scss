@@ -1,0 +1,49 @@
+@use '../styles/variables' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  text-align: center;
+  background-color: $background-light;
+}
+
+.code {
+  font-size: 8rem;
+  font-weight: 800;
+  color: $primary-color;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: $text-dark;
+  margin-bottom: 0.5rem;
+}
+
+.message {
+  color: #666;
+  margin-bottom: 2rem;
+  max-width: 400px;
+}
+
+.reloadButton {
+  padding: 0.75rem 2rem;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}

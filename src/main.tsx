@@ -10,6 +10,7 @@ import { Alerts } from '@/features/alerts/Alerts';
 import { PlanearViagem } from '@/features/planner/PlanearViagem';
 import { TrainProvider } from '@/shared/contexts/TrainContext';
 import { Routes } from '@/shared/routes';
+import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import '@/shared/styles/global.scss';
 
 const App: React.FC = () => {
@@ -35,6 +36,8 @@ const App: React.FC = () => {
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </React.StrictMode>,
 );
