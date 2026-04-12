@@ -9,9 +9,9 @@ import { mockUseTrain } from '@/shared/hooks/spec/mockUseTrain';
 
 const renderWithRoute = (trainId: string) => {
   render(
-    <MemoryRouter initialEntries={[`/train/${trainId}`]}>
+    <MemoryRouter initialEntries={[`/comboio/${trainId}`]}>
       <Routes>
-        <Route path='/train/:trainId' element={<TrainDetail />} />
+        <Route path='/comboio/:trainId' element={<TrainDetail />} />
       </Routes>
     </MemoryRouter>,
   );

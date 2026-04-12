@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router';
 import { Spinner } from '@/shared/components/Spinner';
 import { stationMappings } from '@/shared/data/stationMappings';
 import { useStation } from '@/shared/hooks/useStation';
-import { stationPath } from '@/shared/routes';
+import { stationPath, slugToStationId } from '@/shared/routes';
 import { getLineNameFromDestination } from '@/shared/utils/helpers';
 
 import { NextTrainsTable } from './NextTrainsTable';
@@ -24,10 +24,11 @@ const COLOR_ORDER: Record<string, number> = {
 };
 
 const StationDetail: React.FC = () => {
-  const { stationId } = useParams<{ stationId: string }>();
+  const { stationSlug } = useParams<{ stationSlug: string }>();
+  const stationId = stationSlug ? slugToStationId[stationSlug] : undefined;
   const { station, loading, error } = useStation(stationId);
 
-  if (!stationId) return <p>Estação não encontrada</p>;
+  if (!stationSlug || !stationId) return <p>Estação não encontrada</p>;
 
   if (loading)
     return (

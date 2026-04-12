@@ -7,11 +7,11 @@ vi.mock('@/shared/hooks/useStation');
 import { StationDetail } from '@/features/stations/StationDetail';
 import { mockUseStation, defaultStation } from '@/shared/hooks/spec/mockUseStation';
 
-const renderWithRoute = (stationId: string) => {
+const renderWithRoute = (slug: string) => {
   render(
-    <MemoryRouter initialEntries={[`/station/${stationId}`]}>
+    <MemoryRouter initialEntries={[`/estacao/${slug}`]}>
       <Routes>
-        <Route path='/station/:stationId' element={<StationDetail />} />
+        <Route path='/estacao/:stationSlug' element={<StationDetail />} />
       </Routes>
     </MemoryRouter>,
   );
@@ -25,36 +25,36 @@ describe('StationDetail', () => {
 
   it('shows loading spinner', () => {
     mockUseStation({ station: null, loading: true });
-    renderWithRoute('AM');
+    renderWithRoute('alameda');
     expect(document.querySelector("[class*='spinner']")).toBeInTheDocument();
   });
 
   it('shows error state', () => {
     mockUseStation({ station: null, error: 'Connection failed' });
-    renderWithRoute('AM');
+    renderWithRoute('alameda');
     expect(screen.getByText(/Connection failed/)).toBeInTheDocument();
   });
 
   it('shows station not found', () => {
     mockUseStation({ station: null });
-    renderWithRoute('AM');
+    renderWithRoute('alameda');
     expect(screen.getByText('Estação não encontrada')).toBeInTheDocument();
   });
 
   it('renders station name and info', () => {
-    renderWithRoute('AM');
+    renderWithRoute('alameda');
     expect(screen.getByRole('heading', { name: /Alameda/ })).toBeInTheDocument();
     expect(screen.getByText(/Verde, Vermelha/)).toBeInTheDocument();
   });
 
   it('renders destination chips', () => {
-    renderWithRoute('AM');
+    renderWithRoute('alameda');
     expect(screen.getAllByText('Telheiras').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('Cais do Sodré').length).toBeGreaterThanOrEqual(1);
   });
 
   it('renders next trains table', () => {
-    renderWithRoute('AM');
+    renderWithRoute('alameda');
     expect(screen.getByText('Destino')).toBeInTheDocument();
     expect(screen.getByText('Tempo 1')).toBeInTheDocument();
     expect(screen.getByText('2m 0s')).toBeInTheDocument();
@@ -62,7 +62,7 @@ describe('StationDetail', () => {
 
   it('shows no upcoming trains when empty', () => {
     mockUseStation({ station: { ...defaultStation, nextTrains: [] } });
-    renderWithRoute('AM');
+    renderWithRoute('alameda');
     expect(screen.getByText('Sem comboios previstos')).toBeInTheDocument();
   });
 });
