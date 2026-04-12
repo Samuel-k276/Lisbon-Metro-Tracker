@@ -6,7 +6,6 @@
 // Importando os dados das estações e das linhas
 import { stationMappings } from "@/shared/data/stationMappings";
 import { lines } from "@/shared/data/staticData";
-import TinyQueue from "tinyqueue";
 
 /**
  * Interface para representar um nó do grafo (uma estação)
@@ -133,17 +132,18 @@ class MetroGraph {
     const previous = new Map<string, string[] | null>();
     const visited = new Set<string>();
     // Queue with priority based on distance [distance, nodeId]
-    const queue = new TinyQueue<[number, string]>([], (a, b) => a[0] - b[0]);
+    const queue: Array<[number, string]> = [];
 
     for (const node of this.nodes.values()) {
       distances.set(node.id, [Infinity, [""]]); // [distância, linha]
       previous.set(node.id, null);
     }
 
-    distances.set(fromId, [0, this.nodes.get(fromId)!.lines]); // [distância, linha]
+    distances.set(fromId, [0, this.nodes.get(fromId)!.lines]);
     queue.push([0, fromId]);
 
     while (queue.length > 0) {
+      queue.sort((a, b) => b[0] - a[0]);
       const [currentDistance, currentId] = queue.pop()!;
       const currentNode = this.nodes.get(currentId);
 

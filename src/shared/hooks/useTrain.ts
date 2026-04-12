@@ -15,15 +15,14 @@ const buildTrainInfo = (trainId: string, train: Train): TrainInfo | null => {
   const lineName = getTrainLine(trainId);
   const lineColor = LINE_COLORS[lineName as LineNames] || "#888888";
 
-  const stationArrivals = Array.from(train.stationArrivals);
-  if (stationArrivals.length === 0) return null;
+  if (train.stationArrivals.length === 0) return null;
 
-  const firstArrival = stationArrivals[0];
+  const firstArrival = train.stationArrivals[0];
   if (!firstArrival) return null;
 
   const [, [, destinationId]] = firstArrival;
 
-  const nextStations = stationArrivals.map(([arrivalTime, stationInfo]) => {
+  const nextStations = train.stationArrivals.map(([arrivalTime, stationInfo]) => {
     const [stationId] = stationInfo;
     return {
       stationId,

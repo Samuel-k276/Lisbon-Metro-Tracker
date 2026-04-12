@@ -2,7 +2,6 @@ import type { Train } from "@/shared/types/metro";
 import type { TrainArrival } from "@/shared/api/responseTypes";
 import { getDestinationId } from "@/shared/data/stationMappings";
 import { apiFetch } from "@/shared/api/client";
-import { OrderedMap } from "js-sdsl";
 
 const fetchTrainData = async (): Promise<Record<string, Train>> => {
   try {
@@ -16,7 +15,7 @@ const fetchTrainData = async (): Promise<Record<string, Train>> => {
     const trains: Record<string, Train> = {};
 
     for (const response of data.resposta) {
-      const trainArrival: TrainArrival = response as TrainArrival;
+      const trainArrival = response as TrainArrival;
 
       const trainData = [
         { id: trainArrival.comboio, time: trainArrival.tempoChegada1 },
@@ -29,21 +28,20 @@ const fetchTrainData = async (): Promise<Record<string, Train>> => {
           if (!trains[train.id]) {
             trains[train.id] = {
               id: train.id,
-              stationArrivals: new OrderedMap<number, [string, string]>([
-                [
-                  parseInt(train.time),
-                  [trainArrival.stop_id.toString(), getDestinationId(trainArrival.destino)],
-                ] as [number, [string, string]],
-              ]),
+              stationArrivals: [],
             };
-          } else {
-            trains[train.id]!.stationArrivals.setElement(parseInt(train.time), [
-              trainArrival.stop_id.toString(),
-              getDestinationId(trainArrival.destino),
-            ]);
           }
+          trains[train.id]!.stationArrivals.push([
+            parseInt(train.time),
+            [trainArrival.stop_id.toString(), getDestinationId(trainArrival.destino)],
+          ]);
         }
       }
+    }
+
+    // Sort each train's arrivals by time ascending
+    for (const train of Object.values(trains)) {
+      train.stationArrivals.sort((a, b) => a[0] - b[0]);
     }
 
     return trains;

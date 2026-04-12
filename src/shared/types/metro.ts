@@ -1,4 +1,3 @@
-import { OrderedMap } from "js-sdsl";
 import type { LineNames } from "@/shared/data/metroLines";
 
 type Coordinates = {
@@ -50,9 +49,11 @@ type LineState = {
   message: string;
 };
 
+type StationArrival = [number, [string, string]]; // [arrivalTime, [stationId, destinationId]]
+
 type Train = {
   id: string;
-  stationArrivals: OrderedMap<number, [string, string]>;
+  stationArrivals: StationArrival[];
 };
 
 export type {
@@ -63,5 +64,6 @@ export type {
   NextTrainsResponse,
   Destination,
   LineState,
+  StationArrival,
   Train,
 };

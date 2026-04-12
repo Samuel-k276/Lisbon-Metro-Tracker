@@ -83,10 +83,9 @@ const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const result: TrainPosition[] = [];
 
     for (const [trainId, train] of Object.entries(trainData)) {
-      const stationArrivals = Array.from(train.stationArrivals);
-      if (stationArrivals.length < 1) continue;
+      if (train.stationArrivals.length < 1) continue;
 
-      const firstArrival = stationArrivals[0];
+      const firstArrival = train.stationArrivals[0];
       if (!firstArrival) continue;
       const [waitingTime, stationInfo] = firstArrival;
       const [nextStationId, destinationId] = stationInfo;
