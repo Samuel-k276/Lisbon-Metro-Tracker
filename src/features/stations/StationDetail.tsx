@@ -27,7 +27,7 @@ const COLOR_ORDER: Record<string, number> = {
 const StationDetail: React.FC = () => {
   const { stationSlug } = useParams<{ stationSlug: string }>();
   const stationId = stationSlug ? slugToStationId[stationSlug] : undefined;
-  const { station, loading, error, retry } = useStation(stationId);
+  const { station, loading, error } = useStation(stationId);
 
   if (!stationSlug || !stationId) return <p>Estação não encontrada</p>;
 
@@ -43,9 +43,6 @@ const StationDetail: React.FC = () => {
         <p className={styles.error} role='alert'>
           {error}
         </p>
-        <button className={styles.retryButton} onClick={retry}>
-          Tentar novamente
-        </button>
       </div>
     );
   if (!station)

@@ -38,7 +38,6 @@ const defaultUseStationReturn: UseStationReturn = {
   station: defaultStation,
   loading: false,
   error: null,
-  retry: vi.fn(),
 };
 
 const mockUseStation = (overrides: Partial<UseStationReturn> = {}) => {
