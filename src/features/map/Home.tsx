@@ -6,10 +6,8 @@ const Home: React.FC = () => {
   return (
     <div className={styles.homePage}>
       <h1>Lisbon Metro Station Map</h1>
-      <div className={styles.metroContainer}>
-        <div className={styles.mapContainer}>
-          <TrainMap />
-        </div>
+      <div className={styles.mapContainer}>
+        <TrainMap />
       </div>
     </div>
   );

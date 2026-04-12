@@ -24,14 +24,10 @@ const Header: React.FC = () => {
   return (
     <header className={`${styles.header} ${isScrolled ? styles.headerScrolled : ""}`}>
       <div className={`container ${styles.headerContainer}`}>
-        <div className={styles.logoContainer}>
-          <Link to={Routes.HOME}>
-            <div className={styles.logoWrapper}>
-              <span className={styles.logoIcon}>M</span>
-              <span className={styles.logoText}>Metro Lisboa</span>
-            </div>
-          </Link>
-        </div>
+        <Link to={Routes.HOME} className={styles.logoWrapper}>
+          <span className={styles.logoIcon}>M</span>
+          <span className={styles.logoText}>Metro Lisboa</span>
+        </Link>
 
         <div className={styles.hamburgerMenu} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
           <div

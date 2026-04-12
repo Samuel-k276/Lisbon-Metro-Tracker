@@ -2,56 +2,8 @@
 
 .footer {
   background-color: $background-dark;
-  color: $text-light;
-  padding: 2.5rem 0 1rem;
-}
-
-.footerColumns {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.footerColumn {
-  flex: 1;
-  min-width: 200px;
-
-  h4 {
-    margin-bottom: 1rem;
-    border-bottom: 2px solid $primary-color;
-    padding-bottom: 0.5rem;
-  }
-
-  ul {
-    list-style: none;
-  }
-
-  li {
-    margin-bottom: 0.5rem;
-  }
-
-  a {
-    color: #ccc;
-    text-decoration: none;
-    transition: color 0.3s;
-
-    &:hover {
-      color: $primary-color;
-    }
-  }
-}
-
-.footerBottom {
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 0.9rem;
   color: #999;
-}
-
-@media (max-width: $mobile) {
-  .footerColumns {
-    flex-direction: column;
-  }
+  padding: 2.5rem 0 1rem;
+  font-size: 0.9rem;
+  text-align: center;
 }
