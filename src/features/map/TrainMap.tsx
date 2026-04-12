@@ -8,6 +8,7 @@ import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
 import { stationPath, trainPath } from '@/shared/routes';
 import { getStationLines, getLineColor, isTransferStation } from '@/shared/utils/metroUtils';
 
+import { LastUpdated } from './LastUpdated';
 import { StationMarker } from './StationMarker';
 import { TrainMarker } from './TrainMarker';
 
@@ -30,11 +31,12 @@ const TrainMap: React.FC = () => {
   const [hoveredStation, setHoveredStation] = useState<string | null>(null);
   const [hoveredTrain, setHoveredTrain] = useState<string | null>(null);
 
-  const { trainPositions, error: loadingError } = useTrains();
+  const { trainPositions, error: loadingError, lastUpdated } = useTrains();
 
   return (
     <div className={styles.container}>
       {loadingError && <div className={styles.errorBanner}>{loadingError}</div>}
+      <LastUpdated timestamp={lastUpdated} />
 
       <svg
         className={styles.map}

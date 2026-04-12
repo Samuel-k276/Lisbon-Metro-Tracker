@@ -28,6 +28,7 @@ describe('TrainMap', () => {
       trainPositions: [],
       loading: false,
       error: null,
+      lastUpdated: null,
     });
   });
 
@@ -52,6 +53,7 @@ describe('TrainMap', () => {
       trainPositions: [],
       loading: false,
       error: 'Falha ao carregar dados dos comboios',
+      lastUpdated: null,
     });
 
     renderTrainMap();
@@ -74,6 +76,7 @@ describe('TrainMap', () => {
       ],
       loading: false,
       error: null,
+      lastUpdated: null,
     });
 
     renderTrainMap();

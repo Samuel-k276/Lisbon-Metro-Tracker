@@ -28,6 +28,7 @@ type TrainContextValue = {
   trainPositions: TrainPosition[];
   loading: boolean;
   error: string | null;
+  lastUpdated: number | null;
 };
 
 const TrainContext = createContext<TrainContextValue | null>(null);
@@ -61,12 +62,14 @@ const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [trainData, setTrainData] = useState<Record<string, Train> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchTrainData();
         setTrainData(data);
+        setLastUpdated(Date.now());
         setError(null);
       } catch (err) {
         logger.error('Error fetching train data:', err);
@@ -135,8 +138,8 @@ const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, [trainData]);
 
   const value = useMemo(
-    () => ({ trainData, trainPositions, loading, error }),
-    [trainData, trainPositions, loading, error],
+    () => ({ trainData, trainPositions, loading, error, lastUpdated }),
+    [trainData, trainPositions, loading, error, lastUpdated],
   );
 
   return <TrainContext.Provider value={value}>{children}</TrainContext.Provider>;

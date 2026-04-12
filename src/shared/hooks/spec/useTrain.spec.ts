@@ -25,6 +25,7 @@ describe('useTrain', () => {
       trainPositions: [],
       loading: false,
       error: null,
+      lastUpdated: null,
     });
   });
 
@@ -55,6 +56,7 @@ describe('useTrain', () => {
       trainPositions: [],
       loading: true,
       error: null,
+      lastUpdated: null,
     });
     const { result } = renderHook(() => useTrain('ML001A'));
     expect(result.current.loading).toBe(true);
@@ -72,6 +74,7 @@ describe('useTrain', () => {
       trainPositions: [],
       loading: true,
       error: 'Network error',
+      lastUpdated: null,
     });
     const { result } = renderHook(() => useTrain('ML001A'));
     expect(result.current.error).toBe('Network error');
