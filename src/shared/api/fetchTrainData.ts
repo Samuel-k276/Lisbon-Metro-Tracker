@@ -2,6 +2,7 @@ import type { Train } from '@/shared/types/metro';
 import type { TrainArrival } from '@/shared/api/responseTypes';
 import { getDestinationId } from '@/shared/data/stationMappings';
 import { apiFetch } from '@/shared/api/client';
+import { logger } from '@/shared/utils/logger';
 
 const fetchTrainData = async (): Promise<Record<string, Train>> => {
   try {
@@ -46,8 +47,7 @@ const fetchTrainData = async (): Promise<Record<string, Train>> => {
 
     return trains;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error fetching waiting times:', error);
+    logger.error('Error fetching waiting times:', error);
     return {};
   }
 };

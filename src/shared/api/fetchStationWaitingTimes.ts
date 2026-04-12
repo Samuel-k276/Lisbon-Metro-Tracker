@@ -1,6 +1,7 @@
 import type { Station, NextTrainsResponse } from '@/shared/types/metro';
 import { getStationById, getDestinationNameById } from '@/shared/data/stationMappings';
 import { apiFetch } from '@/shared/api/client';
+import { logger } from '@/shared/utils/logger';
 
 type PlatformResponse = {
   stop_id: string;
@@ -78,8 +79,7 @@ const fetchStationWaitingTimes = async (stationId: string): Promise<Station | nu
 
     return station;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error fetching station:', error);
+    logger.error('Error fetching station:', error);
     return null;
   }
 };

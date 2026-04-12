@@ -1,5 +1,6 @@
 import type { LineState } from '@/shared/types/metro';
 import { apiFetch } from '@/shared/api/client';
+import { logger } from '@/shared/utils/logger';
 
 type LineStateApiResponse = {
   codigo: string;
@@ -47,8 +48,7 @@ const fetchLineStateAll = async (): Promise<LineState[]> => {
 
     return lineStates;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error fetching line state:', error);
+    logger.error('Error fetching line state:', error);
     return [];
   }
 };

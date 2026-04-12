@@ -10,6 +10,7 @@ import { fetchTrainData } from '@/shared/api/fetchTrainData';
 import type { Train } from '@/shared/types/metro';
 import { stationCoordinates, lines } from '@/shared/data/staticData';
 import { getTrainLine } from '@/shared/utils/metroUtils';
+import { logger } from '@/shared/utils/logger';
 
 type TrainPosition = {
   id: string;
@@ -65,8 +66,7 @@ const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         setTrainData(data);
         setError(null);
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Error fetching train data:', err);
+        logger.error('Error fetching train data:', err);
         setError('Falha ao carregar dados dos comboios');
       } finally {
         setLoading(false);
