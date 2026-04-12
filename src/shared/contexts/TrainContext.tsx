@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useMemo } from "react";
+import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
 import type { ReactNode } from "react";
 import { fetchTrainData } from "@/shared/api/metro";
 import type { Train } from "@/shared/types/metro";

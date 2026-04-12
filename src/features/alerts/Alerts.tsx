@@ -1,3 +1,4 @@
+import React from "react";
 import { fetchLineStateAll } from "@/shared/api/metro";
 import type { LineState } from "@/shared/types/metro";
 import { useEffect, useState } from "react";
