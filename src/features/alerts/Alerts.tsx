@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { fetchLineStateAll } from "@/shared/api/fetchLineState";
-import type { LineState } from "@/shared/types/metro";
-import { LineStatusCard } from "./LineStatusCard";
-import styles from "./Alerts.module.scss";
+import React, { useEffect, useState } from 'react';
+import { fetchLineStateAll } from '@/shared/api/fetchLineState';
+import type { LineState } from '@/shared/types/metro';
+import { LineStatusCard } from './LineStatusCard';
+import styles from './Alerts.module.scss';
 
 const Alerts: React.FC = () => {
   const [lineStates, setLineStates] = useState<LineState[]>([]);
@@ -15,7 +15,7 @@ const Alerts: React.FC = () => {
         const states = await fetchLineStateAll();
         setLineStates(states);
       } catch {
-        setError("Failed to fetch line states");
+        setError('Failed to fetch line states');
       } finally {
         setLoading(false);
       }

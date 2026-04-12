@@ -1,9 +1,9 @@
-import React from "react";
-import { getLineColor } from "@/shared/utils/metroUtils";
-import styles from "./PlanearViagem.module.scss";
+import React from 'react';
+import { getLineColor } from '@/shared/utils/metroUtils';
+import styles from './PlanearViagem.module.scss';
 
 type RouteLegProps = {
-  tipo: "viagem" | "troca de linha";
+  tipo: 'viagem' | 'troca de linha';
   de: string;
   para: string;
   linha?: string;
@@ -16,7 +16,7 @@ const LineChip: React.FC<{ name: string }> = ({ name }) => (
     className={styles.chip}
     style={{
       backgroundColor: getLineColor(name),
-      color: name === "Amarela" ? "#000" : "#fff",
+      color: name === 'Amarela' ? '#000' : '#fff',
     }}
   >
     {name}
@@ -24,9 +24,9 @@ const LineChip: React.FC<{ name: string }> = ({ name }) => (
 );
 
 const TravelLeg: React.FC<RouteLegProps> = ({ de, para, linha, tempo, estacoes }) => (
-  <div className={styles.legTravel} style={{ borderLeftColor: getLineColor(linha ?? "") }}>
+  <div className={styles.legTravel} style={{ borderLeftColor: getLineColor(linha ?? '') }}>
     <div className={styles.legHeader}>
-      <span className={styles.legIcon} style={{ color: getLineColor(linha ?? "") }}>
+      <span className={styles.legIcon} style={{ color: getLineColor(linha ?? '') }}>
         🚇
       </span>
       <span>
@@ -54,7 +54,7 @@ const TransferLeg: React.FC<RouteLegProps> = ({ de, para, tempo }) => (
 );
 
 const RouteLeg: React.FC<RouteLegProps> = (props) => {
-  if (props.tipo === "viagem") return <TravelLeg {...props} />;
+  if (props.tipo === 'viagem') return <TravelLeg {...props} />;
   return <TransferLeg {...props} />;
 };
 

@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import type { Station } from "@/shared/types/metro";
-import { fetchStationWaitingTimes } from "@/shared/api/fetchStationWaitingTimes";
+import { useState, useEffect } from 'react';
+import type { Station } from '@/shared/types/metro';
+import { fetchStationWaitingTimes } from '@/shared/api/fetchStationWaitingTimes';
 
 type UseStationResult = {
   station: Station | null;
@@ -16,7 +16,7 @@ const useStation = (stationId: string | undefined): UseStationResult => {
   useEffect(() => {
     if (!stationId) {
       setLoading(false);
-      setError("No station ID provided");
+      setError('No station ID provided');
       return;
     }
 

@@ -1,8 +1,8 @@
-import { useMemo } from "react";
-import { useTrains } from "@/shared/contexts/TrainContext";
-import { getTrainLine, getStationNameById } from "@/shared/utils/metroUtils";
-import { LINE_COLORS, type LineNames } from "@/shared/data/metroLines";
-import type { Train } from "@/shared/types/metro";
+import { useMemo } from 'react';
+import { useTrains } from '@/shared/contexts/TrainContext';
+import { getTrainLine, getStationNameById } from '@/shared/utils/metroUtils';
+import { LINE_COLORS, type LineNames } from '@/shared/data/metroLines';
+import type { Train } from '@/shared/types/metro';
 
 type TrainInfo = {
   line: string;
@@ -13,7 +13,7 @@ type TrainInfo = {
 
 const buildTrainInfo = (trainId: string, train: Train): TrainInfo | null => {
   const lineName = getTrainLine(trainId);
-  const lineColor = LINE_COLORS[lineName as LineNames] || "#888888";
+  const lineColor = LINE_COLORS[lineName as LineNames] || '#888888';
 
   if (train.stationArrivals.length === 0) return null;
 
@@ -34,7 +34,7 @@ const buildTrainInfo = (trainId: string, train: Train): TrainInfo | null => {
   return {
     line: lineName,
     lineColor,
-    destination: getStationNameById(destinationId, ""),
+    destination: getStationNameById(destinationId, ''),
     nextStations,
   };
 };

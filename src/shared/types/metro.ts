@@ -1,4 +1,4 @@
-import type { LineNames } from "@/shared/data/metroLines";
+import type { LineNames } from '@/shared/data/metroLines';
 
 type Coordinates = {
   x: number;

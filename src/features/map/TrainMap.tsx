@@ -1,14 +1,14 @@
-import React from "react";
-import { useNavigateTo } from "@/shared/hooks/useNavigateTo";
-import { stationPath, trainPath } from "@/shared/routes";
-import { Stage, Layer, Circle, Group, Image as KonvaImage, Arrow, Text } from "react-konva";
-import mapaImg from "@/assets/mapa.png";
-import { useState, useEffect } from "react";
+import React from 'react';
+import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
+import { stationPath, trainPath } from '@/shared/routes';
+import { Stage, Layer, Circle, Group, Image as KonvaImage, Arrow, Text } from 'react-konva';
+import mapaImg from '@/assets/mapa.png';
+import { useState, useEffect } from 'react';
 
-import { stationCoordinates, lines } from "@/shared/data/staticData";
-import { getStationLines, getLineColor, isTransferStation } from "@/shared/utils/metroUtils";
-import { useTrains } from "@/shared/contexts/TrainContext";
-import styles from "./TrainMap.module.scss";
+import { stationCoordinates, lines } from '@/shared/data/staticData';
+import { getStationLines, getLineColor, isTransferStation } from '@/shared/utils/metroUtils';
+import { useTrains } from '@/shared/contexts/TrainContext';
+import styles from './TrainMap.module.scss';
 
 const DIMENSIONS = { width: 1034.4, height: 720 };
 
@@ -83,9 +83,9 @@ const TrainMap: React.FC = () => {
         <Stage
           width={DIMENSIONS.width}
           height={DIMENSIONS.height}
-          style={{ position: "absolute", top: 0, left: 0 }}
+          style={{ position: 'absolute', top: 0, left: 0 }}
         >
-          <Layer name="background">
+          <Layer name='background'>
             {backgroundImage && (
               <KonvaImage
                 image={backgroundImage}
@@ -96,7 +96,7 @@ const TrainMap: React.FC = () => {
             )}
           </Layer>
 
-          <Layer name="stations">
+          <Layer name='stations'>
             {Object.values(lines)
               .flatMap((lineData) =>
                 lineData.stations.map((stationId) => {
@@ -112,34 +112,34 @@ const TrainMap: React.FC = () => {
                         <>
                           <Circle
                             radius={hoveredStation === stationId ? 13 : 10}
-                            fill="white"
+                            fill='white'
                             stroke={
                               hoveredStation === stationId
-                                ? "#2196F3"
-                                : getLineColor(stationLines[0] ?? "")
+                                ? '#2196F3'
+                                : getLineColor(stationLines[0] ?? '')
                             }
                             strokeWidth={hoveredStation === stationId ? 3 : 2}
-                            shadowColor="rgba(0,0,0,0.3)"
+                            shadowColor='rgba(0,0,0,0.3)'
                             shadowBlur={hoveredStation === stationId ? 8 : 4}
                             shadowOffset={{ x: 0, y: 2 }}
                             shadowOpacity={0.6}
                           />
                           <Circle
                             radius={hoveredStation === stationId ? 11 : 8}
-                            fill={getLineColor(stationLines[0] ?? "")}
+                            fill={getLineColor(stationLines[0] ?? '')}
                           />
                         </>
                       ) : (
                         <Circle
                           radius={hoveredStation === stationId ? 8 : 6}
-                          fill="white"
+                          fill='white'
                           stroke={
                             hoveredStation === stationId
-                              ? "#2196F3"
-                              : getLineColor(stationLines[0] ?? "")
+                              ? '#2196F3'
+                              : getLineColor(stationLines[0] ?? '')
                           }
                           strokeWidth={hoveredStation === stationId ? 3 : 2}
-                          shadowColor="rgba(0,0,0,0.3)"
+                          shadowColor='rgba(0,0,0,0.3)'
                           shadowBlur={hoveredStation === stationId ? 8 : 4}
                           shadowOffset={{ x: 0, y: 2 }}
                           shadowOpacity={0.6}
@@ -152,7 +152,7 @@ const TrainMap: React.FC = () => {
               .filter(Boolean)}
           </Layer>
 
-          <Layer name="trains">
+          <Layer name='trains'>
             {trainPositions.map((train) => (
               <Group
                 key={`train-${train.id}`}
@@ -162,10 +162,10 @@ const TrainMap: React.FC = () => {
               >
                 <Circle
                   radius={hoveredTrain === train.id ? 12 : 10}
-                  fill="#ED1C24"
-                  stroke="white"
+                  fill='#ED1C24'
+                  stroke='white'
                   strokeWidth={hoveredTrain === train.id ? 3 : 1.5}
-                  shadowColor="rgba(0,0,0,0.5)"
+                  shadowColor='rgba(0,0,0,0.5)'
                   shadowBlur={hoveredTrain === train.id ? 10 : 5}
                   shadowOffset={{ x: 0, y: 3 }}
                   shadowOpacity={0.7}
@@ -174,18 +174,18 @@ const TrainMap: React.FC = () => {
                   points={[0, 0, Math.cos(train.angle) * 20, Math.sin(train.angle) * 20]}
                   pointerLength={6}
                   pointerWidth={6}
-                  fill="white"
-                  stroke="white"
+                  fill='white'
+                  stroke='white'
                   strokeWidth={2}
                 />
                 <Text
                   text={train.id.substring(0, 4)}
                   fontSize={hoveredTrain === train.id ? 12 : 10}
-                  fontStyle="bold"
-                  fill="white"
+                  fontStyle='bold'
+                  fill='white'
                   offsetX={-8}
                   offsetY={-12}
-                  shadowColor="black"
+                  shadowColor='black'
                   shadowBlur={3}
                   shadowOffset={{ x: 1, y: 1 }}
                   shadowOpacity={0.8}

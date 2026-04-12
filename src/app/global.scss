@@ -1,4 +1,4 @@
-@use "../shared/styles/variables" as *;
+@use '../shared/styles/variables' as *;
 
 :root {
   --primary-color: #{$primary-color};
@@ -29,7 +29,7 @@ body {
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: $text-dark;
   background-color: $background-light;

@@ -1,22 +1,22 @@
-import { vi } from "vitest";
-import type { Train } from "@/shared/types/metro";
-import { useTrain } from "@/shared/hooks/useTrain";
+import { vi } from 'vitest';
+import type { Train } from '@/shared/types/metro';
+import { useTrain } from '@/shared/hooks/useTrain';
 
 type UseTrainReturn = ReturnType<typeof useTrain>;
 
 const defaultTrainInfo = {
-  line: "Azul",
-  lineColor: "#0075BF",
-  destination: "Santa Apolónia",
+  line: 'Azul',
+  lineColor: '#0075BF',
+  destination: 'Santa Apolónia',
   nextStations: [
-    { stationId: "SS", stationName: "São Sebastião", arrivalTime: 60 },
-    { stationId: "PA", stationName: "Parque", arrivalTime: 180 },
+    { stationId: 'SS', stationName: 'São Sebastião', arrivalTime: 60 },
+    { stationId: 'PA', stationName: 'Parque', arrivalTime: 180 },
   ],
 };
 
 const defaultTrain: Train = {
-  id: "ML001A",
-  stationArrivals: [[60, ["SS", "SP"]]],
+  id: 'ML001A',
+  stationArrivals: [[60, ['SS', 'SP']]],
 };
 
 const defaultUseTrainReturn: UseTrainReturn = {

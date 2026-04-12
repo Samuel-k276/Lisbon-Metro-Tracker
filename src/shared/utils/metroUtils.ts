@@ -1,7 +1,7 @@
-import { LINE_COLORS, TRAIN_LINE_MAPPING } from "@/shared/data/metroLines";
-import type { LineNames } from "@/shared/data/metroLines";
-import { lines } from "@/shared/data/staticData";
-import { stationMappings } from "@/shared/data/stationMappings";
+import { LINE_COLORS, TRAIN_LINE_MAPPING } from '@/shared/data/metroLines';
+import type { LineNames } from '@/shared/data/metroLines';
+import { lines } from '@/shared/data/staticData';
+import { stationMappings } from '@/shared/data/stationMappings';
 
 /**
  * Get the color associated with a metro line
@@ -9,7 +9,7 @@ import { stationMappings } from "@/shared/data/stationMappings";
  * @returns The color hex code for the line or a default color if not found
  */
 const getLineColor = (lineName: string): string => {
-  return LINE_COLORS[lineName as LineNames] || "#888888";
+  return LINE_COLORS[lineName as LineNames] || '#888888';
 };
 
 /**
@@ -17,10 +17,10 @@ const getLineColor = (lineName: string): string => {
  * @param trainId The train identifier
  * @returns The name of the metro line the train operates on
  */
-const getTrainLine = (trainId: string): LineNames | "Unknown" => {
-  if (!trainId || trainId.length === 0) return "Unknown";
+const getTrainLine = (trainId: string): LineNames | 'Unknown' => {
+  if (!trainId || trainId.length === 0) return 'Unknown';
   const lastChar = trainId.charAt(trainId.length - 1);
-  return TRAIN_LINE_MAPPING[lastChar] || "Unknown";
+  return TRAIN_LINE_MAPPING[lastChar] || 'Unknown';
 };
 
 /**
@@ -29,7 +29,7 @@ const getTrainLine = (trainId: string): LineNames | "Unknown" => {
  * @param defaultName Optional default value if station not found
  * @returns The name of the station or default value if not found
  */
-const getStationNameById = (stationId?: string, defaultName: string = "Unknown"): string => {
+const getStationNameById = (stationId?: string, defaultName: string = 'Unknown'): string => {
   if (!stationId) return defaultName;
   return stationMappings[stationId]?.name || defaultName;
 };

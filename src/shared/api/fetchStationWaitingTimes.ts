@@ -1,6 +1,6 @@
-import type { Station, NextTrainsResponse } from "@/shared/types/metro";
-import { getStationById, getDestinationNameById } from "@/shared/data/stationMappings";
-import { apiFetch } from "@/shared/api/client";
+import type { Station, NextTrainsResponse } from '@/shared/types/metro';
+import { getStationById, getDestinationNameById } from '@/shared/data/stationMappings';
+import { apiFetch } from '@/shared/api/client';
 
 type PlatformResponse = {
   stop_id: string;
@@ -18,14 +18,14 @@ const fetchStationWaitingTimes = async (stationId: string): Promise<Station | nu
     const response = await apiFetch(`/tempoEspera/Estacao/${stationId}`);
     const data = await response.json();
 
-    if (data.codigo !== "200" || !data.resposta || data.resposta.length === 0) {
-      throw new Error("Invalid response format or no data received");
+    if (data.codigo !== '200' || !data.resposta || data.resposta.length === 0) {
+      throw new Error('Invalid response format or no data received');
     }
 
     const stationData =
       getStationById(stationId) ||
       (() => {
-        throw new Error("Station data not found in mappings");
+        throw new Error('Station data not found in mappings');
       })();
 
     const station: Station = {
@@ -37,13 +37,13 @@ const fetchStationWaitingTimes = async (stationId: string): Promise<Station | nu
       isTerminal: stationData.isTerminal,
       nextTrains: data.resposta.flatMap((platform: PlatformResponse) => {
         const trains: NextTrainsResponse = {
-          destination: "",
-          train1: "",
-          time1: "",
-          train2: "",
-          time2: "",
-          train3: "",
-          time3: "",
+          destination: '',
+          train1: '',
+          time1: '',
+          train2: '',
+          time2: '',
+          train3: '',
+          time3: '',
         };
 
         if (platform.comboio && platform.tempoChegada1) {
@@ -78,7 +78,7 @@ const fetchStationWaitingTimes = async (stationId: string): Promise<Station | nu
 
     return station;
   } catch (error) {
-    console.error("Error fetching station:", error);
+    console.error('Error fetching station:', error);
     return null;
   }
 };

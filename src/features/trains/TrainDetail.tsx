@@ -1,10 +1,10 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useTrain } from "@/shared/hooks/useTrain";
-import { getStationNameById } from "@/shared/utils/metroUtils";
-import { lines } from "@/shared/data/staticData";
-import { StationArrivalRow } from "./StationArrivalRow";
-import styles from "./TrainDetail.module.scss";
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useTrain } from '@/shared/hooks/useTrain';
+import { getStationNameById } from '@/shared/utils/metroUtils';
+import { lines } from '@/shared/data/staticData';
+import { StationArrivalRow } from './StationArrivalRow';
+import styles from './TrainDetail.module.scss';
 
 const TrainDetail: React.FC = () => {
   const { trainId } = useParams<{ trainId: string }>();
@@ -32,7 +32,7 @@ const TrainDetail: React.FC = () => {
     return (
       <div className={styles.container}>
         <div className={styles.card}>
-          <h2 className={styles.error}>{error || "Train information not available"}</h2>
+          <h2 className={styles.error}>{error || 'Train information not available'}</h2>
           <p>
             The train you're looking for may have completed its journey or the information is
             temporarily unavailable.
@@ -48,7 +48,7 @@ const TrainDetail: React.FC = () => {
     <div className={styles.container}>
       <div
         className={styles.card}
-        style={{ "--line-color": trainInfo.lineColor } as React.CSSProperties}
+        style={{ '--line-color': trainInfo.lineColor } as React.CSSProperties}
       >
         <div className={styles.titleRow}>
           <span className={styles.trainIcon}>🚇</span>
@@ -57,7 +57,7 @@ const TrainDetail: React.FC = () => {
             className={styles.lineBadge}
             style={{
               backgroundColor: trainInfo.lineColor,
-              color: trainInfo.line === "Amarela" ? "#000" : "#fff",
+              color: trainInfo.line === 'Amarela' ? '#000' : '#fff',
             }}
           >
             {trainInfo.line}
@@ -101,7 +101,7 @@ const TrainDetail: React.FC = () => {
           </div>
           <div className={styles.infoRow}>
             <span>Total Stations:</span>
-            <strong>{lineStations?.length ?? "N/A"}</strong>
+            <strong>{lineStations?.length ?? 'N/A'}</strong>
           </div>
         </section>
       </div>

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { stationMappings } from "@/shared/data/stationMappings";
-import { metroGraph } from "@/features/planner/graph";
-import { RouteLeg } from "./RouteLeg";
-import styles from "./PlanearViagem.module.scss";
+import React, { useState } from 'react';
+import { stationMappings } from '@/shared/data/stationMappings';
+import { metroGraph } from '@/features/planner/graph';
+import { RouteLeg } from './RouteLeg';
+import styles from './PlanearViagem.module.scss';
 
 type RouteSegment = {
-  tipo: "viagem" | "troca de linha";
+  tipo: 'viagem' | 'troca de linha';
   de: string;
   para: string;
   linha?: string;
@@ -25,8 +25,8 @@ const estacoes = Object.values(stationMappings)
   .sort((a, b) => a.name.localeCompare(b.name));
 
 const PlanearViagem: React.FC = () => {
-  const [origem, setOrigem] = useState("");
-  const [destino, setDestino] = useState("");
+  const [origem, setOrigem] = useState('');
+  const [destino, setDestino] = useState('');
   const [resultados, setResultados] = useState<RouteResult | null>(null);
 
   const trocarOrigemDestino = () => {
@@ -36,7 +36,7 @@ const PlanearViagem: React.FC = () => {
 
   const calcularRota = () => {
     if (!origem || !destino) {
-      alert("Por favor, selecione a origem e o destino");
+      alert('Por favor, selecione a origem e o destino');
       return;
     }
 
@@ -45,7 +45,7 @@ const PlanearViagem: React.FC = () => {
 
     const tempoTotal = rotaProcessada.segments.reduce((total, seg) => total + seg.tempo, 0);
     const estacoesPart = rotaProcessada.segments
-      .filter((seg) => seg.tipo === "viagem")
+      .filter((seg) => seg.tipo === 'viagem')
       .reduce((total, seg) => total + seg.estacoes, 0);
 
     setResultados({
@@ -54,7 +54,7 @@ const PlanearViagem: React.FC = () => {
       trocasLinha: rotaProcessada.transbordos,
       rota: rotaProcessada.segments.map((seg) => ({
         ...seg,
-        tipo: seg.tipo === "transbordo" ? "troca de linha" : "viagem",
+        tipo: seg.tipo === 'transbordo' ? 'troca de linha' : 'viagem',
       })),
     });
   };
@@ -70,9 +70,9 @@ const PlanearViagem: React.FC = () => {
       <div className={styles.card}>
         <div className={styles.formRow}>
           <div className={styles.selectWrapper}>
-            <label htmlFor="origem-select">Estação de Origem</label>
-            <select id="origem-select" value={origem} onChange={(e) => setOrigem(e.target.value)}>
-              <option value="">Selecionar...</option>
+            <label htmlFor='origem-select'>Estação de Origem</label>
+            <select id='origem-select' value={origem} onChange={(e) => setOrigem(e.target.value)}>
+              <option value=''>Selecionar...</option>
               {estacoes.map((e) => (
                 <option key={e.id} value={e.id}>
                   {e.name}
@@ -86,13 +86,13 @@ const PlanearViagem: React.FC = () => {
           </button>
 
           <div className={styles.selectWrapper}>
-            <label htmlFor="destino-select">Estação de Destino</label>
+            <label htmlFor='destino-select'>Estação de Destino</label>
             <select
-              id="destino-select"
+              id='destino-select'
               value={destino}
               onChange={(e) => setDestino(e.target.value)}
             >
-              <option value="">Selecionar...</option>
+              <option value=''>Selecionar...</option>
               {estacoes.map((e) => (
                 <option key={e.id} value={e.id}>
                   {e.name}

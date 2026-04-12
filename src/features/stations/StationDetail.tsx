@@ -1,9 +1,9 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useStation } from "@/shared/hooks/useStation";
-import { formatTimeInSeconds, getLineNameFromDestination } from "@/shared/utils/helpers";
-import { getLineColor } from "@/shared/utils/metroUtils";
-import styles from "./StationDetail.module.scss";
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useStation } from '@/shared/hooks/useStation';
+import { formatTimeInSeconds, getLineNameFromDestination } from '@/shared/utils/helpers';
+import { getLineColor } from '@/shared/utils/metroUtils';
+import styles from './StationDetail.module.scss';
 
 const COLOR_ORDER: Record<string, number> = {
   Azul: 1,
@@ -65,8 +65,8 @@ const StationDetail: React.FC = () => {
                 <strong>Name:</strong> {station.name}
               </p>
               <p>
-                <strong>Lines:</strong>{" "}
-                {Array.isArray(station.lines) ? station.lines.join(", ") : station.lines}
+                <strong>Lines:</strong>{' '}
+                {Array.isArray(station.lines) ? station.lines.join(', ') : station.lines}
               </p>
               <p>
                 <strong>Location:</strong> {station.coordinates.x}, {station.coordinates.y}
@@ -98,7 +98,7 @@ const StationDetail: React.FC = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={4} style={{ textAlign: "center" }}>
+                      <td colSpan={4} style={{ textAlign: 'center' }}>
                         No upcoming trains
                       </td>
                     </tr>

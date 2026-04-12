@@ -4,8 +4,8 @@
  */
 
 // Importando os dados das estações e das linhas
-import { stationMappings } from "@/shared/data/stationMappings";
-import { lines } from "@/shared/data/staticData";
+import { stationMappings } from '@/shared/data/stationMappings';
+import { lines } from '@/shared/data/staticData';
 
 /**
  * Interface para representar um nó do grafo (uma estação)
@@ -17,7 +17,7 @@ type GraphNode = {
 };
 
 type PathSegment = {
-  tipo: "viagem" | "transbordo";
+  tipo: 'viagem' | 'transbordo';
   de: string;
   para: string;
   linha?: string;
@@ -135,7 +135,7 @@ class MetroGraph {
     const queue: Array<[number, string]> = [];
 
     for (const node of this.nodes.values()) {
-      distances.set(node.id, [Infinity, [""]]); // [distância, linha]
+      distances.set(node.id, [Infinity, ['']]); // [distância, linha]
       previous.set(node.id, null);
     }
 
@@ -243,7 +243,7 @@ class MetroGraph {
     let transbordos = 0;
 
     // Precisamos determinar a linha para cada parte do percurso
-    let currentLine = "";
+    let currentLine = '';
     let segmentStartIdx = 0;
 
     // Para cada par de estações no caminho, determinar a linha mais apropriada
@@ -256,7 +256,7 @@ class MetroGraph {
 
       // Encontrar linha em comum (se existir)
       const commonLines = currentNode.lines.filter((line) => nextNode.lines.includes(line));
-      const lineBetweenStations = commonLines.length > 0 ? commonLines[0]! : "";
+      const lineBetweenStations = commonLines.length > 0 ? commonLines[0]! : '';
 
       // Se mudar de linha ou for a primeira iteração, definir a linha atual
       if (i === 0 || lineBetweenStations !== currentLine) {
@@ -272,7 +272,7 @@ class MetroGraph {
           const endName = stationMappings[segmentEnd.id]?.name || segmentEnd.id;
 
           segments.push({
-            tipo: "viagem",
+            tipo: 'viagem',
             de: startName,
             para: endName,
             linha: currentLine,
@@ -284,7 +284,7 @@ class MetroGraph {
           if (lineBetweenStations !== currentLine) {
             transbordos++;
             segments.push({
-              tipo: "transbordo",
+              tipo: 'transbordo',
               de: currentLine,
               para: lineBetweenStations,
               tempo: tempoTransbordoMin,
@@ -310,7 +310,7 @@ class MetroGraph {
         const endName = stationMappings[segmentEnd.id]?.name || segmentEnd.id;
 
         segments.push({
-          tipo: "viagem",
+          tipo: 'viagem',
           de: startName,
           para: endName,
           linha: currentLine,
@@ -324,7 +324,7 @@ class MetroGraph {
     const tempoTotal = segments.reduce((total, segment) => total + segment.tempo, 0);
     const estacoes =
       segments
-        .filter((segment) => segment.tipo === "viagem")
+        .filter((segment) => segment.tipo === 'viagem')
         .reduce((total, segment) => total + segment.estacoes, 0) - transbordos; // Corrigir contagem duplicada
 
     return {

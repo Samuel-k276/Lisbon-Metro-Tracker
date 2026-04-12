@@ -1,4 +1,4 @@
-@use "../../shared/styles/variables" as *;
+@use '../../shared/styles/variables' as *;
 
 .page {
   padding: 2rem;
@@ -188,7 +188,7 @@
     position: relative;
 
     &::before {
-      content: "\275D";
+      content: '\275D';
       font-size: 1.5rem;
       position: absolute;
       top: 0.5rem;
@@ -196,7 +196,7 @@
     }
 
     &::after {
-      content: "\275E";
+      content: '\275E';
       font-size: 1.5rem;
       position: absolute;
       bottom: 0;

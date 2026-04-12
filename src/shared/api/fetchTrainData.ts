@@ -1,15 +1,15 @@
-import type { Train } from "@/shared/types/metro";
-import type { TrainArrival } from "@/shared/api/responseTypes";
-import { getDestinationId } from "@/shared/data/stationMappings";
-import { apiFetch } from "@/shared/api/client";
+import type { Train } from '@/shared/types/metro';
+import type { TrainArrival } from '@/shared/api/responseTypes';
+import { getDestinationId } from '@/shared/data/stationMappings';
+import { apiFetch } from '@/shared/api/client';
 
 const fetchTrainData = async (): Promise<Record<string, Train>> => {
   try {
-    const response = await apiFetch("/tempoEspera/Estacao/todos");
+    const response = await apiFetch('/tempoEspera/Estacao/todos');
     const data = await response.json();
 
-    if (data.codigo !== "200" || !data.resposta || data.resposta.length === 0) {
-      throw new Error("Invalid response format or no data received");
+    if (data.codigo !== '200' || !data.resposta || data.resposta.length === 0) {
+      throw new Error('Invalid response format or no data received');
     }
 
     const trains: Record<string, Train> = {};
@@ -46,7 +46,7 @@ const fetchTrainData = async (): Promise<Record<string, Train>> => {
 
     return trains;
   } catch (error) {
-    console.error("Error fetching waiting times:", error);
+    console.error('Error fetching waiting times:', error);
     return {};
   }
 };

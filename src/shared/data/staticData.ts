@@ -1,5 +1,5 @@
-import type { Coordinates, Line } from "@/shared/types/metro";
-import { LINE_COLORS } from "@/shared/data/metroLines";
+import type { Coordinates, Line } from '@/shared/types/metro';
+import { LINE_COLORS } from '@/shared/data/metroLines';
 
 // Corrected station coordinates for rendering (x values increased by 130)
 const stationCoordinates: Record<string, Coordinates> = {
@@ -59,46 +59,46 @@ const stationCoordinates: Record<string, Coordinates> = {
 const lines: Record<string, Line> = {
   // Map metro line names to colors
   Azul: {
-    name: "Azul",
+    name: 'Azul',
     color: LINE_COLORS.Azul,
     stations: [
-      "RB",
-      "AS",
-      "AF",
-      "PO",
-      "CA",
-      "CM",
-      "AH",
-      "LA",
-      "JZ",
-      "PE",
-      "SS",
-      "PA",
-      "MP",
-      "AV",
-      "RE",
-      "BC",
-      "TP",
-      "SP",
+      'RB',
+      'AS',
+      'AF',
+      'PO',
+      'CA',
+      'CM',
+      'AH',
+      'LA',
+      'JZ',
+      'PE',
+      'SS',
+      'PA',
+      'MP',
+      'AV',
+      'RE',
+      'BC',
+      'TP',
+      'SP',
     ],
     destinations: { SP: 1, RB: -1, TP: 1 },
   },
   Amarela: {
-    name: "Amarela",
+    name: 'Amarela',
     color: LINE_COLORS.Amarela,
-    stations: ["OD", "SR", "AX", "LU", "QC", "CG", "CU", "EC", "CP", "SA", "PI", "MP", "RA"],
+    stations: ['OD', 'SR', 'AX', 'LU', 'QC', 'CG', 'CU', 'EC', 'CP', 'SA', 'PI', 'MP', 'RA'],
     destinations: { RA: 1, OD: -1, CG: -1 },
   },
   Verde: {
-    name: "Verde",
+    name: 'Verde',
     color: LINE_COLORS.Verde,
-    stations: ["TE", "CG", "AL", "RM", "AE", "AM", "AR", "AN", "IN", "MM", "RO", "BC", "CS"],
+    stations: ['TE', 'CG', 'AL', 'RM', 'AE', 'AM', 'AR', 'AN', 'IN', 'MM', 'RO', 'BC', 'CS'],
     destinations: { CS: 1, TE: -1 },
   },
   Vermelha: {
-    name: "Vermelha",
+    name: 'Vermelha',
     color: LINE_COLORS.Vermelha,
-    stations: ["AP", "EN", "MO", "OR", "CR", "OS", "CH", "BV", "OL", "AM", "SA", "SS"],
+    stations: ['AP', 'EN', 'MO', 'OR', 'CR', 'OS', 'CH', 'BV', 'OL', 'AM', 'SA', 'SS'],
     destinations: { SS: 1, AP: -1 },
   },
 };
@@ -106,21 +106,21 @@ const lines: Record<string, Line> = {
 const getTrainLine = (trainId: string) => {
   const lastChar = trainId.charAt(trainId.length - 1);
   switch (lastChar) {
-    case "A":
-      return "Azul";
-    case "B":
-      return "Amarela";
-    case "C":
-      return "Verde";
-    case "D":
-      return "Vermelha";
+    case 'A':
+      return 'Azul';
+    case 'B':
+      return 'Amarela';
+    case 'C':
+      return 'Verde';
+    case 'D':
+      return 'Vermelha';
     default:
-      return "Unknown";
+      return 'Unknown';
   }
 };
 
 const getLineColor = (line: string) => {
-  return lines[line]?.color || "#888888"; // Default color if line not found
+  return lines[line]?.color || '#888888'; // Default color if line not found
 };
 
 export { stationCoordinates, lines, getTrainLine, getLineColor };

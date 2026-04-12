@@ -1,5 +1,5 @@
-import type { Station } from "@/shared/types/metro";
-import { getStationLines } from "@/shared/utils/metroUtils";
+import type { Station } from '@/shared/types/metro';
+import { getStationLines } from '@/shared/utils/metroUtils';
 
 /**
  * Format time string to display in a user-friendly format
@@ -7,9 +7,9 @@ import { getStationLines } from "@/shared/utils/metroUtils";
  */
 const formatTime = (timeString: string): string => {
   const date = new Date(timeString);
-  return date.toLocaleTimeString("pt-PT", {
-    hour: "2-digit",
-    minute: "2-digit",
+  return date.toLocaleTimeString('pt-PT', {
+    hour: '2-digit',
+    minute: '2-digit',
   });
 };
 
@@ -19,9 +19,9 @@ const formatTime = (timeString: string): string => {
  * @returns Formatted time string
  */
 const formatTimeInSeconds = (seconds: string | number): string => {
-  const sec = typeof seconds === "string" ? parseInt(seconds, 10) : seconds;
+  const sec = typeof seconds === 'string' ? parseInt(seconds, 10) : seconds;
 
-  if (isNaN(sec) || sec <= 0) return "Chegando";
+  if (isNaN(sec) || sec <= 0) return 'Chegando';
 
   const min = Math.floor(sec / 60);
   const remainingSec = sec % 60;
@@ -81,8 +81,8 @@ const findNearestStation = (
  * @returns The name of the line for this destination
  */
 const getLineNameFromDestination = (destinationId: string): string => {
-  if (!destinationId) return "Unknown";
-  return getStationLines(destinationId)[0] || "Unknown";
+  if (!destinationId) return 'Unknown';
+  return getStationLines(destinationId)[0] || 'Unknown';
 };
 
 export {

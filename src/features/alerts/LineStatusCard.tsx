@@ -1,11 +1,11 @@
-import React from "react";
-import type { LineState } from "@/shared/types/metro";
-import { LINE_COLORS } from "@/shared/data/metroLines";
-import linhaAzulImg from "@/assets/linhaAzul.png";
-import linhaAmarelaImg from "@/assets/linhaAmarela.png";
-import linhaVerdeImg from "@/assets/linhaVerde.png";
-import linhaVermelhaImg from "@/assets/linhaVermelha.png";
-import styles from "./Alerts.module.scss";
+import React from 'react';
+import type { LineState } from '@/shared/types/metro';
+import { LINE_COLORS } from '@/shared/data/metroLines';
+import linhaAzulImg from '@/assets/linhaAzul.png';
+import linhaAmarelaImg from '@/assets/linhaAmarela.png';
+import linhaVerdeImg from '@/assets/linhaVerde.png';
+import linhaVermelhaImg from '@/assets/linhaVermelha.png';
+import styles from './Alerts.module.scss';
 
 const LINE_IMAGES: Record<string, string> = {
   azul: linhaAzulImg,
@@ -15,10 +15,10 @@ const LINE_IMAGES: Record<string, string> = {
 };
 
 const LINE_NAMES: Record<string, string> = {
-  azul: "Azul (Blue)",
-  amarela: "Amarela (Yellow)",
-  verde: "Verde (Green)",
-  vermelha: "Vermelha (Red)",
+  azul: 'Azul (Blue)',
+  amarela: 'Amarela (Yellow)',
+  verde: 'Verde (Green)',
+  vermelha: 'Vermelha (Red)',
 };
 
 const LINE_GRADIENTS: Record<string, { primary: string; gradient: string }> = {
@@ -42,20 +42,20 @@ const LINE_GRADIENTS: Record<string, { primary: string; gradient: string }> = {
 
 const getStatusColor = (status: string): string => {
   switch (status.toLowerCase()) {
-    case "normal":
-      return "#10b981";
-    case "conditional":
-    case "conditioned":
-      return "#f59e0b";
-    case "interrupted":
-    case "closed":
-      return "#ef4444";
+    case 'normal':
+      return '#10b981';
+    case 'conditional':
+    case 'conditioned':
+      return '#f59e0b';
+    case 'interrupted':
+    case 'closed':
+      return '#ef4444';
     default:
-      return "#6b7280";
+      return '#6b7280';
   }
 };
 
-const getStatusIcon = (status: string): string => (status === "Ok" ? "\u2713" : "\u26A0\uFE0F");
+const getStatusIcon = (status: string): string => (status === 'Ok' ? '\u2713' : '\u26A0\uFE0F');
 
 type LineStatusCardProps = {
   lineState: LineState;
@@ -95,10 +95,10 @@ const LineStatusCard: React.FC<LineStatusCardProps> = ({ lineState }) => {
           </span>
         </div>
 
-        {lineState.message && lineState.message !== "0" && (
+        {lineState.message && lineState.message !== '0' && (
           <div
             className={styles.message}
-            style={{ "--quote-color": lineStyle?.primary } as React.CSSProperties}
+            style={{ '--quote-color': lineStyle?.primary } as React.CSSProperties}
           >
             <p>{lineState.message}</p>
           </div>
