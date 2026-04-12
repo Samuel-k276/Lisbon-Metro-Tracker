@@ -1,4 +1,5 @@
-import { LINE_COLORS, LineNames, TRAIN_LINE_MAPPING } from "../constants/metroLines";
+import { LINE_COLORS, TRAIN_LINE_MAPPING } from "../constants/metroLines";
+import type { LineNames } from "../constants/metroLines";
 import { lines } from "./staticData";
 import { stationMappings } from "./stationMappings";
 

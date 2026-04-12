@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Station } from '../types/metro';
+import type { Station } from '../types/metro';
 import { fetchStationWaitingTimes } from '../api/metro'; // Adjust the import path as necessary
 
 export const useStation = (stationId: string | undefined) => {

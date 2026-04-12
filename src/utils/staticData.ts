@@ -1,4 +1,4 @@
-import { Coordinates, Line } from '../types/metro';
+import type { Coordinates, Line } from '../types/metro';
 import { LINE_COLORS } from '../constants/metroLines';
 
 // Corrected station coordinates for rendering (x values increased by 130)

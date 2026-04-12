@@ -1,5 +1,5 @@
 import { fetchLineStateAll } from "../api/metro";
-import { LineState } from "../types/metro";
+import type { LineState } from "../types/metro";
 import { useEffect, useState } from "react";
 import { 
    Card, 

@@ -22,10 +22,9 @@ const TrainMap: React.FC = () => {
   const { trainPositions, error: loadingError } = useTrains();
 
   useEffect(() => {
-    if (backgroundImage) {
-      const timer = setTimeout(() => setMapReady(true), 500);
-      return () => clearTimeout(timer);
-    }
+    if (!backgroundImage) return;
+    const timer = setTimeout(() => setMapReady(true), 500);
+    return () => clearTimeout(timer);
   }, [backgroundImage]);
 
   const handleStationClick = (stationId: string) => {
@@ -133,7 +132,7 @@ const TrainMap: React.FC = () => {
                         <Circle
                           radius={hoveredStation === stationId ? 13 : 10}
                           fill="white"
-                          stroke={hoveredStation === stationId ? "#2196F3" : getLineColor(stationLines[0])}
+                          stroke={hoveredStation === stationId ? "#2196F3" : getLineColor(stationLines[0] ?? '')}
                           strokeWidth={hoveredStation === stationId ? 3 : 2}
                           shadowColor="rgba(0,0,0,0.3)"
                           shadowBlur={hoveredStation === stationId ? 8 : 4}
@@ -142,14 +141,14 @@ const TrainMap: React.FC = () => {
                         />
                         <Circle
                           radius={hoveredStation === stationId ? 11 : 8}
-                          fill={getLineColor(stationLines[0])}
+                          fill={getLineColor(stationLines[0] ?? '')}
                         />
                       </>
                     ) : (
                       <Circle
                         radius={hoveredStation === stationId ? 8 : 6}
                         fill="white"
-                        stroke={hoveredStation === stationId ? "#2196F3" : getLineColor(stationLines[0])}
+                        stroke={hoveredStation === stationId ? "#2196F3" : getLineColor(stationLines[0] ?? '')}
                         strokeWidth={hoveredStation === stationId ? 3 : 2}
                         shadowColor="rgba(0,0,0,0.3)"
                         shadowBlur={hoveredStation === stationId ? 8 : 4}

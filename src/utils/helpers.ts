@@ -1,4 +1,4 @@
-import { Station } from '../types/metro';
+import type { Station } from '../types/metro';
 import { getStationLines } from './metroUtils';
 
 /**
@@ -46,16 +46,16 @@ export const calculateDistance = (x1: number, y1: number, x2: number, y2: number
 export const findNearestStation = (coordinates: { x: number, y: number }, stations: Station[]): Station | null => {
   if (!stations.length) return null;
   
-  let nearestStation = stations[0];
+  let nearestStation = stations[0]!;
   let shortestDistance = calculateDistance(
-    coordinates.x, 
+    coordinates.x,
     coordinates.y,
     nearestStation.coordinates.x,
     nearestStation.coordinates.y
   );
-  
+
   for (let i = 1; i < stations.length; i++) {
-    const station = stations[i];
+    const station = stations[i]!;
     const distance = calculateDistance(
       coordinates.x,
       coordinates.y,

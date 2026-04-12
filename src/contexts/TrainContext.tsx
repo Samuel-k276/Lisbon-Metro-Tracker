@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { fetchTrainData } from '../api/metro';
-import { Train } from '../types/metro';
+import type { Train } from '../types/metro';
 import { stationCoordinates, lines } from '../utils/staticData';
 import { getTrainLine } from '../utils/metroUtils';
 
@@ -80,24 +80,30 @@ const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       const stationArrivals = Array.from(train.stationArrivals);
       if (stationArrivals.length < 1) continue;
 
-      const [waitingTime, stationInfo] = stationArrivals[0];
+      const firstArrival = stationArrivals[0];
+      if (!firstArrival) continue;
+      const [waitingTime, stationInfo] = firstArrival;
       const [nextStationId, destinationId] = stationInfo;
 
       const lineName = getTrainLine(trainId);
       if (lineName === 'Unknown') continue;
 
-      const directionValue = lines[lineName].destinations[destinationId];
+      const lineData = lines[lineName];
+      if (!lineData) continue;
+
+      const directionValue = lineData.destinations[destinationId];
       if (typeof directionValue === 'undefined') continue;
 
-      const currentIndex = lines[lineName].stations.indexOf(nextStationId);
+      const currentIndex = lineData.stations.indexOf(nextStationId);
       if (currentIndex === -1) continue;
 
       let nextIndex = currentIndex + directionValue * -1;
-      nextIndex = Math.max(0, Math.min(nextIndex, lines[lineName].stations.length - 1));
+      nextIndex = Math.max(0, Math.min(nextIndex, lineData.stations.length - 1));
 
-      if (nextIndex < 0 || nextIndex >= lines[lineName].stations.length) continue;
+      if (nextIndex < 0 || nextIndex >= lineData.stations.length) continue;
 
-      const currentStationId = lines[lineName].stations[nextIndex];
+      const currentStationId = lineData.stations[nextIndex];
+      if (!currentStationId) continue;
       const { x, y, angle } = calculateTrainPosition(currentStationId, nextStationId, waitingTime, stationCoordinates);
 
       result.push({

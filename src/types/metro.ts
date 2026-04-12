@@ -1,6 +1,6 @@
 // Define the types for the Metro Lisboa project
 import { OrderedMap  } from "js-sdsl";
-import { LineNames } from "../constants/metroLines";
+import type { LineNames } from "../constants/metroLines";
 
 // Coordinates for positioning on the map
 export interface Coordinates {

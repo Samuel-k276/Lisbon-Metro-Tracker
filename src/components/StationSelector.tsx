@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Station } from '../types/metro';
+import type { Station } from '../types/metro';
 import styles from './StationSelector.module.scss';
 
 type StationSelectorProps = {

@@ -2,8 +2,8 @@
 // This file provides mappings between station IDs and names
 // and utility functions to translate IDs to human-readable names
 
-import { LineNames } from "../constants/metroLines";
-import { Coordinates } from "../types/metro"; // Adjust the import path as necessary
+import type { LineNames } from "../constants/metroLines";
+import type { Coordinates } from "../types/metro"; // Adjust the import path as necessary
 
 // Type for our station mapping
 export interface StationMapping {

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Train } from '../types/metro';
+import type { Train } from '../types/metro';
 import { fetchTrainData } from '../api/metro';
 import { getTrainLine, getStationNameById } from '../utils/metroUtils';
-import { LINE_COLORS, LineNames } from '../constants/metroLines';
+import { LINE_COLORS } from '../constants/metroLines';
+import type { LineNames } from '../constants/metroLines';
 
 export const useTrain = (trainId: string | undefined) => {
   const [train, setTrain] = useState<Train | null>(null);
@@ -41,7 +42,7 @@ export const useTrain = (trainId: string | undefined) => {
         const stationArrivals = Array.from(data[trainId].stationArrivals);
         if (stationArrivals.length > 0) {
           // The first entry has the next station and destination info
-          const [_, firstStationInfo] = stationArrivals[0];
+          const [_, firstStationInfo] = stationArrivals[0]!;
           const [__, destinationId] = firstStationInfo;
           
           // Format station arrivals into a more usable format for UI

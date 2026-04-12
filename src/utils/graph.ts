@@ -65,12 +65,15 @@ export class MetroGraph {
     
     // Agora, adicionar as arestas (conexões entre estações)
     for (const lineName of Object.keys(lines)) {
-      const stations = lines[lineName].stations;
-      
+      const lineData = lines[lineName];
+      if (!lineData) continue;
+      const stations = lineData.stations;
+
       // Para cada par de estações consecutivas na linha, adicionar conexão
       for (let i = 0; i < stations.length - 1; i++) {
         const current = stations[i];
         const next = stations[i+1];
+        if (!current || !next) continue;
         
         // Adicionar conexão em ambas as direções (grafo não direcionado)
         this.addEdge(current, next);
@@ -184,7 +187,7 @@ export class MetroGraph {
    while (currentNodeId !== fromId) {
       const prev = previous.get(currentNodeId)!;
       path.unshift(currentNodeId);
-      currentNodeId = prev[0]; // Pega o primeiro predecessor
+      currentNodeId = prev[0]!; // Pega o primeiro predecessor
    }
 
    // Adicionar a estação de origem ao início do caminho
@@ -243,23 +246,23 @@ export class MetroGraph {
     
     // Para cada par de estações no caminho, determinar a linha mais apropriada
     for (let i = 0; i < path.length - 1; i++) {
-      const currentId = path[i];
-      const nextId = path[i + 1];
-      
+      const currentId = path[i]!;
+      const nextId = path[i + 1]!;
+
       const currentNode = this.nodes.get(currentId)!;
       const nextNode = this.nodes.get(nextId)!;
-      
+
       // Encontrar linha em comum (se existir)
       const commonLines = currentNode.lines.filter(line => nextNode.lines.includes(line));
-      const lineBetweenStations = commonLines.length > 0 ? commonLines[0] : '';
+      const lineBetweenStations = commonLines.length > 0 ? commonLines[0]! : '';
       
       // Se mudar de linha ou for a primeira iteração, definir a linha atual
       if (i === 0 || lineBetweenStations !== currentLine) {
         // Se não for a primeira iteração, finalizar o segmento atual
         if (i > 0) {
           // Adicionar segmento de viagem
-          const segmentStart = this.nodes.get(path[segmentStartIdx])!;
-          const segmentEnd = this.nodes.get(path[i])!;
+          const segmentStart = this.nodes.get(path[segmentStartIdx]!)!;
+          const segmentEnd = this.nodes.get(path[i]!)!;
           const stationCount = i - segmentStartIdx + 1;
           
           // Obter os nomes das estações do stationMappings
@@ -296,8 +299,8 @@ export class MetroGraph {
       
       // Para o último par de estações
       if (i === path.length - 2) {
-        const segmentStart = this.nodes.get(path[segmentStartIdx])!;
-        const segmentEnd = this.nodes.get(nextId)!;
+        const segmentStart = this.nodes.get(path[segmentStartIdx]!)!;
+        const segmentEnd = this.nodes.get(nextId!)!;
         const stationCount = (i + 1) - segmentStartIdx + 1;
         
         // Obter os nomes das estações do stationMappings

@@ -164,11 +164,11 @@ const TrainDetail: React.FC<TrainDetailProps> = ({ trainId }) => {
                 {lines[trainInfo.line]?.stations && (
                   <>
                     <Typography variant="body1" fontWeight="medium">
-                      {getStationNameById(lines[trainInfo.line].stations[0])}
+                      {getStationNameById(lines[trainInfo.line]?.stations[0])}
                     </Typography>
                     <ArrowRightAltIcon sx={{ mx: 1 }} />
                     <Typography variant="body1" fontWeight="medium">
-                      {getStationNameById(lines[trainInfo.line].stations[lines[trainInfo.line].stations.length - 1])}
+                      {getStationNameById(lines[trainInfo.line]?.stations[(lines[trainInfo.line]?.stations.length ?? 1) - 1])}
                     </Typography>
                   </>
                 )}

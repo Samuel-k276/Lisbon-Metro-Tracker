@@ -1,6 +1,6 @@
-import { Station, NextTrainsResponse, LineState, Train } from '../types/metro';
+import type { Station, NextTrainsResponse, LineState, Train } from '../types/metro';
 import { getStationById, getDestinationNameById, getDestinationId } from '../utils/stationMappings';
-import { TrainArrival } from './responseTypes';
+import type { TrainArrival } from './responseTypes';
 import { OrderedMap } from 'js-sdsl';
 
 // API URL for Lisbon Metro
@@ -151,7 +151,7 @@ export const fetchTrainData = async (): Promise<Record<string, Train>> => {
             };
           } else {
             // Add the station arrival to the existing train's Map
-            trains[train.id].stationArrivals.setElement(parseInt(train.time), [trainArrival.stop_id.toString(), getDestinationId(trainArrival.destino)]);
+            trains[train.id]!.stationArrivals.setElement(parseInt(train.time), [trainArrival.stop_id.toString(), getDestinationId(trainArrival.destino)]);
             // The Map will automatically sort entries by key (arrivalTime)
           }
         }
