@@ -3,5 +3,6 @@
   "singleQuote": true,
   "jsxSingleQuote": true,
   "sortImports": true,
+  "trailingComma": "all",
   "ignorePatterns": []
 }
