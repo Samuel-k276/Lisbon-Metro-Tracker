@@ -127,6 +127,33 @@
   color: #666;
 }
 
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  gap: 1rem;
+  text-align: center;
+  padding: 2rem;
+}
+
 .error {
   color: $status-error;
+  font-size: 1.1rem;
+}
+
+.retryButton {
+  padding: 0.6rem 1.5rem;
+  background-color: $primary-color;
+  color: $text-light;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $primary-color-dark;
+  }
 }

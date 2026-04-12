@@ -51,7 +51,7 @@ describe('useStation', () => {
     });
 
     expect(result.current.station).toBeNull();
-    expect(result.current.error).toBe('Failed to load station AM');
+    expect(result.current.error).toBe('Erro ao carregar a estação Alameda');
   });
 
   it('returns error when no stationId provided', async () => {
@@ -61,7 +61,7 @@ describe('useStation', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    expect(result.current.error).toBe('No station ID provided');
+    expect(result.current.error).toBe('Estação não encontrada');
     expect(result.current.station).toBeNull();
   });
 

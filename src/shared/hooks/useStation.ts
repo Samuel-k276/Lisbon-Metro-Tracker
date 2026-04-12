@@ -1,23 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { fetchStationWaitingTimes } from '@/shared/api/fetchStationWaitingTimes';
+import { stationMappings } from '@/shared/data/stationMappings';
 import type { Station } from '@/shared/types/metro';
 
 type UseStationResult = {
   station: Station | null;
   loading: boolean;
   error: string | null;
+  retry: () => void;
 };
 
 const useStation = (stationId: string | undefined): UseStationResult => {
   const [station, setStation] = useState<Station | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const retry = useCallback(() => setRetryCount((c) => c + 1), []);
 
   useEffect(() => {
     if (!stationId) {
       setLoading(false);
-      setError('No station ID provided');
+      setError('Estação não encontrada');
       return;
     }
 
@@ -34,7 +39,8 @@ const useStation = (stationId: string | undefined): UseStationResult => {
       if (data) {
         setStation(data);
       } else {
-        setError(`Failed to load station ${stationId}`);
+        const name = stationMappings[stationId]?.name ?? stationId;
+        setError(`Erro ao carregar a estação ${name}`);
         setStation(null);
       }
 
@@ -46,9 +52,9 @@ const useStation = (stationId: string | undefined): UseStationResult => {
     return () => {
       cancelled = true;
     };
-  }, [stationId]);
+  }, [stationId, retryCount]);
 
-  return { station, loading, error };
+  return { station, loading, error, retry };
 };
 
 export { useStation };
