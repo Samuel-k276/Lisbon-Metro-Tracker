@@ -24,24 +24,23 @@ yarn test:coverage # vitest run --coverage
 
 ## Code Style
 
+Formatting (quotes, semicolons, trailing commas, import order) is handled by oxfmt — don't think about it.
+
 - Always use `React.FC` for component typing
 - Named exports only — no default exports
 - Always use `type` instead of `interface` — use `enum` only when a type union gets unwieldy
-- Always use semicolons
-- Single quotes (enforced by oxfmt)
 - Comments and variable names in English
 - SCSS module class names in camelCase
 - State management via React Context only — no external state libs
 - Use `@/` path alias when shorter than relative imports
 - Never use inline styles — use SCSS modules and CSS custom properties via class names
 - Use `$variables` from `shared/styles/_variables.scss` for colors, breakpoints — no hardcoded values
-- Don't worry about formatting — oxfmt handles it via git hooks
 - Tests live next to source in `spec/` dirs (e.g., `features/alerts/spec/Alerts.spec.tsx`)
 - Use shared mock helpers from `shared/hooks/spec/` for hook mocking in tests
 
 ## Architecture
 
-Real-time Lisbon Metro tracker: React 19 + TypeScript + Vite, with Konva canvas for map rendering and SCSS modules for styling.
+Real-time Lisbon Metro tracker: React 19 + TypeScript 6 + Vite 8, with Konva canvas for map rendering and SCSS modules for styling.
 
 ### Project Structure
 
@@ -76,7 +75,7 @@ Metro API (metrolisboa.pt:8243)
 
 Trains are positioned between stations on a canvas coordinate system (1034.4×720):
 - `stationCoordinates` in `staticData.ts` maps station IDs → canvas {x,y} (NOT geographic coords)
-- Position interpolation: `percentage = 1 - (timeToNext / 240)` between current and next station
+- Position interpolation: `percentage = 1 - (timeToNext / MAX_TIME_BETWEEN_STATIONS)` between current and next station
 - Train line determined by last character of train ID: A=Azul, B=Amarela, C=Verde, D=Vermelha
 
 ### Route Planning (`features/planner/graph.ts`)
