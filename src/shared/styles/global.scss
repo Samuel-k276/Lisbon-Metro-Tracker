@@ -4,10 +4,26 @@
   --yellow-line: #{$yellow-line};
   --green-line: #{$green-line};
   --red-line: #{$red-line};
-  --text-dark: #{$text-dark};
-  --text-light: #{$text-light};
-  --background-light: #{$background-light};
-  --background-dark: #{$background-dark};
+
+  --text: #{$text-dark};
+  --text-muted: #666;
+  --bg: #{$background-light};
+  --bg-card: #fff;
+  --bg-input: #fff;
+  --border: #ddd;
+  --shadow: rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #e0e0e0;
+    --text-muted: #999;
+    --bg: #1a1a1a;
+    --bg-card: #2a2a2a;
+    --bg-input: #333;
+    --border: #444;
+    --shadow: rgba(0, 0, 0, 0.3);
+  }
 }
 
 * {
@@ -19,8 +35,8 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  color: $text-dark;
-  background-color: $background-light;
+  color: var(--text);
+  background-color: var(--bg);
   min-width: 320px;
   min-height: 100vh;
 }
@@ -48,7 +64,8 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #f9f9f9;
+  background-color: var(--bg-card);
+  color: var(--text);
   cursor: pointer;
   transition: border-color 0.25s;
 

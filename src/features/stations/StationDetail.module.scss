@@ -7,9 +7,9 @@
 .card {
   padding: 1.5rem;
   margin: 2rem 0;
-  background: white;
+  background: var(--bg-card);
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px var(--shadow);
 }
 
 .header {
@@ -111,7 +111,7 @@
   td {
     padding: 8px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--border);
   }
 
   th {
