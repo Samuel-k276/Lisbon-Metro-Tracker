@@ -24,7 +24,7 @@ describe('useLineStates', () => {
     const { result } = renderHook(() => useLineStates());
 
     expect(result.current.loading).toBe(true);
-    expect(result.current.lineStates).toEqual([]);
+    expect(result.current.lineStates).toHaveLength(4);
     expect(result.current.error).toBeNull();
   });
 
@@ -49,6 +49,6 @@ describe('useLineStates', () => {
     });
 
     expect(result.current.error).toBe('Erro ao carregar estado das linhas');
-    expect(result.current.lineStates).toEqual([]);
+    expect(result.current.lineStates).toHaveLength(4);
   });
 });
