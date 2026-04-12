@@ -21,9 +21,13 @@ export default defineConfig({
     target: "es2022",
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ["react", "react-dom", "react-router-dom"],
-          konva: ["konva", "react-konva"],
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react-router') || id.includes('node_modules/react/')) {
+            return 'react';
+          }
+          if (id.includes('node_modules/konva') || id.includes('node_modules/react-konva')) {
+            return 'konva';
+          }
         },
       },
     },

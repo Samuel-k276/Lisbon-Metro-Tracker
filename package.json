@@ -20,7 +20,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-konva": "^19.0.3",
-    "react-router-dom": "^6.15.0"
+    "react-router-dom": "^7"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.0.0",
@@ -30,14 +30,14 @@
     "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^4.0.3",
+    "@vitejs/plugin-react": "^6",
     "@vitest/coverage-v8": "^4.1.4",
     "jsdom": "^29.0.2",
     "oxfmt": "^0.44.0",
     "oxlint": "^1.59.0",
     "sass": "^1.99.0",
     "typescript": "^5.0.2",
-    "vite": "^6.2.5",
+    "vite": "^8",
     "vitest": "^4.1.4"
   },
   "resolutions": {
