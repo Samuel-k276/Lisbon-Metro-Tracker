@@ -1,9 +1,9 @@
-import { createContext, useContext, useState, useEffect, useMemo } from 'react';
-import type { ReactNode } from 'react';
-import { fetchTrainData } from '../api/metro';
-import type { Train } from '../types/metro';
-import { stationCoordinates, lines } from '../utils/staticData';
-import { getTrainLine } from '../utils/metroUtils';
+import { createContext, useContext, useState, useEffect, useMemo } from "react";
+import type { ReactNode } from "react";
+import { fetchTrainData } from "../api/metro";
+import type { Train } from "../types/metro";
+import { stationCoordinates, lines } from "../utils/staticData";
+import { getTrainLine } from "../utils/metroUtils";
 
 type TrainPosition = {
   id: string;
@@ -28,7 +28,7 @@ const calculateTrainPosition = (
   currentStationId: string,
   nextStationId: string,
   timeToNext: number,
-  stationCoordinates: Record<string, { x: number; y: number }>
+  stationCoordinates: Record<string, { x: number; y: number }>,
 ): { x: number; y: number; angle: number } => {
   const currentCoords = stationCoordinates[currentStationId];
   const nextCoords = stationCoordinates[nextStationId];
@@ -59,8 +59,8 @@ const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         setTrainData(data);
         setError(null);
       } catch (err) {
-        console.error('Error fetching train data:', err);
-        setError('Falha ao carregar dados dos comboios');
+        console.error("Error fetching train data:", err);
+        setError("Falha ao carregar dados dos comboios");
       } finally {
         setLoading(false);
       }
@@ -86,13 +86,13 @@ const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       const [nextStationId, destinationId] = stationInfo;
 
       const lineName = getTrainLine(trainId);
-      if (lineName === 'Unknown') continue;
+      if (lineName === "Unknown") continue;
 
       const lineData = lines[lineName];
       if (!lineData) continue;
 
       const directionValue = lineData.destinations[destinationId];
-      if (typeof directionValue === 'undefined') continue;
+      if (typeof directionValue === "undefined") continue;
 
       const currentIndex = lineData.stations.indexOf(nextStationId);
       if (currentIndex === -1) continue;
@@ -104,7 +104,12 @@ const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
       const currentStationId = lineData.stations[nextIndex];
       if (!currentStationId) continue;
-      const { x, y, angle } = calculateTrainPosition(currentStationId, nextStationId, waitingTime, stationCoordinates);
+      const { x, y, angle } = calculateTrainPosition(
+        currentStationId,
+        nextStationId,
+        waitingTime,
+        stationCoordinates,
+      );
 
       result.push({
         id: trainId,
@@ -122,7 +127,7 @@ const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const value = useMemo(
     () => ({ trainData, trainPositions, loading, error }),
-    [trainData, trainPositions, loading, error]
+    [trainData, trainPositions, loading, error],
   );
 
   return <TrainContext.Provider value={value}>{children}</TrainContext.Provider>;
@@ -131,7 +136,7 @@ const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 const useTrains = (): TrainContextValue => {
   const context = useContext(TrainContext);
   if (!context) {
-    throw new Error('useTrains must be used within a TrainProvider');
+    throw new Error("useTrains must be used within a TrainProvider");
   }
   return context;
 };

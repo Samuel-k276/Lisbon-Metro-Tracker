@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import styles from './Header.module.scss';
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import styles from "./Header.module.scss";
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -12,8 +12,8 @@ const Header: React.FC = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const Header: React.FC = () => {
   }, [location]);
 
   return (
-    <header className={`${styles.header} ${isScrolled ? styles.headerScrolled : ''}`}>
+    <header className={`${styles.header} ${isScrolled ? styles.headerScrolled : ""}`}>
       <div className={`container ${styles.headerContainer}`}>
         <div className={styles.logoContainer}>
           <Link to="/">
@@ -33,26 +33,32 @@ const Header: React.FC = () => {
         </div>
 
         <div className={styles.hamburgerMenu} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          <div className={`${styles.hamburgerLine} ${mobileMenuOpen ? styles.hamburgerLineActive : ''}`}></div>
-          <div className={`${styles.hamburgerLine} ${mobileMenuOpen ? styles.hamburgerLineActive : ''}`}></div>
-          <div className={`${styles.hamburgerLine} ${mobileMenuOpen ? styles.hamburgerLineActive : ''}`}></div>
+          <div
+            className={`${styles.hamburgerLine} ${mobileMenuOpen ? styles.hamburgerLineActive : ""}`}
+          ></div>
+          <div
+            className={`${styles.hamburgerLine} ${mobileMenuOpen ? styles.hamburgerLineActive : ""}`}
+          ></div>
+          <div
+            className={`${styles.hamburgerLine} ${mobileMenuOpen ? styles.hamburgerLineActive : ""}`}
+          ></div>
         </div>
 
-        <nav className={`${styles.mainNav} ${mobileMenuOpen ? styles.open : ''}`}>
+        <nav className={`${styles.mainNav} ${mobileMenuOpen ? styles.open : ""}`}>
           <ul className={styles.navLinks}>
-            <li className={location.pathname === '/' ? styles.navLinkActive : ''}>
+            <li className={location.pathname === "/" ? styles.navLinkActive : ""}>
               <Link to="/">Mapa em Tempo Real</Link>
             </li>
-            <li className={location.pathname === '/planear-viagem' ? styles.navLinkActive : ''}>
+            <li className={location.pathname === "/planear-viagem" ? styles.navLinkActive : ""}>
               <Link to="/planear-viagem">Planeia Viagem</Link>
             </li>
-            <li className={location.pathname === '/sobre' ? styles.navLinkActive : ''}>
+            <li className={location.pathname === "/sobre" ? styles.navLinkActive : ""}>
               <Link to="/sobre">Sobre</Link>
             </li>
-            <li className={location.pathname === '/tarifarios' ? styles.navLinkActive : ''}>
+            <li className={location.pathname === "/tarifarios" ? styles.navLinkActive : ""}>
               <Link to="/tarifarios">Tarifários</Link>
             </li>
-            <li className={location.pathname === '/alertas' ? styles.navLinkActive : ''}>
+            <li className={location.pathname === "/alertas" ? styles.navLinkActive : ""}>
               <Link to="/alertas" className={styles.alertLink}>
                 <span>Alertas</span>
                 <div className={styles.alertIndicator}></div>

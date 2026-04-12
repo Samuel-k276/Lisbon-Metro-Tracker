@@ -1,4 +1,4 @@
-@use '../styles/variables' as *;
+@use "../styles/variables" as *;
 
 .header {
   background: linear-gradient(135deg, $primary-color, #008040);
@@ -126,7 +126,7 @@
 
 .navLinkActive {
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -8px;
     left: 0;

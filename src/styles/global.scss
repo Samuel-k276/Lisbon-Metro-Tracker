@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 :root {
   --primary-color: #{$primary-color};
@@ -13,7 +13,8 @@
   font-size: 108%;
 }
 
-html, body {
+html,
+body {
   transform: scale(1.08);
   transform-origin: 0 0;
   width: 92%;
@@ -28,7 +29,7 @@ html, body {
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: $text-dark;
   background-color: $background-light;

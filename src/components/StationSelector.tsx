@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import type { Station } from '../types/metro';
-import styles from './StationSelector.module.scss';
+import React, { useState } from "react";
+import type { Station } from "../types/metro";
+import styles from "./StationSelector.module.scss";
 
 type StationSelectorProps = {
   stations: Station[];
@@ -24,15 +24,13 @@ const StationSelector: React.FC<StationSelectorProps> = ({ stations, onSelectSta
         {safeStations.map((station) => (
           <div
             key={station.id}
-            className={`${styles.stationItem} ${selectedStation?.id === station.id ? styles.selected : ''}`}
+            className={`${styles.stationItem} ${selectedStation?.id === station.id ? styles.selected : ""}`}
             onClick={() => handleStationClick(station)}
           >
             {station.name}
           </div>
         ))}
-        {safeStations.length === 0 && (
-          <div>No stations available</div>
-        )}
+        {safeStations.length === 0 && <div>No stations available</div>}
       </div>
     </div>
   );

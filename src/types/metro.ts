@@ -1,5 +1,5 @@
 // Define the types for the Metro Lisboa project
-import { OrderedMap  } from "js-sdsl";
+import { OrderedMap } from "js-sdsl";
 import type { LineNames } from "../constants/metroLines";
 
 // Coordinates for positioning on the map
@@ -51,7 +51,7 @@ export interface Destination {
   name: string;
 }
 
-// Metro's lines state 
+// Metro's lines state
 export interface LineState {
   name: LineNames;
   status: string;
@@ -63,5 +63,5 @@ export interface Train {
   id: string;
   // TreeMap de tempos de chegada para IDs de estação
   // As chaves (tempos de chegada em segundos) são automaticamente mantidas em ordem crescente
-  stationArrivals: OrderedMap <number, [string, string]>; // [stationId, destinationId]
+  stationArrivals: OrderedMap<number, [string, string]>; // [stationId, destinationId]
 }

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import type { Station } from '../types/metro';
-import { fetchStationWaitingTimes } from '../api/metro'; // Adjust the import path as necessary
+import { useState, useEffect } from "react";
+import type { Station } from "../types/metro";
+import { fetchStationWaitingTimes } from "../api/metro"; // Adjust the import path as necessary
 
 export const useStation = (stationId: string | undefined) => {
   const [station, setStation] = useState<Station | null>(null);
@@ -10,7 +10,7 @@ export const useStation = (stationId: string | undefined) => {
   useEffect(() => {
     if (!stationId) {
       setLoading(false);
-      setError('No station ID provided');
+      setError("No station ID provided");
       return;
     }
 
@@ -21,7 +21,7 @@ export const useStation = (stationId: string | undefined) => {
         setStation(data);
         setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        setError(err instanceof Error ? err.message : "An unknown error occurred");
         setStation(null);
       } finally {
         setLoading(false);

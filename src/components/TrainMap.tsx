@@ -1,13 +1,13 @@
-import { useNavigate } from 'react-router-dom';
-import { Stage, Layer, Circle, Group, Image, Arrow, Text } from 'react-konva';
-import useImage from 'use-image';
-import mapaImg from '../assets/mapa.png';
-import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
+import { Stage, Layer, Circle, Group, Image, Arrow, Text } from "react-konva";
+import useImage from "use-image";
+import mapaImg from "../assets/mapa.png";
+import { useState, useEffect, useRef } from "react";
 
-import { stationCoordinates, lines } from '../utils/staticData';
-import { getStationLines, getLineColor, isTransferStation } from '../utils/metroUtils';
-import { useTrains } from '../contexts/TrainContext';
-import styles from './TrainMap.module.scss';
+import { stationCoordinates, lines } from "../utils/staticData";
+import { getStationLines, getLineColor, isTransferStation } from "../utils/metroUtils";
+import { useTrains } from "../contexts/TrainContext";
+import styles from "./TrainMap.module.scss";
 
 const TrainMap: React.FC = () => {
   const stageRef = useRef<any>(null);
@@ -39,56 +39,56 @@ const TrainMap: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      {loadingError && (
-        <div className={styles.errorBanner}>
-          {loadingError}
-        </div>
-      )}
+      {loadingError && <div className={styles.errorBanner}>{loadingError}</div>}
 
       <div
         className={styles.stageWrapper}
         style={{ width: dimensions.width, height: dimensions.height }}
       >
         {/* Station clickable areas */}
-        {mapReady && Object.values(lines).flatMap(lineData =>
-          lineData.stations.map((stationId) => {
-            const coords = stationCoordinates[stationId];
-            if (!coords) return null;
+        {mapReady &&
+          Object.values(lines)
+            .flatMap((lineData) =>
+              lineData.stations.map((stationId) => {
+                const coords = stationCoordinates[stationId];
+                if (!coords) return null;
 
-            return (
-              <div
-                key={`overlay-station-${stationId}`}
-                onClick={() => handleStationClick(stationId)}
-                onMouseEnter={() => setHoveredStation(stationId)}
-                onMouseLeave={() => setHoveredStation(null)}
-                className={styles.stationOverlay}
-                style={{
-                  left: coords.x - 15,
-                  top: coords.y - 15,
-                  width: 30,
-                  height: 30,
-                }}
-              />
-            );
-          })
-        ).filter(Boolean)}
+                return (
+                  <div
+                    key={`overlay-station-${stationId}`}
+                    onClick={() => handleStationClick(stationId)}
+                    onMouseEnter={() => setHoveredStation(stationId)}
+                    onMouseLeave={() => setHoveredStation(null)}
+                    className={styles.stationOverlay}
+                    style={{
+                      left: coords.x - 15,
+                      top: coords.y - 15,
+                      width: 30,
+                      height: 30,
+                    }}
+                  />
+                );
+              }),
+            )
+            .filter(Boolean)}
 
         {/* Train clickable areas */}
-        {mapReady && trainPositions.map((train) => (
-          <div
-            key={`overlay-train-${train.id}`}
-            onClick={() => handleTrainClick(train.id)}
-            onMouseEnter={() => setHoveredTrain(train.id)}
-            onMouseLeave={() => setHoveredTrain(null)}
-            className={styles.trainOverlay}
-            style={{
-              left: train.position.x - 15,
-              top: train.position.y - 15,
-              width: 30,
-              height: 30,
-            }}
-          />
-        ))}
+        {mapReady &&
+          trainPositions.map((train) => (
+            <div
+              key={`overlay-train-${train.id}`}
+              onClick={() => handleTrainClick(train.id)}
+              onMouseEnter={() => setHoveredTrain(train.id)}
+              onMouseLeave={() => setHoveredTrain(null)}
+              className={styles.trainOverlay}
+              style={{
+                left: train.position.x - 15,
+                top: train.position.y - 15,
+                width: 30,
+                height: 30,
+              }}
+            />
+          ))}
 
         {/* Konva stage */}
         <Stage
@@ -96,7 +96,7 @@ const TrainMap: React.FC = () => {
           width={dimensions.width}
           height={dimensions.height}
           scale={{ x: stageScale, y: stageScale }}
-          style={{ position: 'absolute', top: 0, left: 0 }}
+          style={{ position: "absolute", top: 0, left: 0 }}
         >
           <Layer name="background">
             {backgroundImage && (
@@ -112,54 +112,59 @@ const TrainMap: React.FC = () => {
           </Layer>
 
           <Layer name="stations">
-            {Object.values(lines).flatMap(lineData =>
-              lineData.stations.map((stationId) => {
-                const coords = stationCoordinates[stationId];
-                if (!coords) return null;
+            {Object.values(lines)
+              .flatMap((lineData) =>
+                lineData.stations.map((stationId) => {
+                  const coords = stationCoordinates[stationId];
+                  if (!coords) return null;
 
-                const stationTransfer = isTransferStation(stationId);
-                const stationLines = getStationLines(stationId);
+                  const stationTransfer = isTransferStation(stationId);
+                  const stationLines = getStationLines(stationId);
 
-                return (
-                  <Group
-                    key={`station-${stationId}`}
-                    x={coords.x}
-                    y={coords.y}
-                    listening={false}
-                  >
-                    {stationTransfer ? (
-                      <>
+                  return (
+                    <Group key={`station-${stationId}`} x={coords.x} y={coords.y} listening={false}>
+                      {stationTransfer ? (
+                        <>
+                          <Circle
+                            radius={hoveredStation === stationId ? 13 : 10}
+                            fill="white"
+                            stroke={
+                              hoveredStation === stationId
+                                ? "#2196F3"
+                                : getLineColor(stationLines[0] ?? "")
+                            }
+                            strokeWidth={hoveredStation === stationId ? 3 : 2}
+                            shadowColor="rgba(0,0,0,0.3)"
+                            shadowBlur={hoveredStation === stationId ? 8 : 4}
+                            shadowOffset={{ x: 0, y: 2 }}
+                            shadowOpacity={0.6}
+                          />
+                          <Circle
+                            radius={hoveredStation === stationId ? 11 : 8}
+                            fill={getLineColor(stationLines[0] ?? "")}
+                          />
+                        </>
+                      ) : (
                         <Circle
-                          radius={hoveredStation === stationId ? 13 : 10}
+                          radius={hoveredStation === stationId ? 8 : 6}
                           fill="white"
-                          stroke={hoveredStation === stationId ? "#2196F3" : getLineColor(stationLines[0] ?? '')}
+                          stroke={
+                            hoveredStation === stationId
+                              ? "#2196F3"
+                              : getLineColor(stationLines[0] ?? "")
+                          }
                           strokeWidth={hoveredStation === stationId ? 3 : 2}
                           shadowColor="rgba(0,0,0,0.3)"
                           shadowBlur={hoveredStation === stationId ? 8 : 4}
                           shadowOffset={{ x: 0, y: 2 }}
                           shadowOpacity={0.6}
                         />
-                        <Circle
-                          radius={hoveredStation === stationId ? 11 : 8}
-                          fill={getLineColor(stationLines[0] ?? '')}
-                        />
-                      </>
-                    ) : (
-                      <Circle
-                        radius={hoveredStation === stationId ? 8 : 6}
-                        fill="white"
-                        stroke={hoveredStation === stationId ? "#2196F3" : getLineColor(stationLines[0] ?? '')}
-                        strokeWidth={hoveredStation === stationId ? 3 : 2}
-                        shadowColor="rgba(0,0,0,0.3)"
-                        shadowBlur={hoveredStation === stationId ? 8 : 4}
-                        shadowOffset={{ x: 0, y: 2 }}
-                        shadowOpacity={0.6}
-                      />
-                    )}
-                  </Group>
-                );
-              })
-            ).filter(Boolean)}
+                      )}
+                    </Group>
+                  );
+                }),
+              )
+              .filter(Boolean)}
           </Layer>
 
           <Layer name="trains">

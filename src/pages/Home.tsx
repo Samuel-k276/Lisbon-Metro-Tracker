@@ -1,5 +1,5 @@
-import { TrainMap } from '../components/TrainMap';
-import styles from './Home.module.scss';
+import { TrainMap } from "../components/TrainMap";
+import styles from "./Home.module.scss";
 
 const Home: React.FC = () => {
   return (

@@ -1,10 +1,10 @@
-@use '../styles/variables' as *;
+@use "../styles/variables" as *;
 
 .sobrePage {
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: #333;
 
@@ -100,7 +100,9 @@
   color: white;
   position: relative;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   overflow: hidden;
 
   &:hover {
@@ -128,7 +130,10 @@
   grid-column: 2;
   grid-row: 1;
 
-  h3, .statLabel, .terminal, .directionArrow {
+  h3,
+  .statLabel,
+  .terminal,
+  .directionArrow {
     color: #333 !important;
   }
 }
@@ -293,10 +298,18 @@
     grid-column: 1;
   }
 
-  .azul { grid-row: 1; }
-  .amarela { grid-row: 2; }
-  .verde { grid-row: 3; }
-  .vermelha { grid-row: 4; }
+  .azul {
+    grid-row: 1;
+  }
+  .amarela {
+    grid-row: 2;
+  }
+  .verde {
+    grid-row: 3;
+  }
+  .vermelha {
+    grid-row: 4;
+  }
 
   .artInfo {
     flex-direction: column;
