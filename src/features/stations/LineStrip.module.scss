@@ -27,20 +27,20 @@
   }
 }
 
-.rail {
-  position: absolute;
-  top: calc(1rem + 5px);
-  left: 0;
-  right: 0;
-  height: 3px;
-  border-radius: 2px;
-}
-
 .stations {
   display: flex;
   position: relative;
   min-width: max-content;
   gap: 0;
+}
+
+.rail {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 2px;
 }
 
 .station {

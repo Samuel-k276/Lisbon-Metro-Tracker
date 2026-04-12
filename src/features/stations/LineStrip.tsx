@@ -37,8 +37,8 @@ const LineStrip: React.FC<LineStripProps> = ({ lineName, currentStationId }) => 
         {lineName}
       </span>
       <div className={styles.track} ref={trackRef}>
-        <div className={styles.rail} style={{ backgroundColor: lineColor }} />
         <div className={styles.stations}>
+          <div className={styles.rail} style={{ backgroundColor: lineColor }} />
           {lineData.stations.map((id) => {
             const name = stationMappings[id]?.name ?? id;
             const isCurrent = id === currentStationId;
