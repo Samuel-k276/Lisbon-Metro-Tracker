@@ -8,11 +8,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev       # Vite dev server
 npm run build     # tsc && vite build
 npm run preview   # Preview production build
+npm run lint      # oxlint src/
+npm run fmt       # oxfmt src/ (auto-fix)
+npm run fmt:check # oxfmt --check src/
 ```
 
-No test or lint commands are configured. TypeScript strict mode is enforced (no unused vars/params).
-
 **Required env var**: `VITE_METRO_API_TOKEN` — Bearer token for the Lisbon Metro API.
+
+**Git hooks** (`.githooks/`, activated via `npm run prepare`):
+- pre-commit: auto-formats with oxfmt
+- pre-push: checks formatting + lint, blocks if failing
+
+## Code Style
+
+- Always use `React.FC` for component typing
+- Named exports only — no default exports
+- Always use semicolons
+- Single quotes in JSX string props
+- Comments and variable names in English
+- SCSS module class names in camelCase
+- State management via React Context only — no external state libs
+- Use `@/` path alias when shorter than relative imports
+- MUI `sx` prop is acceptable for MUI component-specific styles
+- Don't worry about formatting — oxfmt handles it via git hooks
 
 ## Architecture
 
