@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 
 import { lines } from '@/shared/data/staticData';
@@ -15,6 +15,18 @@ type LineStripProps = {
 
 const LineStrip: React.FC<LineStripProps> = ({ lineName, currentStationId }) => {
   const lineData = lines[lineName];
+  const trackRef = useRef<HTMLDivElement>(null);
+  const currentRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (!trackRef.current || !currentRef.current) return;
+
+    const track = trackRef.current;
+    const current = currentRef.current;
+    const offset = current.offsetLeft - track.clientWidth / 2 + current.clientWidth / 2;
+    track.scrollLeft = Math.max(0, offset);
+  }, [currentStationId]);
+
   if (!lineData) return null;
 
   const lineColor = getLineColor(lineName);
@@ -24,7 +36,7 @@ const LineStrip: React.FC<LineStripProps> = ({ lineName, currentStationId }) => 
       <span className={styles.lineName} style={{ color: lineColor }}>
         {lineName}
       </span>
-      <div className={styles.track}>
+      <div className={styles.track} ref={trackRef}>
         <div className={styles.rail} style={{ backgroundColor: lineColor }} />
         <div className={styles.stations}>
           {lineData.stations.map((id) => {
@@ -34,6 +46,7 @@ const LineStrip: React.FC<LineStripProps> = ({ lineName, currentStationId }) => 
             return (
               <Link
                 key={id}
+                ref={isCurrent ? currentRef : undefined}
                 to={stationPath(id)}
                 className={`${styles.station} ${isCurrent ? styles.current : ''}`}
                 title={name}
