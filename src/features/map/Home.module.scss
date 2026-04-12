@@ -6,6 +6,7 @@
     text-align: center;
     color: $text-dark;
     font-weight: 700;
+    font-size: 1.5rem;
     margin-bottom: 0.75rem;
   }
 }
@@ -15,4 +16,16 @@
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+}
+
+@media (max-width: $mobile) {
+  .homePage h1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .mapContainer {
+    border-radius: 8px;
+    margin: 0 -0.5rem;
+  }
 }
