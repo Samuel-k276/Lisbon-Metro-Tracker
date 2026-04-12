@@ -54,6 +54,7 @@ tiles/
 !package.json
 !tsconfig.json
 !.oxfmtrc.json
+!.oxlintrc.json
 !vercel.json
 *.geojson
 *.kml

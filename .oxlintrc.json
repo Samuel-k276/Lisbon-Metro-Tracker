@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-unused-expressions": "warn",
+    "no-unused-private-class-members": "warn",
+    "no-console": "warn",
+    "no-debugger": "error",
+    "no-empty": "warn",
+    "import/no-default-export": "warn",
+    "import/no-cycle": "error",
+    "import/no-self-import": "error",
+    "import/no-duplicates": "warn",
+    "no-unreachable": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  }
+}
