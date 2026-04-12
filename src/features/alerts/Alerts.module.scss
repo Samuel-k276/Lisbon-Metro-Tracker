@@ -13,7 +13,7 @@
 }
 
 .errorBanner {
-  background-color: #d32f2f;
+  background-color: $status-error;
   color: white;
   padding: 1rem 1.5rem;
   border-radius: 8px;
