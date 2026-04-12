@@ -14,6 +14,10 @@ import { TrainMarker } from './TrainMarker';
 
 import styles from './TrainMap.module.scss';
 
+// Eagerly load map image at module level so it's cached across remounts
+const preloadedImage = new Image();
+preloadedImage.src = mapaImg;
+
 const DIMENSIONS = { width: 1034.4, height: 720 };
 const HOVER_COLOR = '#2196F3';
 
