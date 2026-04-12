@@ -29,7 +29,6 @@ const StationMarker: React.FC<StationMarkerProps> = ({
           fill='white'
           stroke={isHovered ? hoverColor : lineColor}
           strokeWidth={isHovered ? 3 : 2}
-          filter={shadowFilter}
         />
         <circle cx={cx} cy={cy} r={isHovered ? 11 : 8} fill={lineColor} />
       </>
