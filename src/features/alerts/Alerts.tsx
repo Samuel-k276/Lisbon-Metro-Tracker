@@ -1,28 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { fetchLineStateAll } from '@/shared/api/fetchLineState';
-import type { LineState } from '@/shared/types/metro';
+import React from 'react';
+import { useLineStates } from '@/shared/hooks/useLineStates';
 import { LineStatusCard } from './LineStatusCard';
 import styles from './Alerts.module.scss';
 
 const Alerts: React.FC = () => {
-  const [lineStates, setLineStates] = useState<LineState[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getLineStates = async () => {
-      try {
-        const states = await fetchLineStateAll();
-        setLineStates(states);
-      } catch {
-        setError('Failed to fetch line states');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getLineStates();
-  }, []);
+  const { lineStates, loading, error } = useLineStates();
 
   return (
     <div className={styles.page}>
