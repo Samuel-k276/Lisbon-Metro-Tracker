@@ -4,7 +4,7 @@ Real-time Lisbon Metro tracking app built with React 19, TypeScript 6, and Vite 
 
 ## Features
 
-- **Live Map** — real-time train positions on an interactive canvas map
+- **Live Map** — real-time train positions on an interactive SVG map
 - **Station Details** — upcoming trains and waiting times per station
 - **Journey Planner** — shortest route between any two stations (Dijkstra with transfer penalty)
 - **Service Alerts** — current status of all four metro lines
@@ -12,11 +12,14 @@ Real-time Lisbon Metro tracking app built with React 19, TypeScript 6, and Vite 
 ## Tech Stack
 
 - React 19 + TypeScript 6 + Vite 8 (Rolldown)
-- Konva/React-Konva for canvas map rendering
+- SVG for interactive map rendering (zero canvas dependencies)
 - SCSS Modules for styling
-- Vitest + React Testing Library (107 tests)
-- oxlint + oxfmt for linting and formatting
+- Vitest + React Testing Library (126 tests, 84% coverage)
+- oxlint (100 rules) + oxfmt for linting and formatting
+- Lazy-loaded routes with React.lazy + Suspense
 - Deployed on Vercel
+
+**3 production dependencies:** react, react-dom, react-router.
 
 ## Getting Started
 
@@ -31,7 +34,7 @@ Requires `VITE_METRO_API_TOKEN` env var — Bearer token for the Lisbon Metro AP
 
 ```bash
 yarn dev          # Dev server (auto-opens browser)
-yarn build        # TypeScript check + production build
+yarn build        # TypeScript check + production build (~350ms)
 yarn preview      # Preview production build
 yarn test         # Run tests
 yarn test:watch   # Watch mode
@@ -44,18 +47,18 @@ yarn fmt          # Format with oxfmt
 
 ```
 src/
-  main.tsx              # Entry point, router, providers
-  features/             # Feature modules
-    map/                #   Real-time train map (Konva canvas)
-    stations/           #   Station detail page
-    trains/             #   Train detail page
-    alerts/             #   Line status cards
-    planner/            #   Journey planner + graph algorithm
+  main.tsx              # Entry point, router, lazy routes
+  features/
+    map/                #   SVG train map (StationMarker, TrainMarker)
+    stations/           #   Station detail (StationInfo, NextTrainsTable)
+    trains/             #   Train detail (StationArrivalRow)
+    alerts/             #   Line status (LineStatusCard)
+    planner/            #   Journey planner (RouteResultPanel, RouteLeg, graph)
   layout/               # Header, Footer
   shared/
-    api/                # One file per API endpoint
+    api/                # One file per API endpoint + shared client
     components/         # Spinner, ErrorBoundary, NotFound
-    contexts/           # TrainContext (global train data, refreshes every 15s)
+    contexts/           # TrainContext (refreshes every 15s)
     data/               # Static metro data (stations, lines, mappings)
     hooks/              # useStation, useTrain, useLineStates, useNavigateTo
     routes.ts           # Centralized route paths
@@ -63,6 +66,17 @@ src/
     types/              # TypeScript types
     utils/              # Helpers + logger
 ```
+
+## Bundle
+
+| Chunk | Size (gzip) |
+|-------|-------------|
+| App (initial) | 3.9 KB |
+| React | 73.6 KB |
+| Lazy routes | 1.6–10.4 KB each |
+| CSS | 1.9 KB initial |
+
+Total initial load: ~78 KB gzipped.
 
 ## License
 

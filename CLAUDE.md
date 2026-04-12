@@ -29,36 +29,46 @@ Formatting (quotes, semicolons, trailing commas, import order) is handled by oxf
 - Always use `React.FC` for component typing
 - Named exports only — no default exports
 - Always use `type` instead of `interface` — use `enum` only when a type union gets unwieldy
-- Comments and variable names in English
+- Code identifiers and comments in English
+- UI-facing strings in Portuguese (pt-PT)
 - SCSS module class names in camelCase
 - State management via React Context only — no external state libs
 - Use `@/` path alias when shorter than relative imports
 - Never use inline styles — use SCSS modules and CSS custom properties via class names
 - Use `$variables` from `shared/styles/_variables.scss` for colors, breakpoints — no hardcoded values
+- Use `logger` from `shared/utils/logger.ts` instead of `console.*` — dev-only logging
 - Tests live next to source in `spec/` dirs (e.g., `features/alerts/spec/Alerts.spec.tsx`)
 - Use shared mock helpers from `shared/hooks/spec/` for hook mocking in tests
+- All images in WebP format
+- Lazy-load non-home routes via `React.lazy` + `Suspense`
+- Accessibility: aria labels, keyboard navigation, semantic HTML, skip link
 
 ## Architecture
 
-Real-time Lisbon Metro tracker: React 19 + TypeScript 6 + Vite 8, with Konva canvas for map rendering and SCSS modules for styling.
+Real-time Lisbon Metro tracker: React 19 + TypeScript 6 + Vite 8 (Rolldown), with SVG map rendering and SCSS modules for styling. 3 prod deps: react, react-dom, react-router.
 
 ### Project Structure
 
 ```
 src/
-  main.tsx              # Entry point, App component, router, providers
-  features/             # Feature modules (map, stations, trains, alerts, planner)
-  layout/               # Shell components (Header, Footer)
+  main.tsx              # Entry point, App component, router, lazy routes
+  features/
+    map/                # SVG map: TrainMap, StationMarker, TrainMarker, Home
+    stations/           # StationDetail, StationInfo, NextTrainsTable
+    trains/             # TrainDetail, StationArrivalRow
+    alerts/             # Alerts, LineStatusCard
+    planner/            # PlanearViagem, RouteResultPanel, RouteLeg, graph.ts
+  layout/               # Header, Footer
   shared/
-    api/                # One file per API endpoint + shared client
-    components/         # Shared UI (Spinner, ErrorBoundary, NotFound)
-    contexts/           # TrainContext (global train data)
+    api/                # One file per endpoint (client.ts, fetchTrainData, etc.)
+    components/         # Spinner, ErrorBoundary, NotFound
+    contexts/           # TrainContext (global train data, refreshes every 15s)
     data/               # Static metro data (stations, lines, mappings)
-    hooks/              # Shared hooks (useStation, useTrain, useLineStates, useNavigateTo)
-    routes.ts           # Centralized route paths
+    hooks/              # useStation, useTrain, useLineStates, useNavigateTo
+    routes.ts           # Centralized route paths + path helpers
     styles/             # SCSS variables + global styles
     types/              # TypeScript types
-    utils/              # Pure utility functions + logger
+    utils/              # helpers, metroUtils, logger
 ```
 
 ### Data Flow
@@ -73,9 +83,9 @@ Metro API (metrolisboa.pt:8243)
 
 ### Train Position System
 
-Trains are positioned between stations on a canvas coordinate system (1034.4×720):
-- `stationCoordinates` in `staticData.ts` maps station IDs → canvas {x,y} (NOT geographic coords)
-- Position interpolation: `percentage = 1 - (timeToNext / MAX_TIME_BETWEEN_STATIONS)` between current and next station
+Trains are positioned on an SVG coordinate system (1034.4×720):
+- `stationCoordinates` in `staticData.ts` maps station IDs → {x,y} (NOT geographic coords)
+- Position interpolation: `percentage = 1 - (timeToNext / MAX_TIME_BETWEEN_STATIONS)`
 - Train line determined by last character of train ID: A=Azul, B=Amarela, C=Verde, D=Vermelha
 
 ### Route Planning (`features/planner/graph.ts`)
@@ -94,4 +104,4 @@ Three overlapping ID systems — all linked via `shared/data/stationMappings.ts`
 
 ### Map Rendering (`features/map/TrainMap.tsx`)
 
-Three Konva layers (background image, station circles, train markers) with HTML div overlays on top for click/hover interactivity. Transfer stations render as concentric circles. Konva props are canvas API — they cannot use CSS.
+Pure SVG with `StationMarker` and `TrainMarker` components. Background map image, station circles (transfer stations as concentric circles), train markers with direction arrows. All interactive — native DOM events, keyboard accessible, no canvas.
