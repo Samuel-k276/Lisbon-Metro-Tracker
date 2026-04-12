@@ -1,12 +1,10 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Typography, Box, Container, Paper, Chip, CircularProgress } from "@mui/material";
 import { useTrain } from "@/shared/hooks/useTrain";
 import { getStationNameById } from "@/shared/utils/metroUtils";
 import { formatTimeInSeconds } from "@/shared/utils/helpers";
 import { lines } from "@/shared/data/staticData";
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import TrainIcon from "@mui/icons-material/Train";
+import styles from "./TrainDetail.module.scss";
 
 const TrainDetail: React.FC = () => {
   const { trainId } = useParams<{ trainId: string }>();
@@ -14,206 +12,111 @@ const TrainDetail: React.FC = () => {
 
   if (!trainId) {
     return (
-      <Container maxWidth="lg">
-        <Paper elevation={3} sx={{ p: 3, mt: 4, mb: 4 }}>
-          <Typography variant="h5" color="error" gutterBottom>
-            Train ID not found
-          </Typography>
-        </Paper>
-      </Container>
+      <div className={styles.container}>
+        <div className={styles.card}>
+          <h2 className={styles.error}>Train ID not found</h2>
+        </div>
+      </div>
     );
   }
 
   if (loading) {
     return (
-      <Container
-        maxWidth="lg"
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}
-      >
-        <CircularProgress />
-      </Container>
+      <div className={styles.loading}>
+        <div className={styles.spinner} />
+      </div>
     );
   }
 
   if (error || !train || !trainInfo) {
     return (
-      <Container maxWidth="lg">
-        <Paper elevation={3} sx={{ p: 3, mt: 4, mb: 4 }}>
-          <Typography variant="h5" color="error" gutterBottom>
-            {error || "Train information not available"}
-          </Typography>
-          <Typography>
+      <div className={styles.container}>
+        <div className={styles.card}>
+          <h2 className={styles.error}>{error || "Train information not available"}</h2>
+          <p>
             The train you're looking for may have completed its journey or the information is
             temporarily unavailable.
-          </Typography>
-        </Paper>
-      </Container>
+          </p>
+        </div>
+      </div>
     );
   }
 
+  const lineStations = lines[trainInfo.line]?.stations;
+
   return (
-    <Container maxWidth="lg">
-      <Paper elevation={3} sx={{ p: 3, mt: 4, mb: 4, position: "relative", overflow: "hidden" }}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: "8px",
-            backgroundColor: trainInfo.lineColor,
-          }}
-        />
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <div className={styles.lineStripe} style={{ backgroundColor: trainInfo.lineColor }} />
 
-        <Box sx={{ pt: 2 }}>
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{ display: "flex", alignItems: "center", gap: 1 }}
-          >
-            <TrainIcon sx={{ fontSize: 35, color: trainInfo.lineColor }} />
-            Train {trainId}
-            <Chip
-              label={trainInfo.line}
-              sx={{
-                ml: 2,
-                backgroundColor: trainInfo.lineColor,
-                color: trainInfo.line === "Amarela" ? "#000" : "#fff",
-                fontWeight: "bold",
-                fontSize: "0.9rem",
-              }}
-            />
-          </Typography>
-
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              mb: 3,
-              pl: 1,
+        <div className={styles.titleRow}>
+          <span className={styles.trainIcon}>🚇</span>
+          <h1 className={styles.title}>Train {trainId}</h1>
+          <span
+            className={styles.lineBadge}
+            style={{
+              backgroundColor: trainInfo.lineColor,
+              color: trainInfo.line === "Amarela" ? "#000" : "#fff",
             }}
           >
-            <Typography variant="h6" color="text.secondary">
-              Direction:
-            </Typography>
-            <Typography variant="h6" fontWeight="bold" sx={{ ml: 1 }}>
-              {trainInfo.destination}
-            </Typography>
-          </Box>
-        </Box>
+            {trainInfo.line}
+          </span>
+        </div>
 
-        <Paper variant="outlined" sx={{ p: 3, mb: 3 }}>
-          <Typography variant="h6" gutterBottom sx={{ borderBottom: "1px solid #eee", pb: 1 }}>
-            Journey Information
-          </Typography>
+        <div className={styles.direction}>
+          Direction: <strong>{trainInfo.destination}</strong>
+        </div>
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              mt: 3,
-            }}
-          >
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Journey Information</h2>
+          <div className={styles.stationList}>
             {trainInfo.nextStations.map((station, index) => (
-              <Box
-                key={`${station.stationId}-${index}`}
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  py: 1,
-                  borderBottom:
-                    index < trainInfo.nextStations.length - 1 ? "1px dashed #eee" : "none",
-                }}
-              >
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <Box
-                    sx={{
-                      width: 12,
-                      height: 12,
-                      borderRadius: "50%",
-                      backgroundColor: trainInfo.lineColor,
-                      border: "2px solid white",
-                      boxShadow: "0 0 0 1px #ccc",
-                    }}
+              <div key={`${station.stationId}-${index}`} className={styles.stationRow}>
+                <div className={styles.stationLeft}>
+                  <span
+                    className={styles.stationDot}
+                    style={{ backgroundColor: trainInfo.lineColor }}
                   />
-                  <Typography fontWeight={index === 0 ? "bold" : "regular"}>
+                  <span style={{ fontWeight: index === 0 ? "bold" : "normal" }}>
                     {station.stationName}
-                  </Typography>
-                  {index === 0 && (
-                    <Chip
-                      label="Next station"
-                      size="small"
-                      sx={{
-                        ml: 1,
-                        backgroundColor: "#e3f2fd",
-                        color: "#1976d2",
-                        fontSize: "0.7rem",
-                      }}
-                    />
-                  )}
-                </Box>
-                <Typography
-                  sx={{
-                    backgroundColor: index === 0 ? "#f5f5f5" : "transparent",
-                    px: index === 0 ? 2 : 0,
-                    py: index === 0 ? 0.5 : 0,
-                    borderRadius: index === 0 ? 4 : 0,
-                    fontWeight: index === 0 ? "bold" : "regular",
-                  }}
-                >
+                  </span>
+                  {index === 0 && <span className={styles.nextBadge}>Next station</span>}
+                </div>
+                <span className={`${styles.arrivalTime} ${index === 0 ? styles.highlight : ""}`}>
                   {formatTimeInSeconds(station.arrivalTime)}
-                </Typography>
-              </Box>
+                </span>
+              </div>
             ))}
-          </Box>
-        </Paper>
+          </div>
+        </div>
 
-        <Paper variant="outlined" sx={{ p: 3 }}>
-          <Typography variant="h6" gutterBottom sx={{ borderBottom: "1px solid #eee", pb: 1 }}>
-            Line Information
-          </Typography>
-
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 2 }}>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <Typography variant="body1">Line:</Typography>
-              <Typography variant="body1" fontWeight="bold">
-                {trainInfo.line}
-              </Typography>
-            </Box>
-
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <Typography variant="body1">Terminals:</Typography>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                {lines[trainInfo.line]?.stations && (
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Line Information</h2>
+          <div className={styles.infoRows}>
+            <div className={styles.infoRow}>
+              <span>Line:</span>
+              <strong>{trainInfo.line}</strong>
+            </div>
+            <div className={styles.infoRow}>
+              <span>Terminals:</span>
+              <div className={styles.terminals}>
+                {lineStations && (
                   <>
-                    <Typography variant="body1" fontWeight="medium">
-                      {getStationNameById(lines[trainInfo.line]?.stations[0])}
-                    </Typography>
-                    <ArrowRightAltIcon sx={{ mx: 1 }} />
-                    <Typography variant="body1" fontWeight="medium">
-                      {getStationNameById(
-                        lines[trainInfo.line]?.stations[
-                          (lines[trainInfo.line]?.stations.length ?? 1) - 1
-                        ],
-                      )}
-                    </Typography>
+                    <span>{getStationNameById(lineStations[0])}</span>
+                    <span>→</span>
+                    <span>{getStationNameById(lineStations[lineStations.length - 1])}</span>
                   </>
                 )}
-              </Box>
-            </Box>
-
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <Typography variant="body1">Total Stations:</Typography>
-              <Typography variant="body1" fontWeight="bold">
-                {lines[trainInfo.line]?.stations?.length || "N/A"}
-              </Typography>
-            </Box>
-          </Box>
-        </Paper>
-      </Paper>
-    </Container>
+              </div>
+            </div>
+            <div className={styles.infoRow}>
+              <span>Total Stations:</span>
+              <strong>{lineStations?.length ?? "N/A"}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
