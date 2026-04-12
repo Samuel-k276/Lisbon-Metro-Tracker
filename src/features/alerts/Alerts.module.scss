@@ -83,6 +83,26 @@
   animation-delay: 0.4s;
 }
 
+// Status color variants — applied to .card
+.statusNormal {
+  --status-color: #{$status-normal};
+}
+.statusConditional {
+  --status-color: #{$status-warning};
+}
+.statusConditioned {
+  --status-color: #{$status-warning};
+}
+.statusInterrupted {
+  --status-color: #{$status-error};
+}
+.statusClosed {
+  --status-color: #{$status-error};
+}
+.statusUnknown {
+  --status-color: #{$status-unknown};
+}
+
 .statusStripe {
   position: absolute;
   top: 0;
@@ -90,6 +110,7 @@
   width: 6px;
   height: 100%;
   z-index: 1;
+  background-color: var(--status-color);
 }
 
 .cardHeader {
@@ -150,6 +171,9 @@
   font-weight: bold;
   font-size: 0.875rem;
   word-break: break-word;
+  background-color: color-mix(in srgb, var(--status-color) 12%, transparent);
+  color: var(--status-color);
+  border: 1px solid var(--status-color);
 }
 
 .message {

@@ -40,20 +40,13 @@ const LINE_GRADIENTS: Record<string, { primary: string; gradient: string }> = {
   },
 };
 
-const getStatusColor = (status: string): string => {
-  switch (status.toLowerCase()) {
-    case 'normal':
-      return '#10b981';
-    case 'conditional':
-    case 'conditioned':
-      return '#f59e0b';
-    case 'interrupted':
-    case 'closed':
-      return '#ef4444';
-    default:
-      return '#6b7280';
-  }
-};
+const STATUS_CLASS = {
+  normal: styles.statusNormal ?? '',
+  conditional: styles.statusConditional ?? '',
+  conditioned: styles.statusConditioned ?? '',
+  interrupted: styles.statusInterrupted ?? '',
+  closed: styles.statusClosed ?? '',
+} as Record<string, string>;
 
 const getStatusIcon = (status: string): string => (status === 'Ok' ? '\u2713' : '\u26A0\uFE0F');
 
@@ -64,11 +57,11 @@ type LineStatusCardProps = {
 const LineStatusCard: React.FC<LineStatusCardProps> = ({ lineState }) => {
   const key = lineState.name.toLowerCase();
   const lineStyle = LINE_GRADIENTS[key];
-  const statusColor = getStatusColor(lineState.status);
+  const statusClass = STATUS_CLASS[lineState.status.toLowerCase()] ?? styles.statusUnknown;
 
   return (
-    <div className={styles.card}>
-      <div className={styles.statusStripe} style={{ backgroundColor: statusColor }} />
+    <div className={`${styles.card} ${statusClass}`}>
+      <div className={styles.statusStripe} />
 
       <div className={styles.cardHeader} style={{ background: lineStyle?.gradient }}>
         <div
@@ -83,14 +76,7 @@ const LineStatusCard: React.FC<LineStatusCardProps> = ({ lineState }) => {
       <div className={styles.cardBody}>
         <div className={styles.statusRow}>
           <span className={styles.statusLabel}>Status:</span>
-          <span
-            className={styles.statusChip}
-            style={{
-              backgroundColor: `${statusColor}20`,
-              color: statusColor,
-              border: `1px solid ${statusColor}`,
-            }}
-          >
+          <span className={styles.statusChip}>
             {getStatusIcon(lineState.status)} {lineState.status}
           </span>
         </div>
