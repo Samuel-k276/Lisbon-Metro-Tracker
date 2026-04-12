@@ -1,3 +1,4 @@
+import type { LineNames } from '@/shared/data/metroLines';
 import type { Station } from '@/shared/types/metro';
 import { getStationLines } from '@/shared/utils/metroUtils';
 
@@ -68,9 +69,9 @@ const findNearestStation = (
  * @param destinationId Destination station ID
  * @returns The name of the line for this destination
  */
-const getLineNameFromDestination = (destinationId: string): string => {
+const getLineNameFromDestination = (destinationId: string): LineNames | 'Unknown' => {
   if (!destinationId) return 'Unknown';
-  return getStationLines(destinationId)[0] || 'Unknown';
+  return getStationLines(destinationId)[0] ?? 'Unknown';
 };
 
 export { formatTimeInSeconds, calculateDistance, findNearestStation, getLineNameFromDestination };

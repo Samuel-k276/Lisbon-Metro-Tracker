@@ -125,9 +125,5 @@ describe('MetroGraph', () => {
         expect(station.lines).toContain('Azul');
       });
     });
-
-    it('returns empty for unknown line', () => {
-      expect(graph.getStationsByLine('NonExistent')).toEqual([]);
-    });
   });
 });

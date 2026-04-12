@@ -73,7 +73,10 @@ const TrainMap: React.FC = () => {
                 <StationMarker
                   cx={coords.x}
                   cy={coords.y}
-                  lineColor={getLineColor(getStationLines(stationId)[0] ?? '')}
+                  lineColor={(() => {
+                    const firstLine = getStationLines(stationId)[0];
+                    return firstLine ? getLineColor(firstLine) : '#888888';
+                  })()}
                   isTransfer={isTransferStation(stationId)}
                 />
               </g>

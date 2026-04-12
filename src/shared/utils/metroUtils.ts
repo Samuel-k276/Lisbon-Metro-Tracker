@@ -8,8 +8,8 @@ import { stationMappings } from '@/shared/data/stationMappings';
  * @param lineName The name of the metro line
  * @returns The color hex code for the line or a default color if not found
  */
-const getLineColor = (lineName: string): string => {
-  return LINE_COLORS[lineName as LineNames] || '#888888';
+const getLineColor = (lineName: LineNames): string => {
+  return LINE_COLORS[lineName] || '#888888';
 };
 
 /**
@@ -61,7 +61,7 @@ const isTerminalStation = (stationId: string): boolean => {
  * @param stationId The station identifier
  * @returns Array of line names for the station
  */
-const getStationLines = (stationId: string): string[] => {
+const getStationLines = (stationId: string): LineNames[] => {
   const station = stationMappings[stationId];
   if (!station) return [];
   return Array.isArray(station.lines) ? station.lines : [station.lines];
@@ -72,8 +72,8 @@ const getStationLines = (stationId: string): string[] => {
  * @param lineName The name of the metro line
  * @returns Array of station IDs that belong to the line
  */
-const getLineStations = (lineName: string): string[] => {
-  return lines[lineName as LineNames]?.stations || [];
+const getLineStations = (lineName: LineNames): string[] => {
+  return lines[lineName]?.stations || [];
 };
 
 export {
