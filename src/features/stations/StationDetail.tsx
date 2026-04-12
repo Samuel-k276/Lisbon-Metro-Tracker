@@ -1,14 +1,20 @@
 import React from 'react';
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 
 import { Spinner } from '@/shared/components/Spinner';
+import { stationMappings } from '@/shared/data/stationMappings';
 import { useStation } from '@/shared/hooks/useStation';
+import { stationPath } from '@/shared/routes';
 import { getLineNameFromDestination } from '@/shared/utils/helpers';
 
 import { NextTrainsTable } from './NextTrainsTable';
 import { StationInfo } from './StationInfo';
 
 import styles from './StationDetail.module.scss';
+
+const stationIdByName = Object.fromEntries(
+  Object.values(stationMappings).map((s) => [s.name, s.id]),
+);
 
 const COLOR_ORDER: Record<string, number> = {
   Azul: 1,
@@ -65,11 +71,18 @@ const StationDetail: React.FC = () => {
           </h1>
 
           <div className={styles.destinations}>
-            {sortedTrains.map((train) => (
-              <span key={train.destination} className={styles.chip}>
-                {train.destination}
-              </span>
-            ))}
+            {sortedTrains.map((train) => {
+              const destId = stationIdByName[train.destination];
+              return destId ? (
+                <Link key={train.destination} to={stationPath(destId)} className={styles.chip}>
+                  {train.destination}
+                </Link>
+              ) : (
+                <span key={train.destination} className={styles.chip}>
+                  {train.destination}
+                </span>
+              );
+            })}
             {sortedTrains.length === 0 && (
               <span className={styles.muted}>Sem destinos disponíveis</span>
             )}
