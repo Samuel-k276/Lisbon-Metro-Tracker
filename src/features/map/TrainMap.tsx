@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 
 import mapaImg from '@/assets/mapa.webp';
 import { useTrains } from '@/shared/contexts/TrainContext';
@@ -19,7 +18,6 @@ const preloadedImage = new Image();
 preloadedImage.src = mapaImg;
 
 const DIMENSIONS = { width: 1034.4, height: 720 };
-const HOVER_COLOR = '#2196F3';
 
 const ALL_STATION_IDS = [...new Set(Object.values(lines).flatMap((line) => line.stations))];
 
@@ -32,7 +30,6 @@ const handleKeyNav = (callback: () => void) => (e: React.KeyboardEvent) => {
 
 const TrainMap: React.FC = () => {
   const navigateTo = useNavigateTo();
-  const [hoveredStation, setHoveredStation] = useState<string | null>(null);
 
   const { trainPositions, error: loadingError, lastUpdated } = useTrains();
 
@@ -69,8 +66,6 @@ const TrainMap: React.FC = () => {
                 className={styles.station}
                 onClick={navigate}
                 onKeyDown={handleKeyNav(navigate)}
-                onMouseEnter={() => setHoveredStation(stationId)}
-                onMouseLeave={() => setHoveredStation(null)}
                 tabIndex={0}
                 role='link'
                 aria-label={`Estação ${stationId}`}
@@ -80,8 +75,6 @@ const TrainMap: React.FC = () => {
                   cy={coords.y}
                   lineColor={getLineColor(getStationLines(stationId)[0] ?? '')}
                   isTransfer={isTransferStation(stationId)}
-                  isHovered={hoveredStation === stationId}
-                  hoverColor={HOVER_COLOR}
                 />
               </g>
             );
