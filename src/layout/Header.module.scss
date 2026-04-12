@@ -135,21 +135,27 @@
 // Mobile
 @media (max-width: $mobile) {
   .headerContainer {
-    padding: 12px 0;
+    padding: 16px 0;
   }
 
   .hamburgerMenu {
     display: flex;
+    width: 32px;
+    height: 24px;
   }
 
   .logoIcon {
-    width: 36px;
-    height: 36px;
-    font-size: 22px;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+
+  .logoWrapper {
+    gap: 12px;
   }
 
   .logoText {
-    font-size: 1.15rem;
+    font-size: 1.3rem;
   }
 
   .mainNav {
