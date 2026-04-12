@@ -2,18 +2,6 @@ import type { Station } from '@/shared/types/metro';
 import { getStationLines } from '@/shared/utils/metroUtils';
 
 /**
- * Format time string to display in a user-friendly format
- * @param timeString ISO format time string
- */
-const formatTime = (timeString: string): string => {
-  const date = new Date(timeString);
-  return date.toLocaleTimeString('pt-PT', {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-};
-
-/**
  * Format time in seconds to minutes and seconds format
  * @param seconds Time in seconds
  * @returns Formatted time string
@@ -85,10 +73,4 @@ const getLineNameFromDestination = (destinationId: string): string => {
   return getStationLines(destinationId)[0] || 'Unknown';
 };
 
-export {
-  formatTime,
-  formatTimeInSeconds,
-  calculateDistance,
-  findNearestStation,
-  getLineNameFromDestination,
-};
+export { formatTimeInSeconds, calculateDistance, findNearestStation, getLineNameFromDestination };
