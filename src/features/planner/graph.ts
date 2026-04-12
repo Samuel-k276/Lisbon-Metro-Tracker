@@ -17,19 +17,19 @@ type GraphNode = {
 };
 
 type PathSegment = {
-  tipo: 'viagem' | 'transbordo';
-  de: string;
-  para: string;
-  linha?: string;
-  tempo: number;
-  estacoes: number;
+  type: 'travel' | 'transfer';
+  from: string;
+  to: string;
+  line?: string;
+  time: number;
+  stations: number;
 };
 
 type FormattedPath = {
   segments: PathSegment[];
-  transbordos: number;
-  tempoTotal: number;
-  estacoes: number;
+  transfers: number;
+  totalTime: number;
+  stations: number;
 };
 
 /**
@@ -205,25 +205,25 @@ class MetroGraph {
    */
   formatPathForUI(
     path: string[],
-    tempoEstacaoMin: number = 2,
-    tempoTransbordoMin: number = 4,
+    minutesPerStation: number = 2,
+    minutesPerTransfer: number = 4,
   ): FormattedPath {
     // Se não há caminho ou só tem uma estação, retornar vazio
     if (!path || path.length === 0) {
-      return { segments: [], transbordos: 0, tempoTotal: 0, estacoes: 0 };
+      return { segments: [], transfers: 0, totalTime: 0, stations: 0 };
     }
 
     if (path.length === 1) {
       return {
         segments: [],
-        transbordos: 0,
-        tempoTotal: 0,
-        estacoes: 0,
+        transfers: 0,
+        totalTime: 0,
+        stations: 0,
       };
     }
 
     // Processar o caminho manualmente
-    return this.processPathManually(path, tempoEstacaoMin, tempoTransbordoMin);
+    return this.processPathManually(path, minutesPerStation, minutesPerTransfer);
   }
 
   /**
@@ -236,15 +236,15 @@ class MetroGraph {
    */
   private processPathManually(
     path: string[],
-    tempoEstacaoMin: number,
-    tempoTransbordoMin: number,
+    minutesPerStation: number,
+    minutesPerTransfer: number,
   ): FormattedPath {
     const segments: PathSegment[] = [];
-    let transbordos = 0;
+    let transfers = 0;
 
     // Precisamos determinar a linha para cada parte do percurso
     let currentLine = '';
-    let segmentStartIdx = 0;
+    let segmentStartIndex = 0;
 
     // Para cada par de estações no caminho, determinar a linha mais apropriada
     for (let i = 0; i < path.length - 1; i++) {
@@ -263,37 +263,37 @@ class MetroGraph {
         // Se não for a primeira iteração, finalizar o segmento atual
         if (i > 0) {
           // Adicionar segmento de viagem
-          const segmentStart = this.nodes.get(path[segmentStartIdx]!)!;
+          const segmentStart = this.nodes.get(path[segmentStartIndex]!)!;
           const segmentEnd = this.nodes.get(path[i]!)!;
-          const stationCount = i - segmentStartIdx + 1;
+          const stationCount = i - segmentStartIndex + 1;
 
           // Obter os nomes das estações do stationMappings
           const startName = stationMappings[segmentStart.id]?.name || segmentStart.id;
           const endName = stationMappings[segmentEnd.id]?.name || segmentEnd.id;
 
           segments.push({
-            tipo: 'viagem',
-            de: startName,
-            para: endName,
-            linha: currentLine,
-            tempo: (stationCount - 1) * tempoEstacaoMin, // -1 porque contamos conexões, não estações
-            estacoes: stationCount,
+            type: 'travel',
+            from: startName,
+            to: endName,
+            line: currentLine,
+            time: (stationCount - 1) * minutesPerStation, // -1 porque contamos conexões, não estações
+            stations: stationCount,
           });
 
           // Se mudou de linha, adicionar transbordo
           if (lineBetweenStations !== currentLine) {
-            transbordos++;
+            transfers++;
             segments.push({
-              tipo: 'transbordo',
-              de: currentLine,
-              para: lineBetweenStations,
-              tempo: tempoTransbordoMin,
-              estacoes: 0,
+              type: 'transfer',
+              from: currentLine,
+              to: lineBetweenStations,
+              time: minutesPerTransfer,
+              stations: 0,
             });
           }
 
           // Iniciar novo segmento
-          segmentStartIdx = i;
+          segmentStartIndex = i;
         }
 
         currentLine = lineBetweenStations;
@@ -301,37 +301,37 @@ class MetroGraph {
 
       // Para o último par de estações
       if (i === path.length - 2) {
-        const segmentStart = this.nodes.get(path[segmentStartIdx]!)!;
+        const segmentStart = this.nodes.get(path[segmentStartIndex]!)!;
         const segmentEnd = this.nodes.get(nextId!)!;
-        const stationCount = i + 1 - segmentStartIdx + 1;
+        const stationCount = i + 1 - segmentStartIndex + 1;
 
         // Obter os nomes das estações do stationMappings
         const startName = stationMappings[segmentStart.id]?.name || segmentStart.id;
         const endName = stationMappings[segmentEnd.id]?.name || segmentEnd.id;
 
         segments.push({
-          tipo: 'viagem',
-          de: startName,
-          para: endName,
-          linha: currentLine,
-          tempo: (stationCount - 1) * tempoEstacaoMin,
-          estacoes: stationCount,
+          type: 'travel',
+          from: startName,
+          to: endName,
+          line: currentLine,
+          time: (stationCount - 1) * minutesPerStation,
+          stations: stationCount,
         });
       }
     }
 
     // Calcular tempo total e número de estações
-    const tempoTotal = segments.reduce((total, segment) => total + segment.tempo, 0);
-    const estacoes =
+    const totalTime = segments.reduce((total, segment) => total + segment.time, 0);
+    const stations =
       segments
-        .filter((segment) => segment.tipo === 'viagem')
-        .reduce((total, segment) => total + segment.estacoes, 0) - transbordos; // Corrigir contagem duplicada
+        .filter((segment) => segment.type === 'travel')
+        .reduce((total, segment) => total + segment.stations, 0) - transfers; // Corrigir contagem duplicada
 
     return {
       segments,
-      transbordos,
-      tempoTotal,
-      estacoes,
+      transfers,
+      totalTime,
+      stations,
     };
   }
 

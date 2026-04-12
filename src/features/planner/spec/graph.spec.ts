@@ -65,7 +65,7 @@ describe('MetroGraph', () => {
     it('returns empty result for empty path', () => {
       const result = graph.formatPathForUI([]);
       expect(result.segments).toEqual([]);
-      expect(result.tempoTotal).toBe(0);
+      expect(result.totalTime).toBe(0);
     });
 
     it('returns empty result for single station', () => {
@@ -77,15 +77,15 @@ describe('MetroGraph', () => {
       const path = graph.shortestPath('RB', 'AS');
       const result = graph.formatPathForUI(path);
       expect(result.segments.length).toBe(1);
-      expect(result.segments[0]!.tipo).toBe('viagem');
-      expect(result.transbordos).toBe(0);
+      expect(result.segments[0]!.type).toBe('travel');
+      expect(result.transfers).toBe(0);
     });
 
     it('includes transfer segments for cross-line paths', () => {
       const path = graph.shortestPath('RB', 'TE');
       const result = graph.formatPathForUI(path);
-      expect(result.transbordos).toBeGreaterThanOrEqual(1);
-      const transfers = result.segments.filter((s) => s.tipo === 'transbordo');
+      expect(result.transfers).toBeGreaterThanOrEqual(1);
+      const transfers = result.segments.filter((s) => s.type === 'transfer');
       expect(transfers.length).toBeGreaterThanOrEqual(1);
     });
 
@@ -93,7 +93,7 @@ describe('MetroGraph', () => {
       const path = graph.shortestPath('RB', 'AS');
       const result = graph.formatPathForUI(path, 2, 4);
       // 2 stations = 1 connection = 2 minutes
-      expect(result.tempoTotal).toBe(2);
+      expect(result.totalTime).toBe(2);
     });
   });
 

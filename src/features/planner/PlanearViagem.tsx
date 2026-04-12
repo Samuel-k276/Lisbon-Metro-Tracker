@@ -8,56 +8,56 @@ import { RouteLeg } from './RouteLeg';
 import styles from './PlanearViagem.module.scss';
 
 type RouteSegment = {
-  tipo: 'viagem' | 'troca de linha';
-  de: string;
-  para: string;
-  linha?: string;
-  tempo: number;
-  estacoes: number;
+  type: 'travel' | 'line-change';
+  from: string;
+  to: string;
+  line?: string;
+  time: number;
+  stations: number;
 };
 
 type RouteResult = {
-  tempoTotal: number;
-  estacoes: number;
-  trocasLinha: number;
-  rota: RouteSegment[];
+  totalTime: number;
+  stations: number;
+  lineChanges: number;
+  route: RouteSegment[];
 };
 
-const estacoes = Object.values(stationMappings)
+const stations = Object.values(stationMappings)
   .map((station) => ({ id: station.id, name: station.name }))
   .sort((a, b) => a.name.localeCompare(b.name));
 
 const PlanearViagem: React.FC = () => {
-  const [origem, setOrigem] = useState('');
-  const [destino, setDestino] = useState('');
-  const [resultados, setResultados] = useState<RouteResult | null>(null);
+  const [origin, setOrigin] = useState('');
+  const [destination, setDestination] = useState('');
+  const [results, setResults] = useState<RouteResult | null>(null);
 
-  const trocarOrigemDestino = () => {
-    setOrigem(destino);
-    setDestino(origem);
+  const swapOriginDestination = () => {
+    setOrigin(destination);
+    setDestination(origin);
   };
 
-  const calcularRota = () => {
-    if (!origem || !destino) {
+  const calculateRoute = () => {
+    if (!origin || !destination) {
       alert('Por favor, selecione a origem e o destino');
       return;
     }
 
-    const resultado = metroGraph.shortestPath(origem, destino);
-    const rotaProcessada = metroGraph.formatPathForUI(resultado);
+    const result = metroGraph.shortestPath(origin, destination);
+    const processedRoute = metroGraph.formatPathForUI(result);
 
-    const tempoTotal = rotaProcessada.segments.reduce((total, seg) => total + seg.tempo, 0);
-    const estacoesPart = rotaProcessada.segments
-      .filter((seg) => seg.tipo === 'viagem')
-      .reduce((total, seg) => total + seg.estacoes, 0);
+    const totalTime = processedRoute.segments.reduce((total, seg) => total + seg.time, 0);
+    const stationCount = processedRoute.segments
+      .filter((seg) => seg.type === 'travel')
+      .reduce((total, seg) => total + seg.stations, 0);
 
-    setResultados({
-      tempoTotal,
-      estacoes: estacoesPart,
-      trocasLinha: rotaProcessada.transbordos,
-      rota: rotaProcessada.segments.map((seg) => ({
+    setResults({
+      totalTime,
+      stations: stationCount,
+      lineChanges: processedRoute.transfers,
+      route: processedRoute.segments.map((seg) => ({
         ...seg,
-        tipo: seg.tipo === 'transbordo' ? 'troca de linha' : 'viagem',
+        type: seg.type === 'transfer' ? 'line-change' : 'travel',
       })),
     });
   };
@@ -75,9 +75,9 @@ const PlanearViagem: React.FC = () => {
           <legend className={styles.srOnly}>Selecionar estações de origem e destino</legend>
           <div className={styles.selectWrapper}>
             <label htmlFor='origem-select'>Estação de Origem</label>
-            <select id='origem-select' value={origem} onChange={(e) => setOrigem(e.target.value)}>
+            <select id='origem-select' value={origin} onChange={(e) => setOrigin(e.target.value)}>
               <option value=''>Selecionar...</option>
-              {estacoes.map((e) => (
+              {stations.map((e) => (
                 <option key={e.id} value={e.id}>
                   {e.name}
                 </option>
@@ -85,7 +85,7 @@ const PlanearViagem: React.FC = () => {
             </select>
           </div>
 
-          <button className={styles.swapButton} onClick={trocarOrigemDestino}>
+          <button className={styles.swapButton} onClick={swapOriginDestination}>
             ⇅
           </button>
 
@@ -93,11 +93,11 @@ const PlanearViagem: React.FC = () => {
             <label htmlFor='destino-select'>Estação de Destino</label>
             <select
               id='destino-select'
-              value={destino}
-              onChange={(e) => setDestino(e.target.value)}
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
             >
               <option value=''>Selecionar...</option>
-              {estacoes.map((e) => (
+              {stations.map((e) => (
                 <option key={e.id} value={e.id}>
                   {e.name}
                 </option>
@@ -107,13 +107,13 @@ const PlanearViagem: React.FC = () => {
         </fieldset>
 
         <div className={styles.submitRow}>
-          <button className={styles.submitButton} onClick={calcularRota}>
+          <button className={styles.submitButton} onClick={calculateRoute}>
             Calcular Rota
           </button>
         </div>
       </div>
 
-      {resultados && (
+      {results && (
         <div className={styles.card} aria-live='polite'>
           <h2 className={styles.sectionTitle}>Resultado</h2>
 
@@ -121,17 +121,17 @@ const PlanearViagem: React.FC = () => {
             <div className={styles.statCard}>
               <span className={styles.statIcon}>⏱</span>
               <span className={styles.statLabel}>Tempo Total</span>
-              <span className={styles.statValue}>{resultados.tempoTotal} min</span>
+              <span className={styles.statValue}>{results.totalTime} min</span>
             </div>
             <div className={styles.statCard}>
               <span className={styles.statIcon}>🚇</span>
               <span className={styles.statLabel}>Estações</span>
-              <span className={styles.statValue}>{resultados.estacoes}</span>
+              <span className={styles.statValue}>{results.stations}</span>
             </div>
             <div className={styles.statCard}>
               <span className={styles.statIcon}>🔄</span>
               <span className={styles.statLabel}>Mudanças de Linha</span>
-              <span className={styles.statValue}>{resultados.trocasLinha}</span>
+              <span className={styles.statValue}>{results.lineChanges}</span>
             </div>
           </div>
 
@@ -140,8 +140,8 @@ const PlanearViagem: React.FC = () => {
           <h3 className={styles.sectionTitle}>Itinerário Detalhado</h3>
 
           <div className={styles.itinerary}>
-            {resultados.rota.map((etapa, index) => (
-              <RouteLeg key={index} {...etapa} />
+            {results.route.map((leg, index) => (
+              <RouteLeg key={index} {...leg} />
             ))}
           </div>
 

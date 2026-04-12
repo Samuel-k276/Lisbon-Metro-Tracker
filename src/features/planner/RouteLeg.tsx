@@ -3,12 +3,12 @@ import React from 'react';
 import styles from './PlanearViagem.module.scss';
 
 type RouteLegProps = {
-  tipo: 'viagem' | 'troca de linha';
-  de: string;
-  para: string;
-  linha?: string;
-  tempo: number;
-  estacoes: number;
+  type: 'travel' | 'line-change';
+  from: string;
+  to: string;
+  line?: string;
+  time: number;
+  stations: number;
 };
 
 const LINE_CLASS: Record<string, string> = {
@@ -24,36 +24,36 @@ const LineChip: React.FC<{ name: string }> = ({ name }) => (
   <span className={`${styles.chip} ${getLineClass(name)}`}>{name}</span>
 );
 
-const TravelLeg: React.FC<RouteLegProps> = ({ de, para, linha, tempo, estacoes }) => (
-  <div className={`${styles.legTravel} ${getLineClass(linha ?? '')}`}>
+const TravelLeg: React.FC<RouteLegProps> = ({ from, to, line, time, stations }) => (
+  <div className={`${styles.legTravel} ${getLineClass(line ?? '')}`}>
     <div className={styles.legHeader}>
       <span className={styles.legIcon}>🚇</span>
       <span>
-        {de} → {para}
+        {from} → {to}
       </span>
-      {linha && <LineChip name={linha} />}
+      {line && <LineChip name={line} />}
     </div>
     <div className={styles.legMeta}>
-      {estacoes} estações • {tempo} minutos
+      {stations} estações • {time} minutos
     </div>
   </div>
 );
 
-const TransferLeg: React.FC<RouteLegProps> = ({ de, para, tempo }) => (
+const TransferLeg: React.FC<RouteLegProps> = ({ from, to, time }) => (
   <div className={styles.legTransfer}>
     <div className={styles.legHeader}>
       <span className={styles.legIcon}>🚶</span>
       <span>Mudança de Linha:</span>
-      <LineChip name={de} />
+      <LineChip name={from} />
       <span>→</span>
-      <LineChip name={para} />
+      <LineChip name={to} />
     </div>
-    <div className={styles.legMeta}>Tempo estimado: {tempo} minutos</div>
+    <div className={styles.legMeta}>Tempo estimado: {time} minutos</div>
   </div>
 );
 
 const RouteLeg: React.FC<RouteLegProps> = (props) => {
-  if (props.tipo === 'viagem') return <TravelLeg {...props} />;
+  if (props.type === 'travel') return <TravelLeg {...props} />;
   return <TransferLeg {...props} />;
 };
 
