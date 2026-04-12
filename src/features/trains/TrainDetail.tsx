@@ -25,7 +25,7 @@ const TrainDetail: React.FC = () => {
     return (
       <div className={styles.container}>
         <div className={styles.card}>
-          <h2 className={styles.error}>Train ID not found</h2>
+          <h2 className={styles.error}>Comboio não encontrado</h2>
         </div>
       </div>
     );
@@ -43,11 +43,11 @@ const TrainDetail: React.FC = () => {
       <div className={styles.container} aria-live='polite'>
         <div className={styles.card}>
           <h2 className={styles.error} role='alert'>
-            {error || 'Train information not available'}
+            {error || 'Informação do comboio indisponível'}
           </h2>
           <p>
-            The train you're looking for may have completed its journey or the information is
-            temporarily unavailable.
+            O comboio que procura pode ter terminado a viagem ou a informação está temporariamente
+            indisponível.
           </p>
         </div>
       </div>
@@ -61,16 +61,16 @@ const TrainDetail: React.FC = () => {
       <div className={`${styles.card} ${LINE_CLASS[trainInfo.line] ?? ''}`}>
         <div className={styles.titleRow}>
           <span className={styles.trainIcon}>🚇</span>
-          <h1 className={styles.title}>Train {trainId}</h1>
+          <h1 className={styles.title}>Comboio {trainId}</h1>
           <span className={styles.lineBadge}>{trainInfo.line}</span>
         </div>
 
         <p className={styles.direction}>
-          Direction: <strong>{trainInfo.destination}</strong>
+          Direção: <strong>{trainInfo.destination}</strong>
         </p>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Journey Information</h2>
+          <h2 className={styles.sectionTitle}>Informação da Viagem</h2>
           {trainInfo.nextStations.map((station, index) => (
             <StationArrivalRow
               key={`${station.stationId}-${index}`}
@@ -83,13 +83,13 @@ const TrainDetail: React.FC = () => {
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Line Information</h2>
+          <h2 className={styles.sectionTitle}>Informação da Linha</h2>
           <div className={styles.infoRow}>
-            <span>Line:</span>
+            <span>Linha:</span>
             <strong>{trainInfo.line}</strong>
           </div>
           <div className={styles.infoRow}>
-            <span>Terminals:</span>
+            <span>Terminais:</span>
             <span className={styles.terminals}>
               {lineStations && (
                 <>
@@ -101,7 +101,7 @@ const TrainDetail: React.FC = () => {
             </span>
           </div>
           <div className={styles.infoRow}>
-            <span>Total Stations:</span>
+            <span>Total de Estações:</span>
             <strong>{lineStations?.length ?? 'N/A'}</strong>
           </div>
         </section>

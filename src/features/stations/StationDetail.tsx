@@ -18,7 +18,7 @@ const StationDetail: React.FC = () => {
   const { stationId } = useParams<{ stationId: string }>();
   const { station, loading, error } = useStation(stationId);
 
-  if (!stationId) return <p>Station ID not found</p>;
+  if (!stationId) return <p>Estação não encontrada</p>;
 
   if (loading)
     return (
@@ -30,14 +30,14 @@ const StationDetail: React.FC = () => {
     return (
       <div aria-live='polite'>
         <p className={styles.error} role='alert'>
-          Error loading station: {error}
+          Erro ao carregar estação: {error}
         </p>
       </div>
     );
   if (!station)
     return (
       <div aria-live='polite'>
-        <p>Station not found</p>
+        <p>Estação não encontrada</p>
       </div>
     );
 
@@ -68,38 +68,38 @@ const StationDetail: React.FC = () => {
               </span>
             ))}
             {sortedTrains.length === 0 && (
-              <span className={styles.muted}>No destinations available</span>
+              <span className={styles.muted}>Sem destinos disponíveis</span>
             )}
           </div>
         </div>
 
         <div className={styles.grid}>
           <div>
-            <h2 className={styles.sectionTitle}>Information</h2>
+            <h2 className={styles.sectionTitle}>Informação</h2>
             <div className={styles.infoList}>
               <p>
-                <strong>Name:</strong> {station.name}
+                <strong>Nome:</strong> {station.name}
               </p>
               <p>
-                <strong>Lines:</strong>{' '}
+                <strong>Linhas:</strong>{' '}
                 {Array.isArray(station.lines) ? station.lines.join(', ') : station.lines}
               </p>
               <p>
-                <strong>Location:</strong> {station.coordinates.x}, {station.coordinates.y}
+                <strong>Localização:</strong> {station.coordinates.x}, {station.coordinates.y}
               </p>
             </div>
           </div>
 
           <div>
-            <h2 className={styles.sectionTitle}>Next Trains</h2>
+            <h2 className={styles.sectionTitle}>Próximos Comboios</h2>
             <div className={styles.tableWrapper}>
               <table className={styles.table}>
                 <thead>
                   <tr>
-                    <th>Destination</th>
-                    <th>Time 1</th>
-                    <th>Time 2</th>
-                    <th>Time 3</th>
+                    <th>Destino</th>
+                    <th>Tempo 1</th>
+                    <th>Tempo 2</th>
+                    <th>Tempo 3</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -115,7 +115,7 @@ const StationDetail: React.FC = () => {
                   ) : (
                     <tr>
                       <td colSpan={4} className={styles.emptyCell}>
-                        No upcoming trains
+                        Sem comboios previstos
                       </td>
                     </tr>
                   )}

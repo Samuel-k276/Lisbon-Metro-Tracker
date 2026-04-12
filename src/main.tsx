@@ -21,7 +21,7 @@ const App: React.FC = () => {
     <Router>
       <TrainProvider>
         <a href='#main-content' className='skip-link'>
-          Skip to content
+          Saltar para o conteúdo
         </a>
         <Header />
         <main id='main-content' className='main-content'>

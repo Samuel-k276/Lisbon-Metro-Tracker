@@ -9,10 +9,10 @@ const NotFound: React.FC = () => {
   return (
     <div className={styles.page}>
       <span className={styles.code}>404</span>
-      <h1 className={styles.title}>Page not found</h1>
-      <p className={styles.message}>The page you're looking for doesn't exist.</p>
+      <h1 className={styles.title}>Página não encontrada</h1>
+      <p className={styles.message}>A página que procura não existe.</p>
       <Link to={Routes.HOME} className={styles.homeLink}>
-        Back to map
+        Voltar ao mapa
       </Link>
     </div>
   );

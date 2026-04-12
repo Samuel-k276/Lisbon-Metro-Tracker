@@ -38,7 +38,7 @@ describe('StationDetail', () => {
   it('shows station not found', () => {
     mockUseStation({ station: null });
     renderWithRoute('AM');
-    expect(screen.getByText('Station not found')).toBeInTheDocument();
+    expect(screen.getByText('Estação não encontrada')).toBeInTheDocument();
   });
 
   it('renders station name and info', () => {
@@ -55,14 +55,14 @@ describe('StationDetail', () => {
 
   it('renders next trains table', () => {
     renderWithRoute('AM');
-    expect(screen.getByText('Destination')).toBeInTheDocument();
-    expect(screen.getByText('Time 1')).toBeInTheDocument();
+    expect(screen.getByText('Destino')).toBeInTheDocument();
+    expect(screen.getByText('Tempo 1')).toBeInTheDocument();
     expect(screen.getByText('2m 0s')).toBeInTheDocument();
   });
 
   it('shows no upcoming trains when empty', () => {
     mockUseStation({ station: { ...defaultStation, nextTrains: [] } });
     renderWithRoute('AM');
-    expect(screen.getByText('No upcoming trains')).toBeInTheDocument();
+    expect(screen.getByText('Sem comboios previstos')).toBeInTheDocument();
   });
 });

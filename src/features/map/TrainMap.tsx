@@ -40,7 +40,7 @@ const TrainMap: React.FC = () => {
         className={styles.map}
         viewBox={`0 0 ${DIMENSIONS.width} ${DIMENSIONS.height}`}
         role='img'
-        aria-label='Lisbon Metro map with real-time train positions'
+        aria-label='Mapa do Metro de Lisboa com posições dos comboios em tempo real'
       >
         <defs>
           <filter id='station-shadow'>
@@ -103,7 +103,7 @@ const TrainMap: React.FC = () => {
                 onMouseLeave={() => setHoveredStation(null)}
                 tabIndex={0}
                 role='link'
-                aria-label={`Station ${stationId}`}
+                aria-label={`Estação ${stationId}`}
               >
                 <StationMarker
                   cx={coords.x}
@@ -132,7 +132,7 @@ const TrainMap: React.FC = () => {
                 onMouseLeave={() => setHoveredTrain(null)}
                 tabIndex={0}
                 role='link'
-                aria-label={`Train ${train.id}`}
+                aria-label={`Comboio ${train.id}`}
               >
                 <TrainMarker
                   cx={train.position.x}

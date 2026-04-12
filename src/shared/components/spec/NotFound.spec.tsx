@@ -13,7 +13,7 @@ describe('NotFound', () => {
       </MemoryRouter>,
     );
     expect(screen.getByText('404')).toBeInTheDocument();
-    expect(screen.getByText('Page not found')).toBeInTheDocument();
+    expect(screen.getByText('Página não encontrada')).toBeInTheDocument();
   });
 
   it('has a link back to home', () => {
@@ -22,6 +22,6 @@ describe('NotFound', () => {
         <NotFound />
       </MemoryRouter>,
     );
-    expect(screen.getByText('Back to map').closest('a')).toHaveAttribute('href', Routes.HOME);
+    expect(screen.getByText('Voltar ao mapa').closest('a')).toHaveAttribute('href', Routes.HOME);
   });
 });

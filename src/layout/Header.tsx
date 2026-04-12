@@ -34,7 +34,7 @@ const Header: React.FC = () => {
         <button
           className={styles.hamburgerMenu}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label='Toggle navigation menu'
+          aria-label='Abrir/fechar menu de navegação'
           aria-expanded={mobileMenuOpen}
         >
           <div

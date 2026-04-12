@@ -20,10 +20,10 @@ describe('Alerts', () => {
 
   it('renders all line cards', () => {
     render(<Alerts />);
-    expect(screen.getByText('Azul (Blue)')).toBeInTheDocument();
-    expect(screen.getByText('Amarela (Yellow)')).toBeInTheDocument();
-    expect(screen.getByText('Verde (Green)')).toBeInTheDocument();
-    expect(screen.getByText('Vermelha (Red)')).toBeInTheDocument();
+    expect(screen.getByText('Azul')).toBeInTheDocument();
+    expect(screen.getByText('Amarela')).toBeInTheDocument();
+    expect(screen.getByText('Verde')).toBeInTheDocument();
+    expect(screen.getByText('Vermelha')).toBeInTheDocument();
   });
 
   it('shows status for each line', () => {
@@ -42,18 +42,18 @@ describe('Alerts', () => {
       lineStates: [{ name: 'Azul', status: 'Normal', message: '0' }],
     });
     render(<Alerts />);
-    expect(screen.getByText('Azul (Blue)')).toBeInTheDocument();
+    expect(screen.getByText('Azul')).toBeInTheDocument();
     expect(screen.queryByText('0')).not.toBeInTheDocument();
   });
 
   it('shows error state', () => {
-    mockUseLineStates({ lineStates: [], error: 'Failed to fetch line states' });
+    mockUseLineStates({ lineStates: [], error: 'Erro ao carregar estado das linhas' });
     render(<Alerts />);
-    expect(screen.getByText('Failed to fetch line states')).toBeInTheDocument();
+    expect(screen.getByText('Erro ao carregar estado das linhas')).toBeInTheDocument();
   });
 
   it('renders the page title', () => {
     render(<Alerts />);
-    expect(screen.getByText('Metro Line Status')).toBeInTheDocument();
+    expect(screen.getByText('Estado das Linhas')).toBeInTheDocument();
   });
 });

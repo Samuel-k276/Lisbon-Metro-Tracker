@@ -12,14 +12,14 @@ const Alerts: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>Metro Line Status</h1>
+      <h1 className={styles.title}>Estado das Linhas</h1>
 
       <div aria-live='polite'>
         {loading && <Spinner />}
 
         {error && (
           <div className={styles.errorBanner} role='alert'>
-            <strong>Error</strong>
+            <strong>Erro</strong>
             {error}
           </div>
         )}

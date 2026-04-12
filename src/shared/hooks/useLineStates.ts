@@ -22,7 +22,7 @@ const useLineStates = (): UseLineStatesResult => {
         const states = await fetchLineStateAll();
         if (!cancelled) setLineStates(states);
       } catch {
-        if (!cancelled) setError('Failed to fetch line states');
+        if (!cancelled) setError('Erro ao carregar estado das linhas');
       } finally {
         if (!cancelled) setLoading(false);
       }

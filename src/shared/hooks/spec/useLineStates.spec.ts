@@ -48,7 +48,7 @@ describe('useLineStates', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    expect(result.current.error).toBe('Failed to fetch line states');
+    expect(result.current.error).toBe('Erro ao carregar estado das linhas');
     expect(result.current.lineStates).toEqual([]);
   });
 });

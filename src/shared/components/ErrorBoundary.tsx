@@ -36,10 +36,10 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     return (
       <div className={styles.page}>
         <span className={styles.code}>500</span>
-        <h1 className={styles.title}>Something went wrong</h1>
-        <p className={styles.message}>An unexpected error occurred. Try reloading the page.</p>
+        <h1 className={styles.title}>Algo correu mal</h1>
+        <p className={styles.message}>Ocorreu um erro inesperado. Tente recarregar a página.</p>
         <button className={styles.reloadButton} onClick={this.handleReload}>
-          Reload page
+          Recarregar página
         </button>
       </div>
     );

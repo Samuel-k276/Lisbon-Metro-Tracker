@@ -38,12 +38,12 @@ describe('TrainDetail', () => {
   it('shows unavailable when no train info', () => {
     mockUseTrain({ train: null, trainInfo: null });
     renderWithRoute('ML001A');
-    expect(screen.getByText('Train information not available')).toBeInTheDocument();
+    expect(screen.getByText('Informação do comboio indisponível')).toBeInTheDocument();
   });
 
   it('renders train details', () => {
     renderWithRoute('ML001A');
-    expect(screen.getByText('Train ML001A')).toBeInTheDocument();
+    expect(screen.getByText('Comboio ML001A')).toBeInTheDocument();
     expect(screen.getAllByText('Azul').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('Santa Apolónia').length).toBeGreaterThanOrEqual(1);
   });
@@ -52,12 +52,12 @@ describe('TrainDetail', () => {
     renderWithRoute('ML001A');
     expect(screen.getByText('São Sebastião')).toBeInTheDocument();
     expect(screen.getByText('Parque')).toBeInTheDocument();
-    expect(screen.getByText('Next station')).toBeInTheDocument();
+    expect(screen.getByText('Próxima estação')).toBeInTheDocument();
   });
 
   it('renders line information section', () => {
     renderWithRoute('ML001A');
-    expect(screen.getByText('Line Information')).toBeInTheDocument();
-    expect(screen.getByText('Terminals:')).toBeInTheDocument();
+    expect(screen.getByText('Informação da Linha')).toBeInTheDocument();
+    expect(screen.getByText('Terminais:')).toBeInTheDocument();
   });
 });

@@ -22,7 +22,7 @@ const StationArrivalRow: React.FC<StationArrivalRowProps> = ({
       <span className={styles.stationLeft}>
         <span className={styles.stationDot} style={{ backgroundColor: lineColor }} />
         <span style={{ fontWeight: isNext ? 'bold' : 'normal' }}>{stationName}</span>
-        {isNext && <span className={styles.nextBadge}>Next station</span>}
+        {isNext && <span className={styles.nextBadge}>Próxima estação</span>}
       </span>
       <span className={`${styles.arrivalTime} ${isNext ? styles.highlight : ''}`}>
         {formatTimeInSeconds(arrivalTime)}

@@ -16,10 +16,10 @@ const LINE_IMAGES: Record<string, string> = {
 };
 
 const LINE_NAMES: Record<string, string> = {
-  azul: 'Azul (Blue)',
-  amarela: 'Amarela (Yellow)',
-  verde: 'Verde (Green)',
-  vermelha: 'Vermelha (Red)',
+  azul: 'Azul',
+  amarela: 'Amarela',
+  verde: 'Verde',
+  vermelha: 'Vermelha',
 };
 
 const LINE_CLASS: Record<string, string> = {
@@ -61,7 +61,7 @@ const LineStatusCard: React.FC<LineStatusCardProps> = ({ lineState }) => {
 
       <div className={styles.cardBody}>
         <div className={styles.statusRow}>
-          <span className={styles.statusLabel}>Status:</span>
+          <span className={styles.statusLabel}>Estado:</span>
           <span className={styles.statusChip}>
             {getStatusIcon(lineState.status)} {lineState.status}
           </span>

@@ -29,8 +29,8 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>,
     );
     expect(screen.getByText('500')).toBeInTheDocument();
-    expect(screen.getByText('Something went wrong')).toBeInTheDocument();
-    expect(screen.getByText('Reload page')).toBeInTheDocument();
+    expect(screen.getByText('Algo correu mal')).toBeInTheDocument();
+    expect(screen.getByText('Recarregar página')).toBeInTheDocument();
   });
 
   it('reload button calls window.location.reload', async () => {
@@ -46,7 +46,7 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>,
     );
 
-    await userEvent.click(screen.getByText('Reload page'));
+    await userEvent.click(screen.getByText('Recarregar página'));
     expect(reloadMock).toHaveBeenCalled();
   });
 });
