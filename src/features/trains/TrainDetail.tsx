@@ -7,6 +7,13 @@ import { Spinner } from '@/shared/components/Spinner';
 import { StationArrivalRow } from './StationArrivalRow';
 import styles from './TrainDetail.module.scss';
 
+const LINE_CLASS: Record<string, string> = {
+  Azul: styles.lineAzul ?? '',
+  Amarela: styles.lineAmarela ?? '',
+  Verde: styles.lineVerde ?? '',
+  Vermelha: styles.lineVermelha ?? '',
+};
+
 const TrainDetail: React.FC = () => {
   const { trainId } = useParams<{ trainId: string }>();
   const { train, trainInfo, loading, error } = useTrain(trainId);
@@ -41,22 +48,11 @@ const TrainDetail: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div
-        className={styles.card}
-        style={{ '--line-color': trainInfo.lineColor } as React.CSSProperties}
-      >
+      <div className={`${styles.card} ${LINE_CLASS[trainInfo.line] ?? ''}`}>
         <div className={styles.titleRow}>
           <span className={styles.trainIcon}>🚇</span>
           <h1 className={styles.title}>Train {trainId}</h1>
-          <span
-            className={styles.lineBadge}
-            style={{
-              backgroundColor: trainInfo.lineColor,
-              color: trainInfo.line === 'Amarela' ? '#000' : '#fff',
-            }}
-          >
-            {trainInfo.line}
-          </span>
+          <span className={styles.lineBadge}>{trainInfo.line}</span>
         </div>
 
         <p className={styles.direction}>

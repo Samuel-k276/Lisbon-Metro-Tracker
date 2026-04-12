@@ -49,6 +49,29 @@
   font-weight: bold;
   font-size: 0.9rem;
   margin-left: 0.5rem;
+  background-color: var(--line-color);
+  color: $text-light;
+}
+
+// Line color variants — applied to .card
+.lineAzul {
+  --line-color: #{$blue-line};
+}
+
+.lineAmarela {
+  --line-color: #{$yellow-line};
+
+  .lineBadge {
+    color: $text-dark;
+  }
+}
+
+.lineVerde {
+  --line-color: #{$green-line};
+}
+
+.lineVermelha {
+  --line-color: #{$red-line};
 }
 
 .direction {

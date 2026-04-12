@@ -1,5 +1,4 @@
 import React from 'react';
-import { getLineColor } from '@/shared/utils/metroUtils';
 import styles from './PlanearViagem.module.scss';
 
 type RouteLegProps = {
@@ -11,24 +10,23 @@ type RouteLegProps = {
   estacoes: number;
 };
 
+const LINE_CLASS: Record<string, string> = {
+  Azul: styles.lineAzul ?? '',
+  Amarela: styles.lineAmarela ?? '',
+  Verde: styles.lineVerde ?? '',
+  Vermelha: styles.lineVermelha ?? '',
+};
+
+const getLineClass = (name: string): string => LINE_CLASS[name] ?? '';
+
 const LineChip: React.FC<{ name: string }> = ({ name }) => (
-  <span
-    className={styles.chip}
-    style={{
-      backgroundColor: getLineColor(name),
-      color: name === 'Amarela' ? '#000' : '#fff',
-    }}
-  >
-    {name}
-  </span>
+  <span className={`${styles.chip} ${getLineClass(name)}`}>{name}</span>
 );
 
 const TravelLeg: React.FC<RouteLegProps> = ({ de, para, linha, tempo, estacoes }) => (
-  <div className={styles.legTravel} style={{ borderLeftColor: getLineColor(linha ?? '') }}>
+  <div className={`${styles.legTravel} ${getLineClass(linha ?? '')}`}>
     <div className={styles.legHeader}>
-      <span className={styles.legIcon} style={{ color: getLineColor(linha ?? '') }}>
-        🚇
-      </span>
+      <span className={styles.legIcon}>🚇</span>
       <span>
         {de} → {para}
       </span>
