@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { stationMappings } from "@/shared/data/stationMappings";
 import { metroGraph } from "@/features/planner/graph";
-import { getLineColor } from "@/shared/utils/metroUtils";
+import { RouteLeg } from "./RouteLeg";
 import styles from "./PlanearViagem.module.scss";
 
 type RouteSegment = {
@@ -136,70 +136,9 @@ const PlanearViagem: React.FC = () => {
           <h3 className={styles.sectionTitle}>Itinerário Detalhado</h3>
 
           <div className={styles.itinerary}>
-            {resultados.rota.map((etapa, index) => {
-              if (etapa.tipo === "viagem") {
-                return (
-                  <div
-                    key={index}
-                    className={styles.legTravel}
-                    style={{ borderLeftColor: getLineColor(etapa.linha ?? "") }}
-                  >
-                    <div className={styles.legHeader}>
-                      <span
-                        className={styles.legIcon}
-                        style={{ color: getLineColor(etapa.linha ?? "") }}
-                      >
-                        🚇
-                      </span>
-                      <span>
-                        {etapa.de} → {etapa.para}
-                      </span>
-                      <span
-                        className={styles.chip}
-                        style={{
-                          backgroundColor: getLineColor(etapa.linha ?? ""),
-                          color: etapa.linha === "Amarela" ? "#000" : "#fff",
-                        }}
-                      >
-                        {etapa.linha}
-                      </span>
-                    </div>
-                    <div className={styles.legMeta}>
-                      {etapa.estacoes} estações • {etapa.tempo} minutos
-                    </div>
-                  </div>
-                );
-              }
-
-              return (
-                <div key={index} className={styles.legTransfer}>
-                  <div className={styles.legHeader}>
-                    <span className={styles.legIcon}>🚶</span>
-                    <span>Mudança de Linha:</span>
-                    <span
-                      className={styles.chip}
-                      style={{
-                        backgroundColor: getLineColor(etapa.de ?? ""),
-                        color: etapa.de === "Amarela" ? "#000" : "#fff",
-                      }}
-                    >
-                      {etapa.de}
-                    </span>
-                    <span>→</span>
-                    <span
-                      className={styles.chip}
-                      style={{
-                        backgroundColor: getLineColor(etapa.para ?? ""),
-                        color: etapa.para === "Amarela" ? "#000" : "#fff",
-                      }}
-                    >
-                      {etapa.para}
-                    </span>
-                  </div>
-                  <div className={styles.legMeta}>Tempo estimado: {etapa.tempo} minutos</div>
-                </div>
-              );
-            })}
+            {resultados.rota.map((etapa, index) => (
+              <RouteLeg key={index} {...etapa} />
+            ))}
           </div>
 
           <div className={styles.note}>

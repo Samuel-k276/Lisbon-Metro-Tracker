@@ -2,8 +2,8 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useTrain } from "@/shared/hooks/useTrain";
 import { getStationNameById } from "@/shared/utils/metroUtils";
-import { formatTimeInSeconds } from "@/shared/utils/helpers";
 import { lines } from "@/shared/data/staticData";
+import { StationArrivalRow } from "./StationArrivalRow";
 import styles from "./TrainDetail.module.scss";
 
 const TrainDetail: React.FC = () => {
@@ -71,21 +71,13 @@ const TrainDetail: React.FC = () => {
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Journey Information</h2>
           {trainInfo.nextStations.map((station, index) => (
-            <div key={`${station.stationId}-${index}`} className={styles.stationRow}>
-              <span className={styles.stationLeft}>
-                <span
-                  className={styles.stationDot}
-                  style={{ backgroundColor: trainInfo.lineColor }}
-                />
-                <span style={{ fontWeight: index === 0 ? "bold" : "normal" }}>
-                  {station.stationName}
-                </span>
-                {index === 0 && <span className={styles.nextBadge}>Next station</span>}
-              </span>
-              <span className={`${styles.arrivalTime} ${index === 0 ? styles.highlight : ""}`}>
-                {formatTimeInSeconds(station.arrivalTime)}
-              </span>
-            </div>
+            <StationArrivalRow
+              key={`${station.stationId}-${index}`}
+              stationName={station.stationName}
+              arrivalTime={station.arrivalTime}
+              lineColor={trainInfo.lineColor}
+              isNext={index === 0}
+            />
           ))}
         </section>
 
