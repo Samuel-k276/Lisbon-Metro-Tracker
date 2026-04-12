@@ -73,7 +73,7 @@ const getStationLines = (stationId: string): string[] => {
  * @returns Array of station IDs that belong to the line
  */
 const getLineStations = (lineName: string): string[] => {
-  return lines[lineName]?.stations || [];
+  return lines[lineName as LineNames]?.stations || [];
 };
 
 export {

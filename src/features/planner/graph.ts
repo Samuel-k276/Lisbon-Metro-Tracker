@@ -3,6 +3,7 @@
  * Utiliza uma estrutura de lista de adjacências para armazenar as conexões entre estações
  */
 
+import type { LineNames } from '@/shared/data/metroLines';
 import { lines } from '@/shared/data/staticData';
 // Importando os dados das estações e das linhas
 import { stationMappings } from '@/shared/data/stationMappings';
@@ -57,7 +58,7 @@ class MetroGraph {
     }
 
     // Agora, adicionar as arestas (conexões entre estações)
-    for (const lineName of Object.keys(lines)) {
+    for (const lineName of Object.keys(lines) as LineNames[]) {
       const lineData = lines[lineName];
       if (!lineData) continue;
       const stations = lineData.stations;
