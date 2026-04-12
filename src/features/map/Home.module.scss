@@ -11,6 +11,32 @@
   }
 }
 
+.alertBanner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.75rem;
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 8px;
+  color: #856404;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #ffecb5;
+    color: #856404;
+    opacity: 1;
+  }
+}
+
+.alertIcon {
+  font-size: 1.1rem;
+}
+
 .mapContainer {
   background: white;
   border-radius: 12px;
