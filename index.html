@@ -2,17 +2,36 @@
 <html lang="pt-PT">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/webp" href="/src/assets/metro-icon.webp" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.25" />
-    <meta name="description" content="Aplicação em tempo real para o Metro de Lisboa" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Acompanhe em tempo real os comboios do Metro de Lisboa. Posições, tempos de espera, alertas e planeador de viagens." />
+    <meta name="theme-color" content="#009048" />
+    <meta name="color-scheme" content="light" />
+
     <title>Metro de Lisboa - Tempo Real</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/webp" href="/src/assets/metro-icon.webp" />
+    <link rel="apple-touch-icon" href="/src/assets/metro-icon.webp" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Metro de Lisboa - Tempo Real" />
+    <meta property="og:description" content="Mapa em tempo real do Metro de Lisboa com posições dos comboios, alertas e planeador de viagens." />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_PT" />
+
+    <!-- Preload LCP image -->
     <link rel="preload" as="image" href="/src/assets/mapa.webp" type="image/webp" fetchpriority="high" />
-    <style>
-      *{box-sizing:border-box;margin:0;padding:0}
-      body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f5f5f5;color:#333}
-    </style>
+
+    <!-- Preconnect to API -->
     <link rel="preconnect" href="https://api.metrolisboa.pt:8243" />
     <link rel="dns-prefetch" href="https://api.metrolisboa.pt:8243" />
+
+    <!-- Critical CSS -->
+    <style>
+      *{box-sizing:border-box;margin:0;padding:0}
+      body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f5f5f5;color:#333;line-height:1.6}
+      #root{min-height:100vh}
+    </style>
   </head>
   <body>
     <div id="root"></div>
