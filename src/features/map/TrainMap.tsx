@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 
-import mapaImg from '@/assets/mapa.png';
+import mapaImg from '@/assets/mapa.webp';
 import { useTrains } from '@/shared/contexts/TrainContext';
 import { stationCoordinates, lines } from '@/shared/data/staticData';
 import { useNavigateTo } from '@/shared/hooks/useNavigateTo';

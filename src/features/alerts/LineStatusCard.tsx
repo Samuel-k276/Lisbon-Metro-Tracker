@@ -1,9 +1,9 @@
 import React from 'react';
 
-import linhaAmarelaImg from '@/assets/linhaAmarela.png';
-import linhaAzulImg from '@/assets/linhaAzul.png';
-import linhaVerdeImg from '@/assets/linhaVerde.png';
-import linhaVermelhaImg from '@/assets/linhaVermelha.png';
+import linhaAmarelaImg from '@/assets/linhaAmarela.webp';
+import linhaAzulImg from '@/assets/linhaAzul.webp';
+import linhaVerdeImg from '@/assets/linhaVerde.webp';
+import linhaVermelhaImg from '@/assets/linhaVermelha.webp';
 import type { LineState } from '@/shared/types/metro';
 
 import styles from './Alerts.module.scss';
