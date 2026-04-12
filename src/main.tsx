@@ -8,6 +8,7 @@ import { Header } from '@/layout/Header';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { NotFound } from '@/shared/components/NotFound';
 import { Spinner } from '@/shared/components/Spinner';
+import { LineStateProvider } from '@/shared/contexts/LineStateContext';
 import { TrainProvider } from '@/shared/contexts/TrainContext';
 import { Routes } from '@/shared/routes';
 
@@ -27,25 +28,27 @@ const TrainDetail = lazy(() =>
 const App: React.FC = () => {
   return (
     <Router>
-      <TrainProvider>
-        <a href='#main-content' className='skip-link'>
-          Saltar para o conteúdo
-        </a>
-        <Header />
-        <main id='main-content' className='main-content'>
-          <Suspense fallback={<Spinner />}>
-            <RouterRoutes>
-              <Route path={Routes.HOME} element={<Home />} />
-              <Route path={Routes.ALERTS} element={<Alerts />} />
-              <Route path={Routes.PLANNER} element={<PlanearViagem />} />
-              <Route path={Routes.STATION} element={<StationDetail />} />
-              <Route path={Routes.TRAIN} element={<TrainDetail />} />
-              <Route path='*' element={<NotFound />} />
-            </RouterRoutes>
-          </Suspense>
-        </main>
-        <Footer />
-      </TrainProvider>
+      <LineStateProvider>
+        <TrainProvider>
+          <a href='#main-content' className='skip-link'>
+            Saltar para o conteúdo
+          </a>
+          <Header />
+          <main id='main-content' className='main-content'>
+            <Suspense fallback={<Spinner />}>
+              <RouterRoutes>
+                <Route path={Routes.HOME} element={<Home />} />
+                <Route path={Routes.ALERTS} element={<Alerts />} />
+                <Route path={Routes.PLANNER} element={<PlanearViagem />} />
+                <Route path={Routes.STATION} element={<StationDetail />} />
+                <Route path={Routes.TRAIN} element={<TrainDetail />} />
+                <Route path='*' element={<NotFound />} />
+              </RouterRoutes>
+            </Suspense>
+          </main>
+          <Footer />
+        </TrainProvider>
+      </LineStateProvider>
     </Router>
   );
 };

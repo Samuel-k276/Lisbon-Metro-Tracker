@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router';
 
-import { useLineStates } from '@/shared/hooks/useLineStates';
+import { useLineStates } from '@/shared/contexts/LineStateContext';
 import { Routes } from '@/shared/routes';
 
 import styles from './Header.module.scss';

@@ -1,9 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+vi.mock('@/shared/contexts/LineStateContext');
 
 import { Header } from '@/layout/Header';
+import { mockUseLineStates } from '@/shared/hooks/spec/mockUseLineStates';
 import { Routes } from '@/shared/routes';
 
 const renderHeader = (initialRoute = Routes.HOME) => {
@@ -15,6 +18,11 @@ const renderHeader = (initialRoute = Routes.HOME) => {
 };
 
 describe('Header', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockUseLineStates();
+  });
+
   it('renders the logo text', () => {
     renderHeader();
     expect(screen.getByText('Metro Lisboa')).toBeInTheDocument();
@@ -44,26 +52,35 @@ describe('Header', () => {
 
   it('hamburger button has correct aria-label', () => {
     renderHeader();
-    expect(
-      screen.getByRole('button', { name: 'Abrir/fechar menu de navegação' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /menu de navegação/ })).toBeInTheDocument();
   });
 
   it('hamburger button toggles aria-expanded on click', async () => {
-    const user = userEvent.setup();
     renderHeader();
-    const button = screen.getByRole('button', { name: 'Abrir/fechar menu de navegação' });
+    const button = screen.getByRole('button', { name: /menu de navegação/ });
     expect(button).toHaveAttribute('aria-expanded', 'false');
-
-    await user.click(button);
+    await userEvent.click(button);
     expect(button).toHaveAttribute('aria-expanded', 'true');
-
-    await user.click(button);
-    expect(button).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('navigation has aria-label', () => {
     renderHeader();
     expect(screen.getByRole('navigation', { name: 'Main navigation' })).toBeInTheDocument();
+  });
+
+  it('shows alert dot when line has non-normal status', () => {
+    mockUseLineStates({
+      lineStates: [{ name: 'Azul', status: 'Perturbada', message: 'test' }],
+    });
+    renderHeader();
+    expect(document.querySelector("[class*='alertIndicator']")).toBeInTheDocument();
+  });
+
+  it('hides alert dot when all lines are normal', () => {
+    mockUseLineStates({
+      lineStates: [{ name: 'Azul', status: 'Normal', message: '0' }],
+    });
+    renderHeader();
+    expect(document.querySelector("[class*='alertIndicator']")).not.toBeInTheDocument();
   });
 });

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-vi.mock('@/shared/hooks/useLineStates');
+vi.mock('@/shared/contexts/LineStateContext');
 
 import { Alerts } from '@/features/alerts/Alerts';
 import { mockUseLineStates } from '@/shared/hooks/spec/mockUseLineStates';

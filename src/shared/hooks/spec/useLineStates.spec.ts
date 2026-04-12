@@ -1,11 +1,15 @@
 import { renderHook, waitFor } from '@testing-library/react';
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.mock('@/shared/api/fetchLineState');
 
 import { fetchLineStateAll } from '@/shared/api/fetchLineState';
-import { useLineStates } from '@/shared/hooks/useLineStates';
+import { LineStateProvider, useLineStates } from '@/shared/contexts/LineStateContext';
 import type { LineState } from '@/shared/types/metro';
+
+const wrapper = ({ children }: { children: React.ReactNode }) =>
+  React.createElement(LineStateProvider, null, children);
 
 const mockLineStates: LineState[] = [
   { name: 'Amarela', status: 'Normal', message: '' },
@@ -21,7 +25,7 @@ describe('useLineStates', () => {
 
   it('returns loading initially', () => {
     vi.mocked(fetchLineStateAll).mockReturnValue(new Promise(() => {}));
-    const { result } = renderHook(() => useLineStates());
+    const { result } = renderHook(() => useLineStates(), { wrapper });
 
     expect(result.current.loading).toBe(true);
     expect(result.current.lineStates).toHaveLength(4);
@@ -30,7 +34,7 @@ describe('useLineStates', () => {
 
   it('returns line states after fetch', async () => {
     vi.mocked(fetchLineStateAll).mockResolvedValue(mockLineStates);
-    const { result } = renderHook(() => useLineStates());
+    const { result } = renderHook(() => useLineStates(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
@@ -42,7 +46,7 @@ describe('useLineStates', () => {
 
   it('returns error on fetch failure', async () => {
     vi.mocked(fetchLineStateAll).mockRejectedValue(new Error('Network error'));
-    const { result } = renderHook(() => useLineStates());
+    const { result } = renderHook(() => useLineStates(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Spinner } from '@/shared/components/Spinner';
-import { useLineStates } from '@/shared/hooks/useLineStates';
+import { useLineStates } from '@/shared/contexts/LineStateContext';
 
 import { LineStatusCard } from './LineStatusCard';
 
