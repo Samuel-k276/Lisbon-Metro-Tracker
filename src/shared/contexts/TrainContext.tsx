@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 
 import { fetchTrainData } from '@/shared/api/fetchTrainData';
+import type { LineNames } from '@/shared/data/metroLines';
 import { stationCoordinates, lines } from '@/shared/data/staticData';
 import type { Train } from '@/shared/types/metro';
 import { logger } from '@/shared/utils/logger';
@@ -15,7 +16,7 @@ import { getTrainLine } from '@/shared/utils/metroUtils';
 
 type TrainPosition = {
   id: string;
-  line: string;
+  line: LineNames;
   position: { x: number; y: number };
   angle: number;
   destination: string;

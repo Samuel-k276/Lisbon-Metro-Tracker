@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 
+import type { LineNames } from '@/shared/data/metroLines';
 import { lines } from '@/shared/data/staticData';
 import { stationMappings } from '@/shared/data/stationMappings';
 import { stationPath } from '@/shared/routes';
@@ -9,7 +10,7 @@ import { getLineColor } from '@/shared/utils/metroUtils';
 import styles from './LineStrip.module.scss';
 
 type LineStripProps = {
-  lineName: string;
+  lineName: LineNames;
   currentStationId: string;
 };
 

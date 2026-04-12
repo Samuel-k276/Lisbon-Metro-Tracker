@@ -6,7 +6,7 @@ import type { Train } from '@/shared/types/metro';
 import { getTrainLine, getStationNameById } from '@/shared/utils/metroUtils';
 
 type TrainInfo = {
-  line: string;
+  line: LineNames;
   lineColor: string;
   destination: string;
   nextStations: Array<{ stationId: string; stationName: string; arrivalTime: number }>;
@@ -14,7 +14,8 @@ type TrainInfo = {
 
 const buildTrainInfo = (trainId: string, train: Train): TrainInfo | null => {
   const lineName = getTrainLine(trainId);
-  const lineColor = LINE_COLORS[lineName as LineNames] || '#888888';
+  if (lineName === 'Unknown') return null;
+  const lineColor = LINE_COLORS[lineName] || '#888888';
 
   if (train.stationArrivals.length === 0) return null;
 

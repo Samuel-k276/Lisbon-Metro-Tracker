@@ -1,12 +1,13 @@
 import { vi } from 'vitest';
 
+import type { LineNames } from '@/shared/data/metroLines';
 import { useTrain } from '@/shared/hooks/useTrain';
 import type { Train } from '@/shared/types/metro';
 
 type UseTrainReturn = ReturnType<typeof useTrain>;
 
 const defaultTrainInfo = {
-  line: 'Azul',
+  line: 'Azul' as LineNames,
   lineColor: '#0075BF',
   destination: 'Santa Apolónia',
   nextStations: [
