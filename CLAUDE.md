@@ -32,7 +32,7 @@ yarn test:watch # vitest (watch mode)
 - SCSS module class names in camelCase
 - State management via React Context only — no external state libs
 - Use `@/` path alias when shorter than relative imports
-- MUI `sx` prop is acceptable for MUI component-specific styles
+- Never use inline styles — use SCSS modules and CSS custom properties via class names
 - Don't worry about formatting — oxfmt handles it via git hooks
 
 ## Architecture

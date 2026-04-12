@@ -1,6 +1,5 @@
 import React from 'react';
 import type { LineState } from '@/shared/types/metro';
-import { LINE_COLORS } from '@/shared/data/metroLines';
 import linhaAzulImg from '@/assets/linhaAzul.png';
 import linhaAmarelaImg from '@/assets/linhaAmarela.png';
 import linhaVerdeImg from '@/assets/linhaVerde.png';
@@ -21,26 +20,14 @@ const LINE_NAMES: Record<string, string> = {
   vermelha: 'Vermelha (Red)',
 };
 
-const LINE_GRADIENTS: Record<string, { primary: string; gradient: string }> = {
-  azul: {
-    primary: LINE_COLORS.Azul,
-    gradient: `linear-gradient(135deg, #93c5fd 0%, ${LINE_COLORS.Azul} 100%)`,
-  },
-  amarela: {
-    primary: LINE_COLORS.Amarela,
-    gradient: `linear-gradient(135deg, #fde68a 0%, ${LINE_COLORS.Amarela} 100%)`,
-  },
-  verde: {
-    primary: LINE_COLORS.Verde,
-    gradient: `linear-gradient(135deg, #6ee7b7 0%, ${LINE_COLORS.Verde} 100%)`,
-  },
-  vermelha: {
-    primary: LINE_COLORS.Vermelha,
-    gradient: `linear-gradient(135deg, #fca5a5 0%, ${LINE_COLORS.Vermelha} 100%)`,
-  },
-};
+const LINE_CLASS: Record<string, string> = {
+  azul: styles.lineAzul ?? '',
+  amarela: styles.lineAmarela ?? '',
+  verde: styles.lineVerde ?? '',
+  vermelha: styles.lineVermelha ?? '',
+} as Record<string, string>;
 
-const STATUS_CLASS = {
+const STATUS_CLASS: Record<string, string> = {
   normal: styles.statusNormal ?? '',
   conditional: styles.statusConditional ?? '',
   conditioned: styles.statusConditioned ?? '',
@@ -56,18 +43,15 @@ type LineStatusCardProps = {
 
 const LineStatusCard: React.FC<LineStatusCardProps> = ({ lineState }) => {
   const key = lineState.name.toLowerCase();
-  const lineStyle = LINE_GRADIENTS[key];
+  const lineClass = LINE_CLASS[key] ?? '';
   const statusClass = STATUS_CLASS[lineState.status.toLowerCase()] ?? styles.statusUnknown;
 
   return (
-    <div className={`${styles.card} ${statusClass}`}>
+    <div className={`${styles.card} ${lineClass} ${statusClass}`}>
       <div className={styles.statusStripe} />
 
-      <div className={styles.cardHeader} style={{ background: lineStyle?.gradient }}>
-        <div
-          className={styles.lineIconWrapper}
-          style={{ border: `1.5px solid ${lineStyle?.primary}` }}
-        >
+      <div className={styles.cardHeader}>
+        <div className={styles.lineIconWrapper}>
           <img src={LINE_IMAGES[key] ?? linhaAzulImg} alt={`Linha ${lineState.name}`} />
         </div>
         <h2 className={styles.lineName}>{LINE_NAMES[key] ?? lineState.name}</h2>
@@ -82,10 +66,7 @@ const LineStatusCard: React.FC<LineStatusCardProps> = ({ lineState }) => {
         </div>
 
         {lineState.message && lineState.message !== '0' && (
-          <div
-            className={styles.message}
-            style={{ '--quote-color': lineStyle?.primary } as React.CSSProperties}
-          >
+          <div className={styles.message}>
             <p>{lineState.message}</p>
           </div>
         )}

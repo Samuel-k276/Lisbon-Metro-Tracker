@@ -83,6 +83,24 @@
   animation-delay: 0.4s;
 }
 
+// Line color variants — applied to .card
+.lineAzul {
+  --line-color: #{$blue-line};
+  --line-gradient: linear-gradient(135deg, #{$blue-line-light} 0%, #{$blue-line} 100%);
+}
+.lineAmarela {
+  --line-color: #{$yellow-line};
+  --line-gradient: linear-gradient(135deg, #{$yellow-line-light} 0%, #{$yellow-line} 100%);
+}
+.lineVerde {
+  --line-color: #{$green-line};
+  --line-gradient: linear-gradient(135deg, #{$green-line-light} 0%, #{$green-line} 100%);
+}
+.lineVermelha {
+  --line-color: #{$red-line};
+  --line-gradient: linear-gradient(135deg, #{$red-line-light} 0%, #{$red-line} 100%);
+}
+
 // Status color variants — applied to .card
 .statusNormal {
   --status-color: #{$status-normal};
@@ -117,6 +135,7 @@
   padding: 1rem;
   display: flex;
   align-items: center;
+  background: var(--line-gradient);
 }
 
 .lineIconWrapper {
@@ -131,6 +150,7 @@
   padding: 2px;
   overflow: hidden;
   flex-shrink: 0;
+  border: 1.5px solid var(--line-color);
 
   img {
     max-width: 100%;
@@ -192,6 +212,7 @@
     &::before {
       content: '\275D';
       font-size: 1.5rem;
+      color: var(--line-color);
       position: absolute;
       top: 0.5rem;
       left: 0.5rem;
@@ -200,6 +221,7 @@
     &::after {
       content: '\275E';
       font-size: 1.5rem;
+      color: var(--line-color);
       position: absolute;
       bottom: 0;
       right: 0.5rem;
