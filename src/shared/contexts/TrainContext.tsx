@@ -1,6 +1,12 @@
-import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
-import type { ReactNode } from "react";
-import { fetchTrainData } from "@/shared/api/metro";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  type ReactNode,
+} from "react";
+import { fetchTrainData } from "@/shared/api/fetchTrainData";
 import type { Train } from "@/shared/types/metro";
 import { stationCoordinates, lines } from "@/shared/data/staticData";
 import { getTrainLine } from "@/shared/utils/metroUtils";

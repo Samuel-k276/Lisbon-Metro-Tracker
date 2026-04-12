@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { Station } from "@/shared/types/metro";
-import { fetchStationWaitingTimes } from "@/shared/api/metro";
+import { fetchStationWaitingTimes } from "@/shared/api/fetchStationWaitingTimes";
 
 const useStation = (stationId: string | undefined) => {
   const [station, setStation] = useState<Station | null>(null);

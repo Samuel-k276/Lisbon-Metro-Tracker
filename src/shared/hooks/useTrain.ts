@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 import { useTrains } from "@/shared/contexts/TrainContext";
 import { getTrainLine, getStationNameById } from "@/shared/utils/metroUtils";
-import { LINE_COLORS } from "@/shared/data/metroLines";
-import type { LineNames } from "@/shared/data/metroLines";
+import { LINE_COLORS, type LineNames } from "@/shared/data/metroLines";
 import type { Train } from "@/shared/types/metro";
 
 type TrainInfo = {
