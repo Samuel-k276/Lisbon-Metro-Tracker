@@ -1,8 +1,6 @@
 const Routes = {
   HOME: "/",
-  ABOUT: "/sobre",
   ALERTS: "/alertas",
-  FARES: "/tarifarios",
   PLANNER: "/planear-viagem",
   STATION: "/station/:stationId",
   TRAIN: "/train/:trainId",

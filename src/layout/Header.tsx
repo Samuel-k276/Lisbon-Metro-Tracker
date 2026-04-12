@@ -49,12 +49,6 @@ const Header: React.FC = () => {
             <li className={location.pathname === Routes.PLANNER ? styles.navLinkActive : ""}>
               <Link to={Routes.PLANNER}>Planeia Viagem</Link>
             </li>
-            <li className={location.pathname === Routes.ABOUT ? styles.navLinkActive : ""}>
-              <Link to={Routes.ABOUT}>Sobre</Link>
-            </li>
-            <li className={location.pathname === Routes.FARES ? styles.navLinkActive : ""}>
-              <Link to={Routes.FARES}>Tarifários</Link>
-            </li>
             <li className={location.pathname === Routes.ALERTS ? styles.navLinkActive : ""}>
               <Link to={Routes.ALERTS} className={styles.alertLink}>
                 <span>Alertas</span>

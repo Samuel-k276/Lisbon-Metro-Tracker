@@ -22,8 +22,6 @@ describe("Header", () => {
     renderHeader();
     expect(screen.getByText("Mapa em Tempo Real")).toBeInTheDocument();
     expect(screen.getByText("Planeia Viagem")).toBeInTheDocument();
-    expect(screen.getByText("Sobre")).toBeInTheDocument();
-    expect(screen.getByText("Tarifários")).toBeInTheDocument();
     expect(screen.getByText("Alertas")).toBeInTheDocument();
   });
 
@@ -39,8 +37,6 @@ describe("Header", () => {
       Routes.HOME,
     );
     expect(screen.getByText("Planeia Viagem").closest("a")).toHaveAttribute("href", Routes.PLANNER);
-    expect(screen.getByText("Sobre").closest("a")).toHaveAttribute("href", Routes.ABOUT);
-    expect(screen.getByText("Tarifários").closest("a")).toHaveAttribute("href", Routes.FARES);
     expect(screen.getByText("Alertas").closest("a")).toHaveAttribute("href", Routes.ALERTS);
   });
 });
