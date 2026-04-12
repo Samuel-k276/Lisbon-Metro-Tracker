@@ -5,11 +5,17 @@ import styles from './Footer.module.scss';
 const Footer: React.FC = () => {
   return (
     <footer className={styles.footer}>
-      <p>&copy; {new Date().getFullYear()} Metro de Lisboa. Todos os direitos reservados.</p>
       <p>
-        Esta aplicação é apenas uma demonstração e não está afiliada oficialmente ao Metro de
-        Lisboa.
+        Projeto open-source &middot;{' '}
+        <a
+          href='https://github.com/Samuel-k276/Lisbon-Metro-Tracker'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          GitHub
+        </a>
       </p>
+      <p className={styles.disclaimer}>Não afiliado oficialmente ao Metro de Lisboa.</p>
     </footer>
   );
 };

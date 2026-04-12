@@ -4,16 +4,15 @@ import { describe, it, expect } from 'vitest';
 import { Footer } from '@/layout/Footer';
 
 describe('Footer', () => {
-  it('renders the copyright text with current year', () => {
+  it('renders GitHub link', () => {
     render(<Footer />);
-    const year = new Date().getFullYear().toString();
-    expect(screen.getByText(new RegExp(year))).toBeInTheDocument();
+    const link = screen.getByText('GitHub');
+    expect(link).toHaveAttribute('href', 'https://github.com/Samuel-k276/Lisbon-Metro-Tracker');
+    expect(link).toHaveAttribute('target', '_blank');
   });
 
   it('renders the disclaimer', () => {
     render(<Footer />);
-    expect(
-      screen.getByText(/não está afiliada oficialmente ao Metro de Lisboa/),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Não afiliado oficialmente/)).toBeInTheDocument();
   });
 });
