@@ -7,6 +7,7 @@ import { useTrains } from '@/shared/contexts/TrainContext';
 import { stationCoordinates, lines } from '@/shared/data/staticData';
 import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
 import { stationPath, trainPath } from '@/shared/routes';
+import { logger } from '@/shared/utils/logger';
 import { getStationLines, getLineColor, isTransferStation } from '@/shared/utils/metroUtils';
 
 import styles from './TrainMap.module.scss';
@@ -39,8 +40,10 @@ const TrainMap: React.FC = () => {
     const img = new window.Image();
     img.src = mapaImg;
     img.onload = () => setBackgroundImage(img);
+    img.onerror = () => logger.error('Failed to load map background image');
     return () => {
       img.onload = null;
+      img.onerror = null;
     };
   }, []);
 

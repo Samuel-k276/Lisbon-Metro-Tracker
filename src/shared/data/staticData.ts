@@ -103,24 +103,4 @@ const lines: Record<string, Line> = {
   },
 };
 
-const getTrainLine = (trainId: string) => {
-  const lastChar = trainId.charAt(trainId.length - 1);
-  switch (lastChar) {
-    case 'A':
-      return 'Azul';
-    case 'B':
-      return 'Amarela';
-    case 'C':
-      return 'Verde';
-    case 'D':
-      return 'Vermelha';
-    default:
-      return 'Unknown';
-  }
-};
-
-const getLineColor = (line: string) => {
-  return lines[line]?.color || '#888888'; // Default color if line not found
-};
-
-export { stationCoordinates, lines, getTrainLine, getLineColor };
+export { stationCoordinates, lines };

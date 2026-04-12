@@ -26,8 +26,8 @@ const Alerts: React.FC = () => {
 
         {!loading && !error && (
           <div className={styles.grid}>
-            {lineStates.map((lineState, index) => (
-              <LineStatusCard key={index} lineState={lineState} />
+            {lineStates.map((lineState) => (
+              <LineStatusCard key={lineState.name} lineState={lineState} />
             ))}
           </div>
         )}

@@ -23,11 +23,8 @@ const fetchStationWaitingTimes = async (stationId: string): Promise<Station | nu
       throw new Error('Invalid response format or no data received');
     }
 
-    const stationData =
-      getStationById(stationId) ||
-      (() => {
-        throw new Error('Station data not found in mappings');
-      })();
+    const stationData = getStationById(stationId);
+    if (!stationData) throw new Error('Station data not found in mappings');
 
     const station: Station = {
       id: stationId,

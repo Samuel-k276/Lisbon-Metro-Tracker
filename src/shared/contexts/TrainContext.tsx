@@ -46,7 +46,8 @@ const calculateTrainPosition = (
   }
 
   const angle = Math.atan2(nextCoords.y - currentCoords.y, nextCoords.x - currentCoords.x);
-  const percentageOfJourney = timeToNext < 240 ? 1 - timeToNext / 240 : 0;
+  const percentageOfJourney =
+    timeToNext < MAX_TIME_BETWEEN_STATIONS ? 1 - timeToNext / MAX_TIME_BETWEEN_STATIONS : 0;
   const x = currentCoords.x + (nextCoords.x - currentCoords.x) * percentageOfJourney;
   const y = currentCoords.y + (nextCoords.y - currentCoords.y) * percentageOfJourney;
 
@@ -54,6 +55,7 @@ const calculateTrainPosition = (
 };
 
 const REFRESH_INTERVAL = 15000;
+const MAX_TIME_BETWEEN_STATIONS = 240;
 
 const TrainProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [trainData, setTrainData] = useState<Record<string, Train> | null>(null);

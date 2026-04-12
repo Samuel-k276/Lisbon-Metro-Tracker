@@ -511,13 +511,13 @@ const getStationById = (id: string): StationMapping | undefined => {
  * @returns Destination name or the ID if not found
  */
 const getDestinationNameById = (id: string, stationId: string): string => {
-  if ((stationId === 'AS' || stationId === 'AH') && DestinationMapping[id] == 'Terreiro do Paço') {
+  if ((stationId === 'AS' || stationId === 'AH') && DestinationMapping[id] === 'Terreiro do Paço') {
     return 'Santa Apolónia';
   }
 
   if (
     (stationId === 'CP' || stationId === 'SA' || stationId === 'PI' || stationId === 'MP') &&
-    DestinationMapping[id] == 'Campo Grande'
+    DestinationMapping[id] === 'Campo Grande'
   ) {
     return 'Odivelas';
   }
