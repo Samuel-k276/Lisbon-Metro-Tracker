@@ -37,7 +37,10 @@ const STATUS_CLASS: Record<string, string> = {
   closed: styles.statusClosed ?? '',
 } as Record<string, string>;
 
-const getStatusIcon = (status: string): string => (status === 'Ok' ? '\u2713' : '\u26A0\uFE0F');
+const getStatusIcon = (status: string): string => {
+  const normalized = status.toLowerCase();
+  return normalized === 'normal' || normalized === 'ok' ? '\u2713' : '\u26A0\uFE0F';
+};
 
 type LineStatusCardProps = {
   lineState: LineState;
