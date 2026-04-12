@@ -1,6 +1,8 @@
 #!/bin/sh
-echo "Running oxfmt check..."
-npx oxfmt --check src/ || exit 1
+printf "\033[36m[pre-push]\033[0m Checking formatting...\n"
+npx oxfmt --check src/ > /dev/null 2>&1 || { printf "\033[31m✗ Formatting issues found. Run 'yarn fmt' to fix.\033[0m\n"; exit 1; }
+printf "\033[32m✓ Formatting OK\033[0m\n"
 
-echo "Running oxlint..."
-npx oxlint src/ || exit 1
+printf "\033[36m[pre-push]\033[0m Linting...\n"
+npx oxlint src/ > /dev/null 2>&1 || { printf "\033[31m✗ Lint errors found. Run 'yarn lint' for details.\033[0m\n"; exit 1; }
+printf "\033[32m✓ Lint OK\033[0m\n"
