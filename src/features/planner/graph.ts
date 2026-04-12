@@ -11,13 +11,13 @@ import TinyQueue from "tinyqueue";
 /**
  * Interface para representar um nó do grafo (uma estação)
  */
-export type GraphNode = {
+type GraphNode = {
   id: string;
   lines: string[];
   adjacent: string[];
 };
 
-export type PathSegment = {
+type PathSegment = {
   tipo: "viagem" | "transbordo";
   de: string;
   para: string;
@@ -26,7 +26,7 @@ export type PathSegment = {
   estacoes: number;
 };
 
-export type FormattedPath = {
+type FormattedPath = {
   segments: PathSegment[];
   transbordos: number;
   tempoTotal: number;
@@ -36,7 +36,7 @@ export type FormattedPath = {
 /**
  * Classe que representa o Grafo do Metro de Lisboa
  */
-export class MetroGraph {
+class MetroGraph {
   private nodes: Map<string, GraphNode>;
 
   constructor() {
@@ -358,4 +358,7 @@ export class MetroGraph {
 }
 
 // Exporta uma instância já inicializada do grafo para uso em toda a aplicação
-export const metroGraph = new MetroGraph();
+const metroGraph = new MetroGraph();
+
+export { MetroGraph, metroGraph };
+export type { GraphNode, PathSegment, FormattedPath };

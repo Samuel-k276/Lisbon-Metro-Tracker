@@ -21,7 +21,7 @@ const HEADERS = {
   accept: "application/json",
 };
 
-export const fetchStationWaitingTimes = async (stationId: string): Promise<Station | null> => {
+const fetchStationWaitingTimes = async (stationId: string): Promise<Station | null> => {
   try {
     const response = await fetch(`${API_BASE_URL}/tempoEspera/Estacao/${stationId}`, {
       headers: HEADERS,
@@ -119,7 +119,7 @@ export const fetchStationWaitingTimes = async (stationId: string): Promise<Stati
 };
 
 // Fetch all waiting times for all lines
-export const fetchTrainData = async (): Promise<Record<string, Train>> => {
+const fetchTrainData = async (): Promise<Record<string, Train>> => {
   try {
     const response = await fetch(`${API_BASE_URL}/tempoEspera/Estacao/todos`, { headers: HEADERS });
     if (!response.ok) {
@@ -177,7 +177,7 @@ export const fetchTrainData = async (): Promise<Record<string, Train>> => {
   }
 };
 
-export const fetchLineStateAll = async (): Promise<LineState[]> => {
+const fetchLineStateAll = async (): Promise<LineState[]> => {
   try {
     const response = await fetch(`${API_BASE_URL}/estadoLinha/todos`, { headers: HEADERS });
     if (!response.ok) {
@@ -218,3 +218,5 @@ export const fetchLineStateAll = async (): Promise<LineState[]> => {
     return [];
   }
 };
+
+export { fetchStationWaitingTimes, fetchTrainData, fetchLineStateAll };

@@ -1,8 +1,8 @@
 // Metro line constants
-export type LineNames = "Azul" | "Amarela" | "Verde" | "Vermelha";
+type LineNames = "Azul" | "Amarela" | "Verde" | "Vermelha";
 
 // Line color constants
-export const LINE_COLORS: Record<LineNames, string> = {
+const LINE_COLORS: Record<LineNames, string> = {
   Azul: "#0075BF",
   Amarela: "#FFD800",
   Verde: "#00A9A6",
@@ -10,9 +10,12 @@ export const LINE_COLORS: Record<LineNames, string> = {
 };
 
 // Map train ID suffix to line name
-export const TRAIN_LINE_MAPPING: Record<string, LineNames> = {
+const TRAIN_LINE_MAPPING: Record<string, LineNames> = {
   A: "Azul",
   B: "Amarela",
   C: "Verde",
   D: "Vermelha",
 };
+
+export { LINE_COLORS, TRAIN_LINE_MAPPING };
+export type { LineNames };

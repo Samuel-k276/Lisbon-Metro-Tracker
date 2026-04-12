@@ -41,7 +41,7 @@ const buildTrainInfo = (trainId: string, train: Train): TrainInfo | null => {
   };
 };
 
-export const useTrain = (trainId: string | undefined) => {
+const useTrain = (trainId: string | undefined) => {
   const { trainData, loading, error } = useTrains();
 
   const train = trainId ? (trainData?.[trainId] ?? null) : null;
@@ -55,3 +55,5 @@ export const useTrain = (trainId: string | undefined) => {
 
   return { train, trainInfo, loading, error: trainError };
 };
+
+export { useTrain };

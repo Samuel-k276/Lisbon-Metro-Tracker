@@ -6,7 +6,7 @@ import type { LineNames } from "@/shared/data/metroLines";
 import type { Coordinates } from "@/shared/types/metro"; // Adjust the import path as necessary
 
 // Type for our station mapping
-export type StationMapping = {
+type StationMapping = {
   id: string;
   name: string;
   coordinates: Coordinates;
@@ -16,7 +16,7 @@ export type StationMapping = {
 };
 
 // Dictionary of destination IDs to names
-export const DestinationMapping: Record<string, string> = {
+const DestinationMapping: Record<string, string> = {
   "1": "Reboleira",
   "18": "Santa Apolónia",
   "33": "Reboleira",
@@ -45,7 +45,7 @@ export const DestinationMapping: Record<string, string> = {
   "60": "Aeroporto",
 };
 
-export const DestinationToID: Record<string, string> = {
+const DestinationToID: Record<string, string> = {
   "1": "RB",
   "18": "SP",
   "33": "RB",
@@ -74,7 +74,7 @@ export const DestinationToID: Record<string, string> = {
   "60": "AP",
 };
 
-export const getDestinationId = (id: string): string => {
+const getDestinationId = (id: string): string => {
   // Get the destination ID from the mapping
   return DestinationToID[id] || id;
 };
@@ -83,7 +83,7 @@ export const getDestinationId = (id: string): string => {
 // Ìt's defined statically because the data is not expected to change frequently
 // and it allows for better performance and easier maintenance
 // as we don't need to fetch it from an external source every time
-export const stationMappings: Record<string, StationMapping> = {
+const stationMappings: Record<string, StationMapping> = {
   // Lisbon Metro stations with their data
   AM: {
     id: "AM",
@@ -492,7 +492,7 @@ export const stationMappings: Record<string, StationMapping> = {
  * @param id Station ID
  * @returns Station name or the ID if not found
  */
-export const getStationNameById = (id: string): string => {
+const getStationNameById = (id: string): string => {
   return stationMappings[id]?.name || id;
 };
 
@@ -501,7 +501,7 @@ export const getStationNameById = (id: string): string => {
  * @param id Station ID
  * @returns Station mapping object or undefined if not found
  */
-export const getStationById = (id: string): StationMapping | undefined => {
+const getStationById = (id: string): StationMapping | undefined => {
   return stationMappings[id];
 };
 
@@ -510,7 +510,7 @@ export const getStationById = (id: string): StationMapping | undefined => {
  * @param id Station ID
  * @returns Destination name or the ID if not found
  */
-export const getDestinationNameById = (id: string, stationId: string): string => {
+const getDestinationNameById = (id: string, stationId: string): string => {
   if ((stationId === "AS" || stationId === "AH") && DestinationMapping[id] == "Terreiro do Paço") {
     return "Santa Apolónia";
   }
@@ -524,3 +524,14 @@ export const getDestinationNameById = (id: string, stationId: string): string =>
 
   return DestinationMapping[id] || id;
 };
+
+export {
+  DestinationMapping,
+  DestinationToID,
+  getDestinationId,
+  stationMappings,
+  getStationNameById,
+  getStationById,
+  getDestinationNameById,
+};
+export type { StationMapping };

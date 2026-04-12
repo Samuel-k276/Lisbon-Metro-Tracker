@@ -1,4 +1,4 @@
-export type TrainArrival = {
+type TrainArrival = {
   stop_id: string;
   cais: string;
   hora: string;
@@ -12,3 +12,5 @@ export type TrainArrival = {
   sairServico: string;
   UT: string;
 };
+
+export type { TrainArrival };

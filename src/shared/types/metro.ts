@@ -1,25 +1,25 @@
 import { OrderedMap } from "js-sdsl";
 import type { LineNames } from "@/shared/data/metroLines";
 
-export type Coordinates = {
+type Coordinates = {
   x: number;
   y: number;
 };
 
-export type UserLocation = {
+type UserLocation = {
   coordinates: Coordinates;
   accuracy: number;
   timestamp: number;
 };
 
-export type Line = {
+type Line = {
   name: LineNames;
   color: string;
   stations: string[];
   destinations: { [stationName: string]: number };
 };
 
-export type Station = {
+type Station = {
   id: string;
   name: string;
   coordinates: Coordinates;
@@ -29,7 +29,7 @@ export type Station = {
   nextTrains: NextTrainsResponse[];
 };
 
-export type NextTrainsResponse = {
+type NextTrainsResponse = {
   destination: string;
   train1: string;
   time1: string;
@@ -39,18 +39,29 @@ export type NextTrainsResponse = {
   time3: string;
 };
 
-export type Destination = {
+type Destination = {
   id: string;
   name: string;
 };
 
-export type LineState = {
+type LineState = {
   name: LineNames;
   status: string;
   message: string;
 };
 
-export type Train = {
+type Train = {
   id: string;
   stationArrivals: OrderedMap<number, [string, string]>;
+};
+
+export type {
+  Coordinates,
+  UserLocation,
+  Line,
+  Station,
+  NextTrainsResponse,
+  Destination,
+  LineState,
+  Train,
 };

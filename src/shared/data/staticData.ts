@@ -2,7 +2,7 @@ import type { Coordinates, Line } from "@/shared/types/metro";
 import { LINE_COLORS } from "@/shared/data/metroLines";
 
 // Corrected station coordinates for rendering (x values increased by 130)
-export const stationCoordinates: Record<string, Coordinates> = {
+const stationCoordinates: Record<string, Coordinates> = {
   RB: { x: 69.5, y: 172 },
   AS: { x: 130, y: 173 },
   AF: { x: 190, y: 173 },
@@ -56,7 +56,7 @@ export const stationCoordinates: Record<string, Coordinates> = {
 };
 
 // Updated lines with stations in correct order from one terminal to another
-export const lines: Record<string, Line> = {
+const lines: Record<string, Line> = {
   // Map metro line names to colors
   Azul: {
     name: "Azul",
@@ -103,7 +103,7 @@ export const lines: Record<string, Line> = {
   },
 };
 
-export const getTrainLine = (trainId: string) => {
+const getTrainLine = (trainId: string) => {
   const lastChar = trainId.charAt(trainId.length - 1);
   switch (lastChar) {
     case "A":
@@ -119,6 +119,8 @@ export const getTrainLine = (trainId: string) => {
   }
 };
 
-export const getLineColor = (line: string) => {
+const getLineColor = (line: string) => {
   return lines[line]?.color || "#888888"; // Default color if line not found
 };
+
+export { stationCoordinates, lines, getTrainLine, getLineColor };

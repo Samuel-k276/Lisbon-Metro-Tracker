@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const useNavigateTo = () => {
+const useNavigateTo = () => {
   const navigate = useNavigate();
 
   return useCallback(
@@ -12,3 +12,5 @@ export const useNavigateTo = () => {
     [navigate],
   );
 };
+
+export { useNavigateTo };

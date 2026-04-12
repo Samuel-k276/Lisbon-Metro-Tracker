@@ -5,7 +5,7 @@ import { getStationLines } from "@/shared/utils/metroUtils";
  * Format time string to display in a user-friendly format
  * @param timeString ISO format time string
  */
-export const formatTime = (timeString: string): string => {
+const formatTime = (timeString: string): string => {
   const date = new Date(timeString);
   return date.toLocaleTimeString("pt-PT", {
     hour: "2-digit",
@@ -18,7 +18,7 @@ export const formatTime = (timeString: string): string => {
  * @param seconds Time in seconds
  * @returns Formatted time string
  */
-export const formatTimeInSeconds = (seconds: string | number): string => {
+const formatTimeInSeconds = (seconds: string | number): string => {
   const sec = typeof seconds === "string" ? parseInt(seconds, 10) : seconds;
 
   if (isNaN(sec) || sec <= 0) return "Chegando";
@@ -36,14 +36,14 @@ export const formatTimeInSeconds = (seconds: string | number): string => {
 /**
  * Calculate distance between two coordinates
  */
-export const calculateDistance = (x1: number, y1: number, x2: number, y2: number): number => {
+const calculateDistance = (x1: number, y1: number, x2: number, y2: number): number => {
   return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 };
 
 /**
  * Find nearest station to given coordinates
  */
-export const findNearestStation = (
+const findNearestStation = (
   coordinates: { x: number; y: number },
   stations: Station[],
 ): Station | null => {
@@ -80,7 +80,15 @@ export const findNearestStation = (
  * @param destinationId Destination station ID
  * @returns The name of the line for this destination
  */
-export const getLineNameFromDestination = (destinationId: string): string => {
+const getLineNameFromDestination = (destinationId: string): string => {
   if (!destinationId) return "Unknown";
   return getStationLines(destinationId)[0] || "Unknown";
+};
+
+export {
+  formatTime,
+  formatTimeInSeconds,
+  calculateDistance,
+  findNearestStation,
+  getLineNameFromDestination,
 };

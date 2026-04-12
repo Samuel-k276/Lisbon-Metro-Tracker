@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import type { Station } from "@/shared/types/metro";
 import { fetchStationWaitingTimes } from "@/shared/api/metro";
 
-export const useStation = (stationId: string | undefined) => {
+const useStation = (stationId: string | undefined) => {
   const [station, setStation] = useState<Station | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,3 +33,5 @@ export const useStation = (stationId: string | undefined) => {
 
   return { station, loading, error };
 };
+
+export { useStation };

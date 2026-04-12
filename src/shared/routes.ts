@@ -1,4 +1,4 @@
-export const Routes = {
+const Routes = {
   HOME: "/",
   ABOUT: "/sobre",
   ALERTS: "/alertas",
@@ -8,5 +8,7 @@ export const Routes = {
   TRAIN: "/train/:trainId",
 } as const;
 
-export const stationPath = (stationId: string) => `/station/${stationId}`;
-export const trainPath = (trainId: string) => `/train/${trainId}`;
+const stationPath = (stationId: string) => `/station/${stationId}`;
+const trainPath = (trainId: string) => `/train/${trainId}`;
+
+export { Routes, stationPath, trainPath };
