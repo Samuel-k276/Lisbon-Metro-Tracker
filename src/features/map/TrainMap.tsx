@@ -2,32 +2,27 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Stage, Layer, Circle, Group, Image as KonvaImage, Arrow, Text } from "react-konva";
 import mapaImg from "@/assets/mapa.png";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 import { stationCoordinates, lines } from "@/shared/data/staticData";
 import { getStationLines, getLineColor, isTransferStation } from "@/shared/utils/metroUtils";
 import { useTrains } from "@/shared/contexts/TrainContext";
 import styles from "./TrainMap.module.scss";
 
+const DIMENSIONS = { width: 1034.4, height: 720 };
+
 const TrainMap: React.FC = () => {
-  const stageRef = useRef<any>(null);
-  const dimensions = { width: 1034.4, height: 720 };
   const navigate = useNavigate();
   const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null);
   const [hoveredStation, setHoveredStation] = useState<string | null>(null);
   const [hoveredTrain, setHoveredTrain] = useState<string | null>(null);
-  const [stageScale] = useState(1);
-  const [mapReady, setMapReady] = useState(false);
 
   const { trainPositions, error: loadingError } = useTrains();
 
   useEffect(() => {
     const img = new window.Image();
     img.src = mapaImg;
-    img.onload = () => {
-      setBackgroundImage(img);
-      setTimeout(() => setMapReady(true), 500);
-    };
+    img.onload = () => setBackgroundImage(img);
     return () => {
       img.onload = null;
     };
@@ -49,10 +44,9 @@ const TrainMap: React.FC = () => {
 
       <div
         className={styles.stageWrapper}
-        style={{ width: dimensions.width, height: dimensions.height }}
+        style={{ width: DIMENSIONS.width, height: DIMENSIONS.height }}
       >
-        {/* Station clickable areas */}
-        {mapReady &&
+        {backgroundImage &&
           Object.values(lines)
             .flatMap((lineData) =>
               lineData.stations.map((stationId) => {
@@ -78,8 +72,7 @@ const TrainMap: React.FC = () => {
             )
             .filter(Boolean)}
 
-        {/* Train clickable areas */}
-        {mapReady &&
+        {backgroundImage &&
           trainPositions.map((train) => (
             <div
               key={`overlay-train-${train.id}`}
@@ -96,22 +89,17 @@ const TrainMap: React.FC = () => {
             />
           ))}
 
-        {/* Konva stage */}
         <Stage
-          ref={stageRef}
-          width={dimensions.width}
-          height={dimensions.height}
-          scale={{ x: stageScale, y: stageScale }}
+          width={DIMENSIONS.width}
+          height={DIMENSIONS.height}
           style={{ position: "absolute", top: 0, left: 0 }}
         >
           <Layer name="background">
             {backgroundImage && (
               <KonvaImage
                 image={backgroundImage}
-                width={dimensions.width}
-                height={dimensions.height}
-                scaleX={1}
-                scaleY={1}
+                width={DIMENSIONS.width}
+                height={DIMENSIONS.height}
                 listening={false}
               />
             )}
