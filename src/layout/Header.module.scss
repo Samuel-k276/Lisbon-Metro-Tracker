@@ -7,6 +7,16 @@
   top: 0;
   z-index: 1100;
   transition: all 0.3s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -100vh;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    background: $primary-color;
+  }
 }
 
 .headerScrolled {
