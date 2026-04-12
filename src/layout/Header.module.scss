@@ -161,19 +161,21 @@
     position: fixed;
     top: 0;
     right: -100%;
-    width: 70%;
+    width: 75%;
+    max-width: 300px;
     height: 100vh;
-    background: $primary-color;
-    padding: 80px 30px 30px;
+    background: linear-gradient(180deg, $primary-color 0%, $primary-color-dark 100%);
+    padding: 70px 24px 24px;
     transition:
-      right 0.4s ease,
-      visibility 0.4s ease;
+      right 0.3s ease,
+      visibility 0.3s ease;
     z-index: 1000;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.2);
     visibility: hidden;
   }
 
   .open {
+    right: 0 !important;
     visibility: visible;
   }
 
@@ -181,10 +183,16 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    gap: 0;
 
     li {
       width: 100%;
-      margin-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    a {
+      padding: 14px 8px;
+      font-size: 1.05rem;
     }
   }
 

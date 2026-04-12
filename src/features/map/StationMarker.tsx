@@ -17,8 +17,6 @@ const StationMarker: React.FC<StationMarkerProps> = ({
   isHovered,
   hoverColor,
 }) => {
-  const shadowFilter = isHovered ? 'url(#station-shadow-hover)' : 'url(#station-shadow)';
-
   if (isTransfer) {
     return (
       <>
@@ -43,7 +41,6 @@ const StationMarker: React.FC<StationMarkerProps> = ({
       fill='white'
       stroke={isHovered ? hoverColor : lineColor}
       strokeWidth={isHovered ? 3 : 2}
-      filter={shadowFilter}
     />
   );
 };

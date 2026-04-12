@@ -44,16 +44,4 @@ describe('StationMarker', () => {
     const circle = container.querySelector('circle');
     expect(circle).toHaveAttribute('stroke', '#FF0000');
   });
-
-  it('uses correct shadow filter when hovered', () => {
-    const { container } = renderMarker({ isHovered: true });
-    const circle = container.querySelector('circle');
-    expect(circle).toHaveAttribute('filter', 'url(#station-shadow-hover)');
-  });
-
-  it('uses correct shadow filter when not hovered', () => {
-    const { container } = renderMarker({ isHovered: false });
-    const circle = container.querySelector('circle');
-    expect(circle).toHaveAttribute('filter', 'url(#station-shadow)');
-  });
 });

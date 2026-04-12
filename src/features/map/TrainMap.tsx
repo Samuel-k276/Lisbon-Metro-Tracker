@@ -44,24 +44,6 @@ const TrainMap: React.FC = () => {
         aria-label='Mapa do Metro de Lisboa com posições dos comboios em tempo real'
       >
         <defs>
-          <filter id='station-shadow'>
-            <feDropShadow
-              dx='0'
-              dy='2'
-              stdDeviation='2'
-              floodColor='rgba(0,0,0,0.3)'
-              floodOpacity='0.6'
-            />
-          </filter>
-          <filter id='station-shadow-hover'>
-            <feDropShadow
-              dx='0'
-              dy='2'
-              stdDeviation='4'
-              floodColor='rgba(0,0,0,0.3)'
-              floodOpacity='0.6'
-            />
-          </filter>
           <filter id='train-shadow'>
             <feDropShadow
               dx='0'
